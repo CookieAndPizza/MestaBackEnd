@@ -14,8 +14,10 @@ import javax.json.Json;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
@@ -40,7 +42,9 @@ public class LocationResource {
     }
 
     /**
-     * Retrieves representation of an instance of com.mesta.resources.PlaceResource
+     * Retrieves representation of an instance of
+     * com.mesta.resources.PlaceResource
+     *
      * @return an instance of java.lang.String
      */
     @GET
@@ -51,17 +55,20 @@ public class LocationResource {
 
     /**
      * PUT method for updating or creating an instance of PlaceResource
+     *
      * @param content representation for the resource
      */
-    @PUT
+    @POST
     @Path("savelocation")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void putJSON(@QueryParam("Name") String name, @QueryParam("Longitude") long longitude, @QueryParam("Latitude") long latitude, @QueryParam("Description") String description) {
+    public boolean putLocation(@FormParam("Name") String name, @FormParam("Longitude") long longitude, @FormParam("Latitude") long latitude, @FormParam("Description") String description) {
+        boolean succes = false;
         Location loc = new Location(name, longitude, latitude, description);
         try {
-            LocationController.getController().locationGetter().saveLocation(loc);
+            succes = LocationController.getController().locationGetter().saveLocation(loc);
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return succes;
     }
 }

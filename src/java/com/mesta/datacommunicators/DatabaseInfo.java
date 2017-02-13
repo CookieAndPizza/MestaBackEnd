@@ -10,7 +10,7 @@ package com.mesta.datacommunicators;
  * @author harm
  */
 public class DatabaseInfo {
-    public static final String ConnectionString = "jdbc:mysql://the-mesta.com:3306/Mesta";
-    public static final String LoginName = "root";
-    public static final String Password = "Mesta";
+    public static final String ConnectionString = "jdbc:mysql://188.166.88.118:3306/Mesta";
+    public static final String LoginName = "Mesta";
+    public static final String Password = "@Glassfish1";
 }
