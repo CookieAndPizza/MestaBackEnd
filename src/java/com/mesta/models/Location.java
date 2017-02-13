@@ -5,11 +5,13 @@
  */
 package com.mesta.models;
 
+import java.io.Serializable;
+
 /**
  *
  * @author harm
  */
-public class Location {
+public class Location implements Serializable{
 
     private int id;
     private String name;
