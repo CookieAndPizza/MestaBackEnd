@@ -10,11 +10,28 @@ package com.mesta.models;
  * @author harm
  */
 public class Location {
+
     private int id;
     private String name;
     private long longitude;
     private long latitude;
     private String discription;
+
+    public Location(String name, long longitude, long latitude, String discription) {
+        this.id = -1;
+        this.name = name;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.discription = discription;
+    }
+
+    public Location(int id, String name, long longitude, long latitude, String discription) {
+        this.id = id;
+        this.name = name;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.discription = discription;
+    }
 
     public int getId() {
         return id;
