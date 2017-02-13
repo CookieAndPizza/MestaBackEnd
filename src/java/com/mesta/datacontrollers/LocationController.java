@@ -1,0 +1,34 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.mesta.datacontrollers;
+
+import com.mesta.datacommunicators.LocationGetter;
+
+/**
+ *
+ * @author harm
+ */
+public class LocationController {
+    
+    private static LocationController controller;
+    
+    private LocationGetter locationGetter;
+    
+    private LocationController() {
+        this.locationGetter = new LocationGetter();
+    }
+    
+    public static LocationController getController(){
+        if (controller == null){
+            controller = new LocationController();
+        }
+        return controller;
+    }
+    
+    public LocationGetter locationGetter(){
+        return locationGetter;
+    }
+}
