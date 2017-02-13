@@ -17,9 +17,9 @@ import java.util.logging.Logger;
  *
  * @author harm
  */
-public class LocationGetter {
+public class LocationSetter {
 
-    private static final Logger LOGGER = Logger.getLogger(LocationGetter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LocationSetter.class.getName());
     private Connection connection;
 
     public boolean saveLocation(Location loc) throws SQLException {
@@ -27,7 +27,7 @@ public class LocationGetter {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(DatabaseInfo.ConnectionString, DatabaseInfo.LoginName, DatabaseInfo.Password);
 
-            String query = "INSERT INTO Location Name, Latitude, Longitude, Description) VALUES (?, ?, ?, ?)";
+            String query = "INSERT INTO Location (Name, Latitude, Longitude, Description) VALUES (?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(query);
 
             statement.setString(1, loc.getName());
@@ -44,7 +44,7 @@ public class LocationGetter {
             LOGGER.log(Level.FINE, ex.getMessage());
         } catch (ClassNotFoundException ex) {
             System.out.println(ex.getMessage());
-            Logger.getLogger(LocationGetter.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             connection.close();
         }

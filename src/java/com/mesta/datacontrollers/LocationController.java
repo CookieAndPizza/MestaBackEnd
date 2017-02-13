@@ -5,7 +5,7 @@
  */
 package com.mesta.datacontrollers;
 
-import com.mesta.datacommunicators.LocationGetter;
+import com.mesta.datacommunicators.LocationSetter;
 
 /**
  *
@@ -15,10 +15,10 @@ public class LocationController {
     
     private static LocationController controller;
     
-    private LocationGetter locationGetter;
+    private LocationSetter locationGetter;
     
     private LocationController() {
-        this.locationGetter = new LocationGetter();
+        this.locationGetter = new LocationSetter();
     }
     
     public static LocationController getController(){
@@ -28,7 +28,7 @@ public class LocationController {
         return controller;
     }
     
-    public LocationGetter locationGetter(){
+    public LocationSetter locationGetter(){
         return locationGetter;
     }
 }

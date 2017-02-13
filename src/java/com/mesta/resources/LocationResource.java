@@ -23,6 +23,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.xml.bind.annotation.XmlElement;
 
 /**
  * REST Web Service
@@ -50,17 +51,17 @@ public class LocationResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getJSON() {
-        return "sa";
+        return "works";
     }
 
     /**
-     * PUT method for updating or creating an instance of PlaceResource
+     * POST method for updating or creating an instance of PlaceResource
      *
      * @param content representation for the resource
      */
     @POST
     @Path("savelocation")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public boolean putLocation(@FormParam("Name") String name, @FormParam("Longitude") long longitude, @FormParam("Latitude") long latitude, @FormParam("Description") String description) {
         boolean succes = false;
         Location loc = new Location(name, longitude, latitude, description);
