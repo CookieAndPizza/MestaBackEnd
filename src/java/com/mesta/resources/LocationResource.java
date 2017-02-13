@@ -61,8 +61,8 @@ public class LocationResource {
      */
     @POST
     @Path("savelocation")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public boolean putLocation(@FormParam("Name") String name, @FormParam("Longitude") long longitude, @FormParam("Latitude") long latitude, @FormParam("Description") String description) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean putLocation(@QueryParam("Name") String name, @QueryParam("Longitude") long longitude, @QueryParam("Latitude") long latitude, @QueryParam("Description") String description) {
         boolean succes = false;
         Location loc = new Location(name, longitude, latitude, description);
         try {
