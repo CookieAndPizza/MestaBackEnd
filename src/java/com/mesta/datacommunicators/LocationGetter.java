@@ -5,10 +5,45 @@
  */
 package com.mesta.datacommunicators;
 
+import com.mesta.models.Location;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author harm
  */
 public class LocationGetter {
-    // ToDo: SQL implementations for geting locations
+    
+    private static final Logger LOGGER = Logger.getLogger(LocationGetter.class.getName());
+    private Connection connection;
+
+    public boolean saveLocation(Location loc) throws SQLException {
+        try {
+            connection = DriverManager.getConnection(DatabaseInfo.ConnectionString, DatabaseInfo.LoginName, DatabaseInfo.Password);
+
+            String query = "INSERT Name, Latitude, Longitude, Description INTO Location VALUES (?, ?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setString(1, loc.getName());
+            statement.setString(2, String.valueOf(loc.getLatitude()));
+            statement.setString(3, String.valueOf(loc.getLongitude()));
+            statement.setString(4, loc.getDiscription());
+            
+            int affectedRows = statement.executeUpdate();
+            
+            return affectedRows > 0;
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            LOGGER.log(Level.FINE, ex.getMessage());
+        } finally {
+            connection.close();
+        }
+        return false;
+    }
 }
