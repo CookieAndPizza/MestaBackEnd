@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,8 +26,8 @@ public class LocationGetter {
     private static final Logger LOGGER = Logger.getLogger(LocationSetter.class.getName());
     private Connection connection;
 
-    public List<Location> getAllLocations() throws SQLException {
-        List<Location> locations = new ArrayList<>();
+    public Stack getAllLocations() throws SQLException {
+        Stack locations = new Stack();
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(DatabaseInfo.ConnectionString, DatabaseInfo.LoginName, DatabaseInfo.Password);
@@ -43,7 +44,7 @@ public class LocationGetter {
                 long longitude = result.getLong("Longitude");
                 String discription = result.getString("Description");
                 Location loc = new Location(id, name, longitude, latitude, discription);
-                
+
                 locations.add(loc);
             }
 
