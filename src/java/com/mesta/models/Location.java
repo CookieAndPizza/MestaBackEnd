@@ -5,6 +5,7 @@
  */
 package com.mesta.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 
 /**
@@ -18,23 +19,7 @@ public class Location implements Serializable{
     private long longitude;
     private long latitude;
     private String discription;
-
-    public Location(String name, long longitude, long latitude, String discription) {
-        this.id = -1;
-        this.name = name;
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.discription = discription;
-    }
-
-    public Location(int id, String name, long longitude, long latitude, String discription) {
-        this.id = id;
-        this.name = name;
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.discription = discription;
-    }
-
+    
     public int getId() {
         return id;
     }
@@ -74,4 +59,27 @@ public class Location implements Serializable{
     public void setDiscription(String discription) {
         this.discription = discription;
     }
+
+    public Location(String name, long longitude, long latitude, String discription) {
+        this.id = -1;
+        this.name = name;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.discription = discription;
+    }
+
+    public Location(int id, String name, long longitude, long latitude, String discription) {
+        this.id = id;
+        this.name = name;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.discription = discription;
+    }
+    
+    @Override
+    public String toString(){
+        return "ID: " + this.id + ", Name: " + this.name + ", Lat: " + this.latitude + ", Long: " + this.longitude + ", Desc: " + this.discription; 
+    }
+
+    
 }
