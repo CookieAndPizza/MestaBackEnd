@@ -15,10 +15,10 @@ public class LocationController {
     
     private static LocationController controller;
     
-    private LocationSetter locationGetter;
+    private LocationSetter locationSetter;
     
     private LocationController() {
-        this.locationGetter = new LocationSetter();
+        this.locationSetter = new LocationSetter();
     }
     
     public static LocationController getController(){
@@ -29,6 +29,6 @@ public class LocationController {
     }
     
     public LocationSetter locationGetter(){
-        return locationGetter;
+        return locationSetter;
     }
 }
