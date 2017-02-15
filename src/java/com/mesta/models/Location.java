@@ -6,6 +6,10 @@
 package com.mesta.models;
 
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -77,7 +81,18 @@ public class Location implements Serializable {
 
     @Override
     public String toString() {
-        return "ID: " + this.id + ", Name: " + this.name + ", Lat: " + this.latitude + ", Long: " + this.longitude + ", Desc: " + this.discription;
-    }
+        JSONObject object = new JSONObject();
+        try {
+            object.put("ID", this.id);
+            object.put("Name", this.name);
+            object.put("Longitude", this.longitude);
+            object.put("Latitude", this.latitude);
+            object.put("Description", this.discription);
+        } catch (JSONException ex) {
+            System.out.println(ex);
+            Logger.getLogger(Location.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
+        return object.toString();
+    }
 }

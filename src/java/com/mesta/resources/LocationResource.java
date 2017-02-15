@@ -10,6 +10,7 @@ import com.mesta.models.Location;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.core.Context;
@@ -50,14 +51,13 @@ public class LocationResource {
     @Path("getall")
     @Produces(MediaType.APPLICATION_JSON)
     public String getAll() {
-        List<Location> locations = new ArrayList<>();
+        Stack locations = new Stack();
         try {
             locations = LocationController.getController().locationGetter().getAllLocations();
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
         }
-        JSONArray json = new JSONArray(locations);
-        return json.toString();
+        return locations.toString();
     }
 
     /**
