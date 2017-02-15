@@ -38,8 +38,8 @@ public class LocationGetter {
             while (result.next()) {
                 int id = result.getInt("ID");
                 String name = result.getString("Name");
-                long latitude = result.getLong("Latitude");
-                long longitude = result.getLong("Longitude");
+                double latitude = result.getDouble("Latitude");
+                double longitude = result.getDouble("Longitude");
                 String discription = result.getString("Description");
 
                 Location loc = new Location(id, name, longitude, latitude, discription);
@@ -73,7 +73,7 @@ public class LocationGetter {
 
             ResultSet result = statement.executeQuery();
             result.next();
-            location = new Location(ID, result.getString("Name"), result.getLong("Longitude"), result.getLong("Latitude"), result.getString("Description"));
+            location = new Location(ID, result.getString("Name"), result.getDouble("Longitude"), result.getDouble("Latitude"), result.getString("Description"));
             addImagesFromLocation(location);
 
         } catch (SQLException ex) {
