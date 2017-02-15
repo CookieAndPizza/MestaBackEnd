@@ -74,6 +74,7 @@ public class LocationGetter {
             ResultSet result = statement.executeQuery();
             result.next();
             location = new Location(ID, result.getString("Name"), result.getLong("Longitude"), result.getLong("Latitude"), result.getString("Description"));
+            addImagesFromLocation(location);
 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
