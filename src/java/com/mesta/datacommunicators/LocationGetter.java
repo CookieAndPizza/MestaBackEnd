@@ -59,4 +59,31 @@ public class LocationGetter {
         }
         return locations;
     }
+    
+    public Location getOneLocation(int ID) throws SQLException{
+        Location location = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            connection = DriverManager.getConnection(DatabaseInfo.ConnectionString, DatabaseInfo.LoginName, DatabaseInfo.Password);
+
+            String query = "SELECT ID, Name, Latitude, Longitude, Description FROM Location WHERE ID = ?";
+            
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, String.valueOf(ID));
+
+            ResultSet result = statement.executeQuery();
+            result.next();
+            location = new Location(ID, result.getString("Name"), result.getLong("Longitude"), result.getLong("Latitude"), result.getString("Description"));
+            
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            LOGGER.log(Level.FINE, ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            connection.close();
+        }
+        return location;
+    }
 }
