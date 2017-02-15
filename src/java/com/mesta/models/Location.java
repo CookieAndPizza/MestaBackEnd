@@ -21,8 +21,8 @@ public class Location implements Serializable {
 
     private int id;
     private String name;
-    private long longitude;
-    private long latitude;
+    private double longitude;
+    private double latitude;
     private String description;
     private List<String> images;
 
@@ -42,20 +42,20 @@ public class Location implements Serializable {
         this.name = name;
     }
 
-    public long getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(long longitude) {
-        this.longitude = longitude;
-    }
-
-    public long getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
-
-    public void setLatitude(long latitude) {
+    
+    public void setLatitude(double latitude){
         this.latitude = latitude;
+    }
+    
+    public void setLongitude(double longitude){
+        this.longitude = longitude;
     }
 
     public String getDescription() {
@@ -73,7 +73,7 @@ public class Location implements Serializable {
     public Location() {
     }
 
-    public Location(String name, long longitude, long latitude, String discription) {
+    public Location(String name, double longitude, double latitude, String discription) {
         this.images = new ArrayList<>();
         this.id = -1;
         this.name = name;
@@ -82,7 +82,7 @@ public class Location implements Serializable {
         this.description = discription;
     }
 
-    public Location(int id, String name, long longitude, long latitude, String discription) {
+    public Location(int id, String name, double longitude, double latitude, String discription) {
         this.images = new ArrayList<>();
         this.id = id;
         this.name = name;
