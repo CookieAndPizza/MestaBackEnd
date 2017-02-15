@@ -59,4 +59,38 @@ public class LocationGetter {
         }
         return locations;
     }
+    
+    public Stack getNearbyLocations() throws SQLException {
+        Stack locations = new Stack();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            connection = DriverManager.getConnection(DatabaseInfo.ConnectionString, DatabaseInfo.LoginName, DatabaseInfo.Password);
+
+            String query = "";
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                int id = result.getInt("ID");
+                String name = result.getString("Name");
+                long latitude = result.getLong("Latitude");
+                long longitude = result.getLong("Longitude");
+                String discription = result.getString("Description");
+                Location loc = new Location(id, name, longitude, latitude, discription);
+
+                locations.add(loc);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            LOGGER.log(Level.FINE, ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            connection.close();
+        }
+        return locations;
+    }
 }

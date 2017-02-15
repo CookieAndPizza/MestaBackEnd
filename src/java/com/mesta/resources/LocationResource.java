@@ -48,7 +48,7 @@ public class LocationResource {
      * @return an instance of java.lang.String
      */
     @GET
-    @Path("getall")
+    @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
     public String getAll() {
         Stack locations = new Stack();
@@ -66,7 +66,7 @@ public class LocationResource {
      * @param content representation for the resource
      */
     @POST
-    @Path("/savelocation")
+    @Path("/save")
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean putLocation(Location loc) {
         boolean succes = false;
@@ -77,5 +77,23 @@ public class LocationResource {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
         }
         return succes;
+    }
+    
+    /**
+     * POST method for updating or creating an instance of PlaceResource
+     *
+     * @param content representation for the resource
+     */
+    @GET
+    @Path("/nearby")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Stack nearbyLocations() {
+        Stack locations = new Stack();
+        try {
+            locations = LocationController.getController().locationGetter().getNearbyLocations();
+        } catch (SQLException ex) {
+            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return locations;
     }
 }
