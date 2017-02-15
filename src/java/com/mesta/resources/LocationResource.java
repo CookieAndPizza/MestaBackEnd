@@ -11,6 +11,7 @@ import com.sun.mail.imap.protocol.ID;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.core.Context;
@@ -22,8 +23,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  * REST Web Service
@@ -49,17 +48,16 @@ public class LocationResource {
      * @return an instance of java.lang.String
      */
     @GET
-    @Path("getall")
+    @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
     public String getAll() {
-        List<Location> locations = new ArrayList<>();
+        Stack locations = new Stack();
         try {
             locations = LocationController.getController().locationGetter().getAllLocations();
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
         }
-        JSONArray json = new JSONArray(locations);
-        return json.toString();
+        return locations.toString();
     }
 
     /**
@@ -68,7 +66,7 @@ public class LocationResource {
      * @param content representation for the resource
      */
     @POST
-    @Path("/savelocation")
+    @Path("/save")
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean putLocation(Location loc) {
         boolean succes = false;
@@ -93,5 +91,23 @@ public class LocationResource {
         }
         JSONObject json = new JSONObject(location);
         return json.toString();
+    }
+    
+    /**
+     * POST method for updating or creating an instance of PlaceResource
+     *
+     * @param content representation for the resource
+     */
+    @GET
+    @Path("/nearby")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Stack nearbyLocations() {
+        Stack locations = new Stack();
+        try {
+            locations = LocationController.getController().locationGetter().getNearbyLocations();
+        } catch (SQLException ex) {
+            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return locations;
     }
 }
