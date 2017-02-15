@@ -33,7 +33,7 @@ public class LocationSetter {
             statement.setString(1, loc.getName());
             statement.setString(2, String.valueOf(loc.getLatitude()));
             statement.setString(3, String.valueOf(loc.getLongitude()));
-            statement.setString(4, loc.getDiscription());
+            statement.setString(4, loc.getDescription());
 
             int affectedRows = statement.executeUpdate();
 

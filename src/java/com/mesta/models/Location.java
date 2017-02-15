@@ -23,7 +23,7 @@ public class Location implements Serializable {
     private String name;
     private long longitude;
     private long latitude;
-    private String discription;
+    private String description;
     private List<String> images;
 
     public int getId() {
@@ -58,16 +58,19 @@ public class Location implements Serializable {
         this.latitude = latitude;
     }
 
-    public String getDiscription() {
-        return discription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDiscription(String discription) {
-        this.discription = discription;
+    public void setDescription(String discription) {
+        this.description = discription;
     }
     
     public void addImage(String path){
         images.add(path);
+    }
+
+    public Location() {
     }
 
     public Location(String name, long longitude, long latitude, String discription) {
@@ -76,7 +79,7 @@ public class Location implements Serializable {
         this.name = name;
         this.longitude = longitude;
         this.latitude = latitude;
-        this.discription = discription;
+        this.description = discription;
     }
 
     public Location(int id, String name, long longitude, long latitude, String discription) {
@@ -85,18 +88,18 @@ public class Location implements Serializable {
         this.name = name;
         this.longitude = longitude;
         this.latitude = latitude;
-        this.discription = discription;
+        this.description = discription;
     }
 
     @Override
     public String toString() {
         JSONObject object = new JSONObject();
         try {
-            object.put("ID", this.id);
-            object.put("Name", this.name);
-            object.put("Longitude", this.longitude);
-            object.put("Latitude", this.latitude);
-            object.put("Description", this.discription);
+            object.put("id", this.id);
+            object.put("name", this.name);
+            object.put("longitude", this.longitude);
+            object.put("latitude", this.latitude);
+            object.put("description", this.description);
             int i = 1;
             for(String s : this.images){
                 object.put("image" + i, s);
