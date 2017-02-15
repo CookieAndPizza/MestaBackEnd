@@ -7,10 +7,7 @@ package com.mesta.resources;
 
 import com.mesta.datacontrollers.LocationController;
 import com.mesta.models.Location;
-import com.sun.mail.imap.protocol.ID;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +20,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
+import org.json.JSONObject;
 
 /**
  * REST Web Service

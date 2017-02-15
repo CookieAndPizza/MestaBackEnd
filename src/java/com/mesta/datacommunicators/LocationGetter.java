@@ -11,8 +11,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,25 +59,22 @@ public class LocationGetter {
         }
         return locations;
     }
-    
-<<<<<<< HEAD
-    public Location getOneLocation(int ID) throws SQLException{
+
+    public Location getOneLocation(int ID) throws SQLException {
         Location location = null;
-=======
-    public Stack getNearbyLocations() throws SQLException {
-        Stack locations = new Stack();
-        try{  
-        Class.forName("com.mysql.jdbc.Driver");
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(DatabaseInfo.ConnectionString, DatabaseInfo.LoginName, DatabaseInfo.Password);
 
-            String query = "";
+            String query = "SELECT ID, Name, Latitude, Longitude, Description FROM Location WHERE ID = ?";
+
             PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, String.valueOf(ID));
+
             ResultSet result = statement.executeQuery();
-            
-            while (result.next()) {
-                
-                
-            }         
+            result.next();
+            location = new Location(ID, result.getString("Name"), result.getLong("Longitude"), result.getLong("Latitude"), result.getString("Description"));
+
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             LOGGER.log(Level.FINE, ex.getMessage());
@@ -87,29 +82,42 @@ public class LocationGetter {
             System.out.println(ex.getMessage());
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            connection.close();   
+            connection.close();
         }
-        return locations;
+
+        return location;
     }
-        
-    private void addImagesFromLocation(Location loc) throws SQLException {
->>>>>>> Development
+
+    public Stack getNearbyLocations() throws SQLException {
+        Stack locations = new Stack();
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(DatabaseInfo.ConnectionString, DatabaseInfo.LoginName, DatabaseInfo.Password);
 
-<<<<<<< HEAD
-            String query = "SELECT ID, Name, Latitude, Longitude, Description FROM Location WHERE ID = ?";
-            
+            String query = "";
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, String.valueOf(ID));
-
             ResultSet result = statement.executeQuery();
-            result.next();
-            location = new Location(ID, result.getString("Name"), result.getLong("Longitude"), result.getLong("Latitude"), result.getString("Description"));
-            
-        }catch (SQLException ex) {
-=======
+
+            while (result.next()) {
+
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            LOGGER.log(Level.FINE, ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            connection.close();
+        }
+        return locations;
+    }
+
+    private void addImagesFromLocation(Location loc) throws SQLException {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            connection = DriverManager.getConnection(DatabaseInfo.ConnectionString, DatabaseInfo.LoginName, DatabaseInfo.Password);
+
             String query = "SELECT i.Path FROM Image i, Location l WHERE l.ID = i.LocationID AND l.ID = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, loc.getId());
@@ -124,7 +132,6 @@ public class LocationGetter {
             }
 
         } catch (SQLException ex) {
->>>>>>> Development
             System.out.println(ex.getMessage());
             LOGGER.log(Level.FINE, ex.getMessage());
         } catch (ClassNotFoundException ex) {
@@ -133,9 +140,5 @@ public class LocationGetter {
         } finally {
             connection.close();
         }
-<<<<<<< HEAD
-        return location;
-=======
->>>>>>> Development
     }
 }
