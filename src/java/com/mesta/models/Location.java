@@ -6,6 +6,8 @@
 package com.mesta.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONException;
@@ -22,6 +24,7 @@ public class Location implements Serializable {
     private long longitude;
     private long latitude;
     private String discription;
+    private List<String> images;
 
     public int getId() {
         return id;
@@ -62,8 +65,13 @@ public class Location implements Serializable {
     public void setDiscription(String discription) {
         this.discription = discription;
     }
+    
+    public void addImage(String path){
+        images.add(path);
+    }
 
     public Location(String name, long longitude, long latitude, String discription) {
+        this.images = new ArrayList<>();
         this.id = -1;
         this.name = name;
         this.longitude = longitude;
@@ -72,6 +80,7 @@ public class Location implements Serializable {
     }
 
     public Location(int id, String name, long longitude, long latitude, String discription) {
+        this.images = new ArrayList<>();
         this.id = id;
         this.name = name;
         this.longitude = longitude;
@@ -88,6 +97,11 @@ public class Location implements Serializable {
             object.put("Longitude", this.longitude);
             object.put("Latitude", this.latitude);
             object.put("Description", this.discription);
+            int i = 1;
+            for(String s : this.images){
+                object.put("image" + i, s);
+                i++;
+            }
         } catch (JSONException ex) {
             System.out.println(ex);
             Logger.getLogger(Location.class.getName()).log(Level.SEVERE, null, ex);
