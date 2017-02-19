@@ -62,7 +62,7 @@ public class LocationGetter {
         return locations;
     }
     
-    public Stack getNearbyLocations() throws SQLException {
+    public Stack getNearbyLocations(String Lat, String Long) throws SQLException {
         Stack locations = new Stack();
         try{  
         Class.forName("com.mysql.jdbc.Driver");
