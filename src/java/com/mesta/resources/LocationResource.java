@@ -21,7 +21,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import org.json.JSONObject;
 
 /**
  * REST Web Service
@@ -101,8 +100,9 @@ public class LocationResource {
      * @param content representation for the resource
      */
     @GET
-    @Path("/nearby")
+    @Path("/nearby/{Lat}/{Long}")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response nearbyLocations(@PathParam("Lat")double lat, @PathParam("Long")double lon) {
         Stack locations = new Stack();
         try {

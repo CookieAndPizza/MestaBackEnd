@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +25,11 @@ public class LocationGetter {
     private static final Logger LOGGER = Logger.getLogger(LocationSetter.class.getName());
     private Connection connection;
 
+    /**
+     * method for getting all locations.
+     *
+     * @param content representation for the resource
+     */
     public Stack getAllLocations() throws SQLException {
         Stack locations = new Stack();
         try {
@@ -90,18 +96,33 @@ public class LocationGetter {
     }
 
     public Stack getNearbyLocations(double lat, double lon) throws SQLException {
-        Stack locations = new Stack();
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
+        Stack locations = new Stack<Location>();
+        Iterator<Location> iter = null;
+        int count = 1;
+        try{
+          Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(DatabaseInfo.ConnectionString, DatabaseInfo.LoginName, DatabaseInfo.Password);
 
-            String query = "";
+            String query = "SELECT l.ID, l.Name, l.Latitude, l.Longitude, l.Description FROM Location l ORDER BY ABS(l.Latitude - ?) + ABS(l.Longitude - ?)";
             PreparedStatement statement = connection.prepareStatement(query);
+            statement.setDouble(1, lat);
+            statement.setDouble(2, lon);
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
+                int id = result.getInt("ID");
+                String name = result.getString("Name");
+                double latitude = result.getDouble("Latitude");
+                double longitude = result.getDouble("Longitude");
+                String discription = result.getString("Description");
 
+                Location loc = new Location(id, name, longitude, latitude, discription);
+                addImagesFromLocation(loc);
+
+                locations.add(loc);
             }
+            iter = locations.iterator();
+
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             LOGGER.log(Level.FINE, ex.getMessage());
@@ -110,8 +131,14 @@ public class LocationGetter {
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             connection.close();
+        }          
+        
+        Stack<Location> nearest = new Stack<Location>();
+        while(iter.hasNext() && count < 5){
+            nearest.add(iter.next());
+            count++;
         }
-        return locations;
+        return nearest;
     }
 
     private void addImagesFromLocation(Location loc) throws SQLException {
