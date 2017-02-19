@@ -21,9 +21,9 @@ public class Location implements Serializable {
 
     private int id;
     private String name;
-    private long longitude;
-    private long latitude;
-    private String discription;
+    private double longitude;
+    private double latitude;
+    private String description;
     private List<String> images;
 
     public int getId() {
@@ -42,61 +42,64 @@ public class Location implements Serializable {
         this.name = name;
     }
 
-    public long getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(long longitude) {
+    public double getLatitude() {
+        return latitude;
+    }
+    
+    public void setLatitude(double latitude){
+        this.latitude = latitude;
+    }
+    
+    public void setLongitude(double longitude){
         this.longitude = longitude;
     }
 
-    public long getLatitude() {
-        return latitude;
+    public String getDescription() {
+        return description;
     }
 
-    public void setLatitude(long latitude) {
-        this.latitude = latitude;
-    }
-
-    public String getDiscription() {
-        return discription;
-    }
-
-    public void setDiscription(String discription) {
-        this.discription = discription;
+    public void setDescription(String discription) {
+        this.description = discription;
     }
     
     public void addImage(String path){
         images.add(path);
     }
 
-    public Location(String name, long longitude, long latitude, String discription) {
+    public Location() {
+    }
+
+    public Location(String name, double longitude, double latitude, String discription) {
         this.images = new ArrayList<>();
         this.id = -1;
         this.name = name;
         this.longitude = longitude;
         this.latitude = latitude;
-        this.discription = discription;
+        this.description = discription;
     }
 
-    public Location(int id, String name, long longitude, long latitude, String discription) {
+    public Location(int id, String name, double longitude, double latitude, String discription) {
         this.images = new ArrayList<>();
         this.id = id;
         this.name = name;
         this.longitude = longitude;
         this.latitude = latitude;
-        this.discription = discription;
+        this.description = discription;
     }
 
     @Override
     public String toString() {
         JSONObject object = new JSONObject();
         try {
-            object.put("ID", this.id);
-            object.put("Name", this.name);
-            object.put("Longitude", this.longitude);
-            object.put("Latitude", this.latitude);
-            object.put("Description", this.discription);
+            object.put("id", this.id);
+            object.put("name", this.name);
+            object.put("longitude", this.longitude);
+            object.put("latitude", this.latitude);
+            object.put("description", this.description);
             int i = 1;
             for(String s : this.images){
                 object.put("image" + i, s);

@@ -11,8 +11,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,8 +38,8 @@ public class LocationGetter {
             while (result.next()) {
                 int id = result.getInt("ID");
                 String name = result.getString("Name");
-                long latitude = result.getLong("Latitude");
-                long longitude = result.getLong("Longitude");
+                double latitude = result.getDouble("Latitude");
+                double longitude = result.getDouble("Longitude");
                 String discription = result.getString("Description");
 
                 Location loc = new Location(id, name, longitude, latitude, discription);
@@ -61,21 +59,23 @@ public class LocationGetter {
         }
         return locations;
     }
-    
-    public Stack getNearbyLocations(String Lat, String Long) throws SQLException {
-        Stack locations = new Stack();
-        try{  
-        Class.forName("com.mysql.jdbc.Driver");
+
+    public Location getOneLocation(int ID) throws SQLException {
+        Location location = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(DatabaseInfo.ConnectionString, DatabaseInfo.LoginName, DatabaseInfo.Password);
 
-            String query = "";
+            String query = "SELECT ID, Name, Latitude, Longitude, Description FROM Location WHERE ID = ?";
+
             PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, String.valueOf(ID));
+
             ResultSet result = statement.executeQuery();
-            
-            while (result.next()) {
-                
-                
-            }         
+            result.next();
+            location = new Location(ID, result.getString("Name"), result.getDouble("Longitude"), result.getDouble("Latitude"), result.getString("Description"));
+            addImagesFromLocation(location);
+
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             LOGGER.log(Level.FINE, ex.getMessage());
@@ -83,11 +83,37 @@ public class LocationGetter {
             System.out.println(ex.getMessage());
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            connection.close();   
+            connection.close();
+        }
+
+        return location;
+    }
+
+    public Stack getNearbyLocations(double lat, double lon) throws SQLException {
+        Stack locations = new Stack();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            connection = DriverManager.getConnection(DatabaseInfo.ConnectionString, DatabaseInfo.LoginName, DatabaseInfo.Password);
+
+            String query = "";
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            LOGGER.log(Level.FINE, ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            connection.close();
         }
         return locations;
     }
-        
+
     private void addImagesFromLocation(Location loc) throws SQLException {
         try {
             Class.forName("com.mysql.jdbc.Driver");
