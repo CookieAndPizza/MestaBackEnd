@@ -31,9 +31,9 @@ public class LocationSetter {
             PreparedStatement statement = connection.prepareStatement(query);
 
             statement.setString(1, loc.getName());
-            statement.setString(2, String.valueOf(loc.getLatitude()));
-            statement.setString(3, String.valueOf(loc.getLongitude()));
-            statement.setString(4, loc.getDiscription());
+            statement.setDouble(2, loc.getLatitude());
+            statement.setDouble(3, loc.getLongitude());
+            statement.setString(4, loc.getDescription());
 
             int affectedRows = statement.executeUpdate();
 

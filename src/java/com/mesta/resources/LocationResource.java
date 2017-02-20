@@ -20,7 +20,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
-import org.json.JSONObject;
+import javax.ws.rs.core.Response;
 
 /**
  * REST Web Service
@@ -48,14 +48,14 @@ public class LocationResource {
     @GET
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getAll() {
+    public Response getAll() {
         Stack locations = new Stack();
         try {
             locations = LocationController.getController().locationGetter().getAllLocations();
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return locations.toString();
+        return Response.ok(locations.toString(), MediaType.APPLICATION_JSON).build();
     }
 
     /**
@@ -66,29 +66,32 @@ public class LocationResource {
     @POST
     @Path("/save")
     @Consumes(MediaType.APPLICATION_JSON)
-    public boolean putLocation(Location loc) {
+    public Response putLocation(Location loc) {
         boolean succes = false;
         try {
-            System.out.println(loc.toString());
             succes = LocationController.getController().locationSetter().saveLocation(loc);
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return succes;
+        return Response.ok(String.valueOf(succes)).build();
     } 
     
     @GET
     @Path("{ID}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getOne(@PathParam("ID")int ID){
+    public Response getOne(@PathParam("ID")int ID){
         Location location = null;
         try {
             location = LocationController.getController().locationGetter().getOneLocation(ID);
+            
+            if(location == null){
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+            
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
         }
-        JSONObject json = new JSONObject(location);
-        return json.toString();
+        return Response.ok(location.toString(), MediaType.APPLICATION_JSON).build();
     }
     
     /**
@@ -97,15 +100,16 @@ public class LocationResource {
      * @param content representation for the resource
      */
     @GET
-    @Path("/nearby")
+    @Path("/nearby/{Lat}/{Long}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Stack nearbyLocations() {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response nearbyLocations(@PathParam("Lat")double lat, @PathParam("Long")double lon) {
         Stack locations = new Stack();
         try {
-            locations = LocationController.getController().locationGetter().getNearbyLocations();
+            locations = LocationController.getController().locationGetter().getNearbyLocations(lat, lon);
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return locations;
+        return Response.ok(locations.toString(), MediaType.APPLICATION_JSON).build();
     }
 }
