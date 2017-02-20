@@ -62,7 +62,6 @@ public class LocationGetter {
             System.out.println(ex.getMessage());
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            statement.close();
             connection.close();
         }
         return locations;
@@ -131,7 +130,6 @@ public class LocationGetter {
             System.out.println(ex.getMessage());
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            statement.close();
             connection.close();
         }          
         
@@ -171,7 +169,6 @@ public class LocationGetter {
             System.out.println(ex.getMessage());
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            statement.close();
             connection.close();
         }
     }
