@@ -11,8 +11,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayDeque;
 import java.util.Iterator;
-import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,20 +24,21 @@ public class LocationGetter {
 
     private static final Logger LOGGER = Logger.getLogger(LocationSetter.class.getName());
     private Connection connection;
+    private PreparedStatement statement;
 
     /**
      * method for getting all locations.
      *
      * @param content representation for the resource
      */
-    public Stack getAllLocations() throws SQLException {
-        Stack locations = new Stack();
+    public ArrayDeque getAllLocations() throws SQLException {
+        ArrayDeque locations = new ArrayDeque();
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(DatabaseInfo.ConnectionString, DatabaseInfo.LoginName, DatabaseInfo.Password);
 
             String query = "SELECT l.ID, l.Name, l.Latitude, l.Longitude, l.Description FROM Location l";
-            PreparedStatement statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query);
 
             ResultSet result = statement.executeQuery();
 
@@ -56,11 +57,12 @@ public class LocationGetter {
 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
-            LOGGER.log(Level.FINE, ex.getMessage());
+            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             System.out.println(ex.getMessage());
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
+            statement.close();
             connection.close();
         }
         return locations;
@@ -73,7 +75,6 @@ public class LocationGetter {
             connection = DriverManager.getConnection(DatabaseInfo.ConnectionString, DatabaseInfo.LoginName, DatabaseInfo.Password);
 
             String query = "SELECT ID, Name, Latitude, Longitude, Description FROM Location WHERE ID = ?";
-
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, String.valueOf(ID));
 
@@ -84,19 +85,19 @@ public class LocationGetter {
 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
-            LOGGER.log(Level.FINE, ex.getMessage());
+            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             System.out.println(ex.getMessage());
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            connection.close();
+                connection.close();
         }
 
         return location;
     }
 
-    public Stack getNearbyLocations(double lat, double lon) throws SQLException {
-        Stack locations = new Stack<Location>();
+    public ArrayDeque getNearbyLocations(double lat, double lon) throws SQLException {
+        ArrayDeque locations = new ArrayDeque<Location>();
         Iterator<Location> iter = null;
         int count = 1;
         try{
@@ -125,19 +126,23 @@ public class LocationGetter {
 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
-            LOGGER.log(Level.FINE, ex.getMessage());
+            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             System.out.println(ex.getMessage());
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
+            statement.close();
             connection.close();
         }          
         
-        Stack<Location> nearest = new Stack<Location>();
-        while(iter.hasNext() && count < 5){
+        ArrayDeque<Location> nearest = new ArrayDeque<Location>();
+        if(iter != null){
+            while(iter.hasNext() && count < 5){
             nearest.add(iter.next());
             count++;
         }
+        }
+        
         return nearest;
     }
 
@@ -161,11 +166,12 @@ public class LocationGetter {
 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
-            LOGGER.log(Level.FINE, ex.getMessage());
+            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             System.out.println(ex.getMessage());
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
+            statement.close();
             connection.close();
         }
     }

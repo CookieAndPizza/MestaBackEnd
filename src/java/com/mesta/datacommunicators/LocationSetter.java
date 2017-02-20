@@ -21,6 +21,7 @@ public class LocationSetter {
 
     private static final Logger LOGGER = Logger.getLogger(LocationSetter.class.getName());
     private Connection connection;
+    private PreparedStatement statement;
 
     public boolean saveLocation(Location loc) throws SQLException {
         try {
@@ -28,7 +29,7 @@ public class LocationSetter {
             connection = DriverManager.getConnection(DatabaseInfo.ConnectionString, DatabaseInfo.LoginName, DatabaseInfo.Password);
 
             String query = "INSERT INTO Location (Name, Latitude, Longitude, Description) VALUES (?, ?, ?, ?)";
-            PreparedStatement statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query);
 
             statement.setString(1, loc.getName());
             statement.setDouble(2, loc.getLatitude());
@@ -41,11 +42,12 @@ public class LocationSetter {
 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
-            LOGGER.log(Level.FINE, ex.getMessage());
+            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             System.out.println(ex.getMessage());
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
+            statement.close();
             connection.close();
         }
         return false;

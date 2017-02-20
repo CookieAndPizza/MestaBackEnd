@@ -8,7 +8,7 @@ package com.mesta.resources;
 import com.mesta.datacontrollers.LocationController;
 import com.mesta.models.Location;
 import java.sql.SQLException;
-import java.util.Stack;
+import java.util.ArrayDeque;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.core.Context;
@@ -49,7 +49,7 @@ public class LocationResource {
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAll() {
-        Stack locations = new Stack();
+        ArrayDeque locations = new ArrayDeque();
         try {
             locations = LocationController.getController().locationGetter().getAllLocations();
         } catch (SQLException ex) {
@@ -91,7 +91,11 @@ public class LocationResource {
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return Response.ok(location.toString(), MediaType.APPLICATION_JSON).build();
+            if(location != null){
+            return Response.ok(location.toString(), MediaType.APPLICATION_JSON).build();
+            }
+            return null;
+        
     }
     
     /**
@@ -104,7 +108,7 @@ public class LocationResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response nearbyLocations(@PathParam("Lat")double lat, @PathParam("Long")double lon) {
-        Stack locations = new Stack();
+        ArrayDeque locations = new ArrayDeque();
         try {
             locations = LocationController.getController().locationGetter().getNearbyLocations(lat, lon);
         } catch (SQLException ex) {
