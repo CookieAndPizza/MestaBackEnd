@@ -25,9 +25,9 @@ public class Location implements Serializable {
     private double latitude;
     private String description;
     private List<String> images;
-    private List<String> comments;
+    private List<Comment> comments;
 
-    public List<String> getComments() {
+    public List<Comment> getComments() {
         return comments;
     }
 
@@ -71,7 +71,7 @@ public class Location implements Serializable {
         images.add(path);
     }
     
-    public void addComment(String comment){
+    public void addComment(Comment comment){
         this.comments.add(comment);
     }
 
