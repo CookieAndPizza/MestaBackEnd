@@ -33,8 +33,6 @@ public class Comment{
         return title;
     }
     
-    
-    
     @Override
     public String toString(){
         return String.format("%s; %s; %s", userID, title, comment);
