@@ -16,12 +16,32 @@ public class Comment{
     private String title;
     private int locationID;
 
+    public Comment(){
+        
+    }
+    
     public Comment(String userID, String comment, String title) {
         this.userID = userID;
         this.comment = comment;
         this.title = title;
     }
 
+    public void setUserID(String userID){
+        this.userID = userID;
+    }
+    
+    public void setLocationID(int locationID){
+        this.locationID = locationID;
+    }
+    
+    public void setTitle(String title){
+        this.title = title;
+    }
+    
+    public void setComment(String comment){
+        this.comment = comment;
+    }
+            
     public String getUserID() {
         return userID;
     }

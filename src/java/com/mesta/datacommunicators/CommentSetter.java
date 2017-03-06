@@ -34,7 +34,7 @@ public class CommentSetter {
             statement.setString(2, comment.getAccountID());
             statement.setString(3, comment.getTitle());
             statement.setString(4, comment.getComment());
-            
+                        
             int affectedRows = statement.executeUpdate();
             
             return affectedRows > 0;
@@ -42,7 +42,6 @@ public class CommentSetter {
             System.out.println(ex.getMessage());
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
-            statement.close();
             connection.close();
         }
         return false;

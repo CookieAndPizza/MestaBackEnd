@@ -125,6 +125,8 @@ public class LocationResource {
         boolean succes = false;
         try {
             succes = CommentController.getController().commentSetter().saveComment(com);
+            System.out.println(succes);
+            
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -28,6 +28,7 @@ public class CommentController {
     
     private CommentController(){
         this.commentGetter = new CommentGetter();
+        this.commentSetter = new CommentSetter();
     }
     
     public CommentGetter commentGetter(){
