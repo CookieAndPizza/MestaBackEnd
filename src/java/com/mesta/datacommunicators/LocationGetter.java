@@ -12,7 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayDeque;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -97,13 +96,12 @@ public class LocationGetter {
 
     public ArrayDeque getNearbyLocations(double lat, double lon) throws SQLException {
         ArrayDeque locations = new ArrayDeque<Location>();
-        Iterator<Location> iter = null;
         int count = 1;
         try{
           Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(DatabaseInfo.ConnectionString, DatabaseInfo.LoginName, DatabaseInfo.Password);
 
-            String query = "SELECT l.ID, l.Name, l.Latitude, l.Longitude, l.Description FROM Location l ORDER BY ABS(l.Latitude - ?) + ABS(l.Longitude - ?)";
+            String query = "SELECT l.ID, l.Name, l.Latitude, l.Longitude, l.Description FROM Location l ORDER BY ABS(l.Latitude - ?) + ABS(l.Longitude - ?) LIMIT 5";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setDouble(1, lat);
             statement.setDouble(2, lon);
@@ -121,8 +119,6 @@ public class LocationGetter {
 
                 locations.add(loc);
             }
-            iter = locations.iterator();
-
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
@@ -131,17 +127,8 @@ public class LocationGetter {
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             connection.close();
-        }          
-        
-        ArrayDeque<Location> nearest = new ArrayDeque<Location>();
-        if(iter != null){
-            while(iter.hasNext() && count < 5){
-            nearest.add(iter.next());
-            count++;
-        }
-        }
-        
-        return nearest;
+        }           
+        return locations;
     }
 
     private void addImagesFromLocation(Location loc) throws SQLException {
