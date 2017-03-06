@@ -74,30 +74,29 @@ public class LocationResource {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
         }
         return Response.ok(String.valueOf(succes)).build();
-    } 
-    
+    }
+
     @GET
     @Path("{ID}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getOne(@PathParam("ID")int ID){
+    public Response getOne(@PathParam("ID") int ID) {
         Location location = null;
         try {
             location = LocationController.getController().locationGetter().getOneLocation(ID);
-            
-            if(location == null){
+
+            if (location == null) {
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
         }
-            if(location != null){
+        if (location != null) {
             return Response.ok(location.toString(), MediaType.APPLICATION_JSON).build();
-            }
-            return null;
-        
+        }
+        return null;
     }
-    
+
     /**
      * POST method for updating or creating an instance of PlaceResource
      *
@@ -107,7 +106,7 @@ public class LocationResource {
     @Path("/nearby/{Lat}/{Long}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response nearbyLocations(@PathParam("Lat")double lat, @PathParam("Long")double lon) {
+    public Response nearbyLocations(@PathParam("Lat") double lat, @PathParam("Long") double lon) {
         ArrayDeque locations = new ArrayDeque();
         try {
             locations = LocationController.getController().locationGetter().getNearbyLocations(lat, lon);

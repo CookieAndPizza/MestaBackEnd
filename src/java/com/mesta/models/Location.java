@@ -25,11 +25,16 @@ public class Location implements Serializable {
     private double latitude;
     private String description;
     private List<String> images;
+    private List<String> comments;
+
+    public List<String> getComments() {
+        return comments;
+    }
 
     public int getId() {
         return id;
     }
-    
+
     public String getName() {
         return name;
     }
@@ -45,12 +50,12 @@ public class Location implements Serializable {
     public double getLatitude() {
         return latitude;
     }
-    
-    public void setLatitude(double latitude){
+
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
-    
-    public void setLongitude(double longitude){
+
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
@@ -61,15 +66,20 @@ public class Location implements Serializable {
     public void setDescription(String discription) {
         this.description = discription;
     }
-    
-    public void addImage(String path){
+
+    public void addImage(String path) {
         images.add(path);
+    }
+    
+    public void addComment(String comment){
+        this.comments.add(comment);
     }
 
     public Location() {
     }
 
     public Location(String name, double longitude, double latitude, String discription) {
+        this.comments = new ArrayList<>();
         this.images = new ArrayList<>();
         this.id = -1;
         this.name = name;
@@ -79,6 +89,7 @@ public class Location implements Serializable {
     }
 
     public Location(int id, String name, double longitude, double latitude, String discription) {
+        this.comments = new ArrayList<>();
         this.images = new ArrayList<>();
         this.id = id;
         this.name = name;
@@ -97,7 +108,7 @@ public class Location implements Serializable {
             object.put("latitude", this.latitude);
             object.put("description", this.description);
             int i = 1;
-            for(String s : this.images){
+            for (String s : this.images) {
                 object.put("image" + i, s);
                 i++;
             }
