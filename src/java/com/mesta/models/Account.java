@@ -19,9 +19,14 @@ public class Account {
     private String externalID;
     private boolean banned;
     private boolean admin;
+    private Token token;
 
     public int getId() {
         return id;
+    }
+
+    public Token getToken() {
+        return token;
     }
 
     public void setId(int id) {

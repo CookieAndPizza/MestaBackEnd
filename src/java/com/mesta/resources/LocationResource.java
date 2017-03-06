@@ -9,7 +9,9 @@ import com.mesta.datacontrollers.CommentController;
 import com.mesta.datacontrollers.LocationController;
 import com.mesta.models.Location;
 import com.mesta.models.Comment;
+import com.mesta.models.Token;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,6 +54,7 @@ public class LocationResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAll() {
         ArrayDeque locations = new ArrayDeque();
+        Token token = new Token();
         try {
             locations = LocationController.getController().locationGetter().getAllLocations();
         } catch (SQLException ex) {
@@ -117,7 +120,7 @@ public class LocationResource {
         }
         return Response.ok(locations.toString(), MediaType.APPLICATION_JSON).build();
     }
-    
+
     @POST
     @Path("/comment/save")
     @Consumes(MediaType.APPLICATION_JSON)

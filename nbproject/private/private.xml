@@ -3,9 +3,6 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/D:/School/Semester%204/PTT/code/src/java/com/mesta/datacommunicators/LocationGetter.java</file>
-=======
             <file>file:/home/harm/Documents/S4/Proftaak/Mesta/src/java/com/mesta/datacommunicators/LocationGetter.java</file>
             <file>file:/home/harm/Documents/S4/Proftaak/Mesta/src/java/com/mesta/datacommunicators/LocationSetter.java</file>
             <file>file:/home/harm/Documents/S4/Proftaak/Mesta/src/java/com/mesta/models/Comment.java</file>
@@ -14,7 +11,6 @@
             <file>file:/home/harm/Documents/S4/Proftaak/Mesta/test/com/mesta/testmodels/LocationTest.java</file>
             <file>file:/home/harm/Documents/S4/Proftaak/Mesta/src/java/com/mesta/models/Location.java</file>
             <file>file:/home/harm/Documents/S4/Proftaak/Mesta/src/java/com/mesta/resources/LocationResource.java</file>
->>>>>>> f7b7ae5b6bab7daca3414626ca1973e9165986f8
         </group>
     </open-files>
 </project-private>

@@ -107,16 +107,8 @@ public class Location implements Serializable {
             object.put("longitude", this.longitude);
             object.put("latitude", this.latitude);
             object.put("description", this.description);
-            int i = 1;
-            for (String s : this.images) {
-                object.put("image" + i, s);
-                i++;
-            }
-            int x = 1;
-            for (Comment c : this.comments) {
-                object.put("Comment" + 1, String.format("%s;%s;%s", c.getUserID(), c.getTitle(), c.getComment()));
-                x++;
-            }
+            object.put("images", images);
+            object.put("comments", comments);
         } catch (JSONException ex) {
             System.out.println(ex);
             Logger.getLogger(Location.class.getName()).log(Level.SEVERE, null, ex);
