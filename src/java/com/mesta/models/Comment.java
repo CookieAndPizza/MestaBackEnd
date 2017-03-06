@@ -11,16 +11,32 @@ package com.mesta.models;
  */
 public class Comment{
     
-    private int userID;
+    private String userID;
     private String comment;
+    private String title;
 
-    public Comment(int userID, String comment) {
+    public Comment(String userID, String comment, String title) {
         this.userID = userID;
         this.comment = comment;
+        this.title = title;
     }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+    
+    
     
     @Override
     public String toString(){
-        return String.format("%d; %s", userID, comment);
+        return String.format("%s; %s; %s", userID, title, comment);
     }
 }

@@ -70,8 +70,8 @@ public class Location implements Serializable {
     public void addImage(String path) {
         images.add(path);
     }
-    
-    public void addComment(Comment comment){
+
+    public void addComment(Comment comment) {
         this.comments.add(comment);
     }
 
@@ -111,6 +111,11 @@ public class Location implements Serializable {
             for (String s : this.images) {
                 object.put("image" + i, s);
                 i++;
+            }
+            int x = 1;
+            for (Comment c : this.comments) {
+                object.put("Comment" + 1, String.format("%s;%s;%s", c.getUserID(), c.getTitle(), c.getComment()));
+                x++;
             }
         } catch (JSONException ex) {
             System.out.println(ex);

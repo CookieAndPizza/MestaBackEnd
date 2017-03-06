@@ -5,6 +5,7 @@
  */
 package com.mesta.datacommunicators;
 
+import com.mesta.datacontrollers.CommentController;
 import com.mesta.models.Location;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -51,6 +52,7 @@ public class LocationGetter {
 
                 Location loc = new Location(id, name, longitude, latitude, discription);
                 addImagesFromLocation(loc);
+                CommentController.getController().commentGetter().getCommentsFromLocation(loc);
 
                 locations.add(loc);
             }
@@ -81,6 +83,7 @@ public class LocationGetter {
             result.next();
             location = new Location(ID, result.getString("Name"), result.getDouble("Longitude"), result.getDouble("Latitude"), result.getString("Description"));
             addImagesFromLocation(location);
+            CommentController.getController().commentGetter().getCommentsFromLocation(location);
 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -89,7 +92,7 @@ public class LocationGetter {
             System.out.println(ex.getMessage());
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-                connection.close();
+            connection.close();
         }
 
         return location;
@@ -99,8 +102,8 @@ public class LocationGetter {
         ArrayDeque locations = new ArrayDeque<Location>();
         Iterator<Location> iter = null;
         int count = 1;
-        try{
-          Class.forName("com.mysql.jdbc.Driver");
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(DatabaseInfo.ConnectionString, DatabaseInfo.LoginName, DatabaseInfo.Password);
 
             String query = "SELECT l.ID, l.Name, l.Latitude, l.Longitude, l.Description FROM Location l ORDER BY ABS(l.Latitude - ?) + ABS(l.Longitude - ?)";
@@ -118,6 +121,7 @@ public class LocationGetter {
 
                 Location loc = new Location(id, name, longitude, latitude, discription);
                 addImagesFromLocation(loc);
+                CommentController.getController().commentGetter().getCommentsFromLocation(loc);
 
                 locations.add(loc);
             }
@@ -131,16 +135,16 @@ public class LocationGetter {
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             connection.close();
-        }          
-        
+        }
+
         ArrayDeque<Location> nearest = new ArrayDeque<Location>();
-        if(iter != null){
-            while(iter.hasNext() && count < 5){
-            nearest.add(iter.next());
-            count++;
+        if (iter != null) {
+            while (iter.hasNext() && count < 5) {
+                nearest.add(iter.next());
+                count++;
+            }
         }
-        }
-        
+
         return nearest;
     }
 
