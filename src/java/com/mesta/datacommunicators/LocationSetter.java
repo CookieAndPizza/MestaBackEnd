@@ -40,10 +40,7 @@ public class LocationSetter {
 
             return affectedRows > 0;
 
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+        } catch (SQLException | ClassNotFoundException ex) {
             System.out.println(ex.getMessage());
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {

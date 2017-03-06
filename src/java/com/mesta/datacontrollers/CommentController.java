@@ -6,6 +6,7 @@
 package com.mesta.datacontrollers;
 
 import com.mesta.datacommunicators.CommentGetter;
+import com.mesta.datacommunicators.CommentSetter;
 
 /**
  *
@@ -16,6 +17,7 @@ public class CommentController {
     private static CommentController controller;
     
     private CommentGetter commentGetter;
+    private CommentSetter commentSetter;
 
     public static CommentController getController() {
         if (controller == null) {
@@ -30,5 +32,8 @@ public class CommentController {
     
     public CommentGetter commentGetter(){
         return this.commentGetter;
+    }
+    public CommentSetter commentSetter(){
+        return this.commentSetter;
     }
 }
