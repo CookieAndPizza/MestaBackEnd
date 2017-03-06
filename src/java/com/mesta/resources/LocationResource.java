@@ -5,8 +5,10 @@
  */
 package com.mesta.resources;
 
+import com.mesta.datacontrollers.CommentController;
 import com.mesta.datacontrollers.LocationController;
 import com.mesta.models.Location;
+import com.mesta.models.Comment;
 import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.logging.Level;
@@ -114,5 +116,18 @@ public class LocationResource {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
         }
         return Response.ok(locations.toString(), MediaType.APPLICATION_JSON).build();
+    }
+    
+    @POST
+    @Path("/comment/save")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response putComment(Comment com) {
+        boolean succes = false;
+        try {
+            succes = CommentController.getController().commentSetter().saveComment(com);
+        } catch (SQLException ex) {
+            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return Response.ok(String.valueOf(succes)).build();
     }
 }

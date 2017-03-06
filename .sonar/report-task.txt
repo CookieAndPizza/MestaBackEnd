@@ -1,5 +1,5 @@
 projectKey=my:Mesta
 serverUrl=http://localhost:9000
 dashboardUrl=http://localhost:9000/dashboard/index/my:Mesta
-ceTaskId=AVpa9Edgb15BNm6t23IY
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AVpa9Edgb15BNm6t23IY
+ceTaskId=AVpa_0iDb15BNm6t23Ie
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AVpa_0iDb15BNm6t23Ie

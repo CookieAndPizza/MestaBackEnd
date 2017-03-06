@@ -14,6 +14,7 @@ public class Comment{
     private String userID;
     private String comment;
     private String title;
+    private int locationID;
 
     public Comment(String userID, String comment, String title) {
         this.userID = userID;
@@ -31,6 +32,22 @@ public class Comment{
 
     public String getTitle() {
         return title;
+    }
+    
+    public String getAccountID(){
+        return String.valueOf(userID);
+    }
+    
+    public String getComment(){
+        return comment;
+    }
+    
+    public String getTitle(){
+        return title;
+    }
+    
+    public String getLocationID(){
+        return String.valueOf(locationID);
     }
     
     @Override

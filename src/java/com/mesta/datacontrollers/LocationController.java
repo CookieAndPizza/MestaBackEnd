@@ -16,8 +16,8 @@ public class LocationController {
     
     private static LocationController controller;
     
-    private LocationSetter locationSetter;
-    private LocationGetter locationGetter;
+    private final LocationSetter locationSetter;
+    private final LocationGetter locationGetter;
     
     private LocationController() {
         this.locationSetter = new LocationSetter();
