@@ -38,14 +38,6 @@ public class Comment{
         return String.valueOf(userID);
     }
     
-    public String getComment(){
-        return comment;
-    }
-    
-    public String getTitle(){
-        return title;
-    }
-    
     public String getLocationID(){
         return String.valueOf(locationID);
     }
