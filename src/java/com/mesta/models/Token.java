@@ -16,7 +16,6 @@ import java.util.Random;
 public class Token {
 
     private String token;
-    private Date expires;
     private static final String CHAR_LIST = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
     private static final int RANDOM_STRING_LENGTH = 254;
 
@@ -28,19 +27,8 @@ public class Token {
         this.token = token;
     }
 
-    public Date getExpires() {
-        return expires;
-    }
-
-    public void setExpires(Date expires) {
-        this.expires = expires;
-    }
-
     public Token() {
         token = generateRandomString();
-        expires = new Date(System.currentTimeMillis());
-        // SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
-        // format.format(token.getExpires());
     }
 
     private String generateRandomString() {

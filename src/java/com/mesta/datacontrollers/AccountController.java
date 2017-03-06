@@ -17,6 +17,10 @@ public class AccountController {
     
     private AccountGetter accountGetter;
     
+    private AccountController(){
+        this.accountGetter = new AccountGetter();
+    }
+    
     public static AccountController getController() {
         if (controller == null) {
             controller = new AccountController();

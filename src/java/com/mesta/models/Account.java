@@ -57,27 +57,30 @@ public class Account {
         this.admin = admin;
     }
     
-    public Account(String externalID, boolean banned, boolean admin){
+    public Account(String externalID, boolean banned, boolean admin, Token token){
         this.externalID = externalID;
         this.banned = banned;
         this.admin = admin;
+        this.token = token;
     }
     
-    public Account(int id, String externalID, boolean banned, boolean admin){
+    public Account(int id, String externalID, boolean banned, boolean admin, Token token){
         this.id = id;
         this.externalID = externalID;
         this.banned = banned;
         this.admin = admin;
+        this.token = token;
     }
     
     @Override
     public String toString() {
         JSONObject object = new JSONObject();
         try {
-            object.put("id", this.id);
-            object.put("externalID", this.externalID);
-            object.put("banned", this.banned);
-            object.put("admin", this.admin);
+            object.put("ID", this.id);
+            object.put("ExternalID", this.externalID);
+            object.put("Banned", this.banned);
+            object.put("Admin", this.admin);
+            object.put("Token", this.token.getToken());
         } catch (JSONException ex) {
             System.out.println(ex);
             Logger.getLogger(Location.class.getName()).log(Level.SEVERE, null, ex);

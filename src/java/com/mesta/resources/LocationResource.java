@@ -109,7 +109,6 @@ public class LocationResource {
      */
     @GET
     @Path("/nearby/{Lat}/{Long}")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response nearbyLocations(@PathParam("Lat") double lat, @PathParam("Long") double lon) {
         ArrayDeque locations = new ArrayDeque();

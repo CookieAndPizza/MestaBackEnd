@@ -5,14 +5,19 @@
  */
 package com.mesta.resources;
 
+import com.mesta.datacontrollers.AccountController;
+import com.mesta.models.Account;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PUT;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  * REST Web Service
@@ -35,19 +40,17 @@ public class AccountResource {
      * Retrieves representation of an instance of com.mesta.resources.Account
      * @return an instance of java.lang.String
      */
+    @Path("/fblogin/{ID}")
     @GET
-    @Produces(MediaType.APPLICATION_XML)
-    public String getXml() {
-        //TODO return proper representation object
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * PUT method for updating or creating an instance of Account
-     * @param content representation for the resource
-     */
-    @PUT
-    @Consumes(MediaType.APPLICATION_XML)
-    public void putXml(String content) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response login(@PathParam("ID") String loginID) {
+        Account account = null;
+        try {
+            account = AccountController.getController().accountGetter().login(loginID);
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(AccountResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return Response.ok(account.toString(), MediaType.APPLICATION_JSON).build();
     }
 }
