@@ -13,4 +13,10 @@ public class DatabaseInfo {
     public static final String ConnectionString = "jdbc:mysql://188.166.88.118:3306/Mesta";
     public static final String LoginName = "Mesta";
     public static final String Password = "@Glassfish1";
+    
+    public enum DatabaseRepsonse{
+        SUCCES,
+        FAILED,
+        TOKEN_NOT_VALID
+    }
 }

@@ -11,7 +11,7 @@ package com.mesta.models;
  */
 public class Comment{
     
-    private String userID;
+    private String faceBookID;
     private String comment;
     private String title;
     private int locationID;
@@ -20,14 +20,14 @@ public class Comment{
         
     }
     
-    public Comment(String userID, String comment, String title) {
-        this.userID = userID;
+    public Comment(String faceBookID, String comment, String title) {
+        this.faceBookID = faceBookID;
         this.comment = comment;
         this.title = title;
     }
 
-    public void setUserID(String userID){
-        this.userID = userID;
+    public void setfaceBookID(String faceBookID){
+        this.faceBookID = faceBookID;
     }
     
     public void setLocationID(int locationID){
@@ -42,8 +42,8 @@ public class Comment{
         this.comment = comment;
     }
             
-    public String getUserID() {
-        return userID;
+    public String getfaceBookID() {
+        return faceBookID;
     }
 
     public String getComment() {
@@ -54,16 +54,12 @@ public class Comment{
         return title;
     }
     
-    public String getAccountID(){
-        return String.valueOf(userID);
-    }
-    
     public String getLocationID(){
         return String.valueOf(locationID);
     }
     
     @Override
     public String toString(){
-        return String.format("%s; %s; %s", userID, title, comment);
+        return String.format("%s; %s; %s", faceBookID, title, comment);
     }
 }

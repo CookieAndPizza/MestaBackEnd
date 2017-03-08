@@ -76,8 +76,7 @@ public class Account {
     public String toString() {
         JSONObject object = new JSONObject();
         try {
-            object.put("ID", this.id);
-            object.put("ExternalID", this.externalID);
+            object.put("faceBookID", this.externalID);
             object.put("Banned", this.banned);
             object.put("Admin", this.admin);
             object.put("Token", this.token.getToken());

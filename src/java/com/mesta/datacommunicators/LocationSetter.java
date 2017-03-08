@@ -23,22 +23,28 @@ public class LocationSetter {
     private Connection connection;
     private PreparedStatement statement;
 
-    public boolean saveLocation(Location loc) throws SQLException {
+    public DatabaseInfo.DatabaseRepsonse saveLocation(Location loc, String login, String token) throws SQLException {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(DatabaseInfo.ConnectionString, DatabaseInfo.LoginName, DatabaseInfo.Password);
 
-            String query = "INSERT INTO Location (Name, Latitude, Longitude, Description) VALUES (?, ?, ?, ?)";
-            statement = connection.prepareStatement(query);
+            if (CallVerifier.verify(login, token, connection)) {
+                String query = "INSERT INTO Location (Name, Latitude, Longitude, Description) VALUES (?, ?, ?, ?)";
+                statement = connection.prepareStatement(query);
 
-            statement.setString(1, loc.getName());
-            statement.setDouble(2, loc.getLatitude());
-            statement.setDouble(3, loc.getLongitude());
-            statement.setString(4, loc.getDescription());
+                statement.setString(1, loc.getName());
+                statement.setDouble(2, loc.getLatitude());
+                statement.setDouble(3, loc.getLongitude());
+                statement.setString(4, loc.getDescription());
 
-            int affectedRows = statement.executeUpdate();
+                int affectedRows = statement.executeUpdate();
 
-            return affectedRows > 0;
+                if (affectedRows > 0) {
+                    return DatabaseInfo.DatabaseRepsonse.SUCCES;
+                }
+            }else{
+                return DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID;
+            }
 
         } catch (SQLException | ClassNotFoundException ex) {
             System.out.println(ex.getMessage());
@@ -47,6 +53,6 @@ public class LocationSetter {
             statement.close();
             connection.close();
         }
-        return false;
+        return DatabaseInfo.DatabaseRepsonse.FAILED;
     }
 }
