@@ -17,15 +17,20 @@ import java.util.logging.Logger;
  * @author harm
  */
 public class CallVerifier {
-
-    private static final Logger LOGGER = Logger.getLogger(LocationSetter.class.getName());
     private static CallableStatement statement;
+    
+    private CallVerifier(){
+        throw new IllegalAccessError("Utility class");
+    }
 
     /**
      * method for getting all locations.
      *
-     * @param content representation for the resource
-     * @throws java.sql.SQLExceptionw
+     * @param login login to be verified
+     * @param token token of the login
+     * @param connection database connection
+     * @return returns true or false
+     * @throws java.sql.SQLException
      */
     public static boolean verify(String login, String token, Connection connection) throws SQLException {
         boolean succes = false;
@@ -43,11 +48,7 @@ public class CallVerifier {
             int answer = statement.getInt(3);
             succes = answer != 0;
 
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            System.out.println(ex.getMessage());
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         }
         return succes;

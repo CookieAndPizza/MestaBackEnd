@@ -43,7 +43,7 @@ public class AccountGetter {
         Account account = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(DatabaseInfo.ConnectionString, DatabaseInfo.LoginName, DatabaseInfo.Password);
+            connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);
 
             checkFacebook("1");
 
@@ -81,7 +81,7 @@ public class AccountGetter {
     public DatabaseInfo.DatabaseRepsonse logout(String fbID, String token) throws SQLException {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(DatabaseInfo.ConnectionString, DatabaseInfo.LoginName, DatabaseInfo.Password);
+            connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);
 
             if (CallVerifier.verify(fbID, token, connection)) {
                 String query = "DELETE FROM Tokens WHERE Token = ? AND AccountID = ?";
