@@ -21,6 +21,7 @@ public class ApplicationConfig extends Application {
         Set<Class<?>> resources = new java.util.HashSet<>();
         resources.add(JacksonFeature.class);
         addRestResourceClasses(resources);
+        
         return resources;
     }
 
@@ -33,6 +34,7 @@ public class ApplicationConfig extends Application {
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(com.mesta.resources.AccountResource.class);
         resources.add(com.mesta.resources.LocationResource.class);
+        resources.add(HttpFilter.class);
     }
     
 }
