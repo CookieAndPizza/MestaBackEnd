@@ -37,14 +37,14 @@ public class CommentGetter {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(DatabaseInfo.ConnectionString, DatabaseInfo.LoginName, DatabaseInfo.Password);
 
-            String query = "SELECT c.Title, c.Text, a.externalID FROM Comment c, Account a WHERE c.LocationID = ?";
+            String query = "SELECT c.Title, c.Text, c.AccountID FROM Comment c WHERE c.LocationID = ?";
             statement = connection.prepareStatement(query);
             statement.setString(1, String.valueOf(loc.getId()));
 
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
-                String id = result.getString("externalID");
+                String id = result.getString("AccountID");
                 String comment = result.getString("Text");
                 String title = result.getString("Title");
                 Comment com = new Comment(id, comment, title);
