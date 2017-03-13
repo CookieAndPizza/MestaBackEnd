@@ -5,12 +5,8 @@
  */
 package com.mesta.datacommunicators;
 
-import com.mesta.models.Account;
-import com.mesta.models.Token;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.logging.Level;
@@ -29,7 +25,7 @@ public class CallVerifier {
      * method for getting all locations.
      *
      * @param content representation for the resource
-     * @throws java.sql.SQLException
+     * @throws java.sql.SQLExceptionw
      */
     public static boolean verify(String login, String token, Connection connection) throws SQLException {
         boolean succes = false;

@@ -123,7 +123,7 @@ public class AccountGetter {
 
             InputStream is = httpConnection.getInputStream();
             BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-            StringBuffer response = new StringBuffer();
+            StringBuilder response = new StringBuilder();
             String line;
             while ((line = rd.readLine()) != null) {
                 response.append(line);
@@ -139,7 +139,9 @@ public class AccountGetter {
             System.out.println(ex.getMessage());
             Logger.getLogger(AccountGetter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            httpConnection.disconnect();
+            if (httpConnection != null) {
+                httpConnection.disconnect();
+            }
         }
         return succes;
     }

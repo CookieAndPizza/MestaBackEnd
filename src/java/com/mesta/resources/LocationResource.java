@@ -61,6 +61,7 @@ public class LocationResource {
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NullPointerException ex){
+            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Status.BAD_REQUEST).build();
         }
         return Response.ok(locations.toString(), MediaType.APPLICATION_JSON).build();
@@ -81,6 +82,7 @@ public class LocationResource {
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NullPointerException ex){
+            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Status.BAD_REQUEST).build();
         }
         return Response.serverError().build();
@@ -101,6 +103,7 @@ public class LocationResource {
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NullPointerException ex){
+            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Status.BAD_REQUEST).build();
         }
         if (location != null) {
@@ -124,6 +127,7 @@ public class LocationResource {
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NullPointerException ex){
+            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Status.BAD_REQUEST).build();
         }
         return Response.ok(locations.toString(), MediaType.APPLICATION_JSON).build();
@@ -139,6 +143,7 @@ public class LocationResource {
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NullPointerException ex){
+            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Status.BAD_REQUEST).build();
         }
         return Response.serverError().build();

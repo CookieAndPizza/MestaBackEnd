@@ -56,6 +56,7 @@ public class AccountResource {
             System.out.println(ex.getMessage());
             Logger.getLogger(AccountResource.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NullPointerException ex){
+            Logger.getLogger(AccountResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         NewCookie loginCookie = new NewCookie("fbLoginID", loginID);
@@ -70,8 +71,9 @@ public class AccountResource {
             DatabaseInfo.DatabaseRepsonse succes = AccountController.getController().accountGetter().logout(fbLogin.getValue(), token.getValue());
             return Response.ok(String.valueOf(succes)).build();
         } catch (SQLException ex) {
-            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AccountResource.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NullPointerException ex){
+            Logger.getLogger(AccountResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
         return Response.serverError().build();
