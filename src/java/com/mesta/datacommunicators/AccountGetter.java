@@ -29,14 +29,14 @@ import java.util.logging.Logger;
  */
 public class AccountGetter {
 
-    private static final Logger LOGGER = Logger.getLogger(LocationSetter.class.getName());
     private Connection connection;
     private CallableStatement statement;
 
     /**
      * method for getting all locations.
      *
-     * @param content representation for the resource
+     * @param login representation for the resource
+     * @return Account
      * @throws java.sql.SQLException
      */
     public Account login(String login) throws SQLException {
@@ -63,11 +63,7 @@ public class AccountGetter {
                 account = new Account(id, fbID, admin, banned, token);
             }
 
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            System.out.println(ex.getMessage());
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             connection.close();
@@ -75,6 +71,13 @@ public class AccountGetter {
         return account;
     }
 
+    /**
+     * 
+     * @param fbID Facebook ID of the logged in user
+     * @param token token of the logged in user
+     * @return response from database
+     * @throws SQLException 
+     */
     public DatabaseInfo.DatabaseRepsonse logout(String fbID, String token) throws SQLException {
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -95,11 +98,7 @@ public class AccountGetter {
                 return DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID;
             }
 
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            System.out.println(ex.getMessage());
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             connection.close();
@@ -130,14 +129,11 @@ public class AccountGetter {
                 response.append('\r');
             }
             rd.close();
-            System.out.println(line);
 
         } catch (MalformedURLException ex) {
-            System.out.println(ex.getMessage());
             Logger.getLogger(AccountGetter.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-            Logger.getLogger(AccountGetter.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (IOException ex){
+                Logger.getLogger(AccountGetter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (httpConnection != null) {
                 httpConnection.disconnect();
