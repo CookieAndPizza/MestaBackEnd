@@ -16,6 +16,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Cookie;
@@ -59,8 +60,8 @@ public class AccountResource {
         return Response.ok(account.toString(), MediaType.APPLICATION_JSON).build();
     }
     
-    @Path("/fblogin/logout")
-    @GET
+    @Path("/fblogout")
+    @POST
     public Response logout(@CookieParam("fbLoginID") Cookie fbLogin, @CookieParam("token") Cookie token){
         try{
             DatabaseInfo.DatabaseRepsonse succes = AccountController.getController().accountGetter().logout(fbLogin.getValue(), token.getValue());
