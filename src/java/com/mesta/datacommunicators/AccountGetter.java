@@ -7,6 +7,14 @@ package com.mesta.datacommunicators;
 
 import com.mesta.models.Account;
 import com.mesta.models.Token;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -37,6 +45,8 @@ public class AccountGetter {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(DatabaseInfo.ConnectionString, DatabaseInfo.LoginName, DatabaseInfo.Password);
 
+            checkFacebook("1");
+
             Token token = new Token();
             String query = "CALL select_or_insert_Account(?, ?)";
             statement = connection.prepareCall(query);
@@ -65,7 +75,7 @@ public class AccountGetter {
         return account;
     }
 
-    public DatabaseInfo.DatabaseRepsonse logout(String fbID, String token) throws SQLException{
+    public DatabaseInfo.DatabaseRepsonse logout(String fbID, String token) throws SQLException {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(DatabaseInfo.ConnectionString, DatabaseInfo.LoginName, DatabaseInfo.Password);
@@ -78,8 +88,10 @@ public class AccountGetter {
 
                 int rows = statement.executeUpdate();
 
-                if(rows > 0) return DatabaseInfo.DatabaseRepsonse.SUCCES;
-            }else{
+                if (rows > 0) {
+                    return DatabaseInfo.DatabaseRepsonse.SUCCES;
+                }
+            } else {
                 return DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID;
             }
 
@@ -93,5 +105,42 @@ public class AccountGetter {
             connection.close();
         }
         return DatabaseInfo.DatabaseRepsonse.FAILED;
+    }
+
+    private boolean checkFacebook(String inputtoken) {
+        boolean succes = false;
+        HttpURLConnection httpConnection = null;
+        try {
+            URL url = new URL("https://graph.facebook.com/debug_token?input_token=" + inputtoken + "&access_token=1648610375442724");
+            httpConnection = (HttpURLConnection) url.openConnection();
+
+            httpConnection.setRequestMethod("GET");
+            httpConnection.setUseCaches(false);
+            httpConnection.setDoOutput(true);
+
+            DataOutputStream wr = new DataOutputStream(httpConnection.getOutputStream());
+            wr.close();
+
+            InputStream is = httpConnection.getInputStream();
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+            StringBuffer response = new StringBuffer();
+            String line;
+            while ((line = rd.readLine()) != null) {
+                response.append(line);
+                response.append('\r');
+            }
+            rd.close();
+            System.out.println(line);
+
+        } catch (MalformedURLException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(AccountGetter.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(AccountGetter.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            httpConnection.disconnect();
+        }
+        return succes;
     }
 }

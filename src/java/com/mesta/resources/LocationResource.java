@@ -65,7 +65,7 @@ public class LocationResource {
         } catch (NullPointerException ex){
             return Response.status(Status.BAD_REQUEST).build();
         }
-        return Response.ok(locations.toString(), MediaType.APPLICATION_JSON).build();
+        return Response.ok(locations.toString(), MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "www.the-mesta.com").build();
     }
 
     /**
