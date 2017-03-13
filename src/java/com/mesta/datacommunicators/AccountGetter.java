@@ -6,16 +6,12 @@
 package com.mesta.datacommunicators;
 
 import com.mesta.models.Account;
-import com.mesta.models.Comment;
-import com.mesta.models.Location;
 import com.mesta.models.Token;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayDeque;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -67,5 +63,35 @@ public class AccountGetter {
             connection.close();
         }
         return account;
+    }
+
+    public DatabaseInfo.DatabaseRepsonse logout(String fbID, String token) throws SQLException{
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            connection = DriverManager.getConnection(DatabaseInfo.ConnectionString, DatabaseInfo.LoginName, DatabaseInfo.Password);
+
+            if (CallVerifier.verify(fbID, token, connection)) {
+                String query = "DELETE FROM Tokens WHERE Token = ? AND AccountID = ?";
+                statement = connection.prepareCall(query);
+                statement.setString(1, token);
+                statement.setString(2, fbID);
+
+                int rows = statement.executeUpdate();
+
+                if(rows > 0) return DatabaseInfo.DatabaseRepsonse.SUCCES;
+            }else{
+                return DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID;
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            connection.close();
+        }
+        return DatabaseInfo.DatabaseRepsonse.FAILED;
     }
 }

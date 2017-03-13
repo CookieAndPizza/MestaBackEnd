@@ -5,17 +5,20 @@
  */
 package com.mesta.resources;
 
+import com.mesta.datacommunicators.DatabaseInfo;
 import com.mesta.datacontrollers.AccountController;
 import com.mesta.models.Account;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ws.rs.CookieParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -50,7 +53,23 @@ public class AccountResource {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             Logger.getLogger(AccountResource.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NullPointerException ex){
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
         return Response.ok(account.toString(), MediaType.APPLICATION_JSON).build();
+    }
+    
+    @Path("/fblogin/logout")
+    @GET
+    public Response logout(@CookieParam("fbLoginID") Cookie fbLogin, @CookieParam("token") Cookie token){
+        try{
+            DatabaseInfo.DatabaseRepsonse succes = AccountController.getController().accountGetter().logout(fbLogin.getValue(), token.getValue());
+            return Response.ok(String.valueOf(succes)).build();
+        } catch (SQLException ex) {
+            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NullPointerException ex){
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        return Response.serverError().build();
     }
 }

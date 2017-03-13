@@ -39,9 +39,7 @@ public class LocationSetter {
 
                 int affectedRows = statement.executeUpdate();
 
-                if (affectedRows > 0) {
-                    return DatabaseInfo.DatabaseRepsonse.SUCCES;
-                }
+                if (affectedRows > 0) return DatabaseInfo.DatabaseRepsonse.SUCCES;
             }else{
                 return DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID;
             }
