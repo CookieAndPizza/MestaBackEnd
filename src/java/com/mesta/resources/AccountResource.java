@@ -21,6 +21,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 
 /**
@@ -57,7 +58,9 @@ public class AccountResource {
         } catch (NullPointerException ex){
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        return Response.ok(account.toString(), MediaType.APPLICATION_JSON).build();
+        NewCookie loginCookie = new NewCookie("fbLoginID", loginID);
+        NewCookie tokenCookie = new NewCookie("token", account.getToken().getToken());
+        return Response.ok(account.toString(), MediaType.APPLICATION_JSON).cookie(loginCookie).cookie(tokenCookie).build();
     }
     
     @Path("/fblogout")
