@@ -10,7 +10,6 @@ import com.mesta.datacontrollers.CommentController;
 import com.mesta.datacontrollers.LocationController;
 import com.mesta.models.Location;
 import com.mesta.models.Comment;
-import com.mesta.models.Token;
 import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.logging.Level;
@@ -57,7 +56,6 @@ public class LocationResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAll() {
         ArrayDeque locations = new ArrayDeque();
-        Token token = new Token();
         try {
             locations = LocationController.getController().locationGetter().getAllLocations();
         } catch (SQLException ex) {
@@ -65,7 +63,7 @@ public class LocationResource {
         } catch (NullPointerException ex){
             return Response.status(Status.BAD_REQUEST).build();
         }
-        return Response.ok(locations.toString(), MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "http://www.the-mesta.com").build();
+        return Response.ok(locations.toString(), MediaType.APPLICATION_JSON).build();
     }
 
     /**
