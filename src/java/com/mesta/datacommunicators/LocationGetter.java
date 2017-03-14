@@ -25,7 +25,7 @@ public class LocationGetter {
 
     private Connection connection;
     private PreparedStatement statement;
-    private final String DRIVER_STRING = com.mysql.jdbc.Driver;
+    private final String DRIVER_STRING = "com.mysql.jdbc.Driver";
 
     /**
      * method for getting all locations.

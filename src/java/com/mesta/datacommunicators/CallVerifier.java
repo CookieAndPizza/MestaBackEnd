@@ -5,12 +5,21 @@
  */
 package com.mesta.datacommunicators;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -53,4 +62,78 @@ public class CallVerifier {
         }
         return succes;
     }
+    
+    public static boolean facebookVerify(String inputtoken) {
+        boolean succes = false;
+
+        HttpURLConnection httpConnection = null;
+        try {
+            String accessToken = getAccessToken();
+            URL url = new URL("https://graph.facebook.com/debug_token?input_token=" + inputtoken + "&" + accessToken);
+
+            httpConnection = (HttpURLConnection) url.openConnection();
+
+            httpConnection.setDoOutput(true);
+
+            InputStream is = httpConnection.getInputStream();
+            String line;
+            StringBuilder response = new StringBuilder();
+            try (BufferedReader rd = new BufferedReader(new InputStreamReader(is))) {
+                while ((line = rd.readLine()) != null) {
+                    response.append(line);
+                    response.append('\r');
+                }
+            }
+            JSONObject json = new JSONObject(response.toString()); //ToDo: Throws JSON Exception
+            boolean is_valid = json.getBoolean("is_valid");
+            
+            if(is_valid) succes = true;
+
+        } catch (MalformedURLException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(AccountGetter.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(AccountGetter.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JSONException ex) {
+            Logger.getLogger(CallVerifier.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            httpConnection.disconnect();
+        }
+        return succes;
+    }
+    
+    private static String getAccessToken(){
+        String answer = "";
+        HttpURLConnection httpConnection = null;
+        try {
+            URL url = new URL("https://graph.facebook.com/oauth/access_token?client_id=1648610375442724&client_secret=457b6d1b4d0d23b7d489277ca599dd7d&grant_type=client_credentials");
+
+            httpConnection = (HttpURLConnection) url.openConnection();
+
+            httpConnection.setDoOutput(true);
+
+            InputStream is = httpConnection.getInputStream();
+            String line;
+            StringBuilder response = new StringBuilder();
+            try (BufferedReader rd = new BufferedReader(new InputStreamReader(is))) {
+                while ((line = rd.readLine()) != null) {
+                    response.append(line);
+                    response.append('\r');
+                }
+            }
+            answer = response.toString();
+
+        } catch (MalformedURLException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(AccountGetter.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(AccountGetter.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            httpConnection.disconnect();
+        }
+        return answer;
+    }
 }
+
