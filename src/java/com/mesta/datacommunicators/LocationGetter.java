@@ -145,16 +145,16 @@ public class LocationGetter {
             Class.forName(DRIVER_STRING);
             connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);
 
-            String query = "SELECT i.Path FROM Image i, Location l WHERE l.ID = i.LocationID AND l.ID = ?";
+            String query = "SELECT i.ID FROM Image i, Location l WHERE l.ID = i.LocationID AND l.ID = ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, loc.getId());
 
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
-                String image = result.getString("Path");
+                String image = result.getString("ID");
                 if (!"".equals(image)) {
-                    loc.addImage(image);
+                    loc.addImage("i.the-mesta.com/" + image);
                 }
             }
 
