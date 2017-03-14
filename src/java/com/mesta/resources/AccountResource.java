@@ -43,6 +43,7 @@ public class AccountResource {
 
     /**
      * Retrieves representation of an instance of com.mesta.resources.Account
+     *
      * @return an instance of java.lang.String
      */
     @Path("/fblogin/{ID}/{AccessToken}")
@@ -55,24 +56,29 @@ public class AccountResource {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             Logger.getLogger(AccountResource.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NullPointerException ex){
+        } catch (NullPointerException ex) {
             Logger.getLogger(AccountResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
+
+        if (account == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
         NewCookie loginCookie = new NewCookie("fbLoginID", loginID);
         NewCookie tokenCookie = new NewCookie("token", account.getToken().getToken());
         return Response.ok(account.toString(), MediaType.APPLICATION_JSON).cookie(loginCookie).cookie(tokenCookie).build();
     }
-    
+
     @Path("/fblogout")
     @POST
-    public Response logout(@CookieParam("fbLoginID") Cookie fbLogin, @CookieParam("token") Cookie token){
-        try{
+    public Response logout(@CookieParam("fbLoginID") Cookie fbLogin, @CookieParam("token") Cookie token) {
+        try {
             DatabaseInfo.DatabaseRepsonse succes = AccountController.getController().accountGetter().logout(fbLogin.getValue(), token.getValue());
             return Response.ok(String.valueOf(succes)).build();
         } catch (SQLException ex) {
             Logger.getLogger(AccountResource.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NullPointerException ex){
+        } catch (NullPointerException ex) {
             Logger.getLogger(AccountResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

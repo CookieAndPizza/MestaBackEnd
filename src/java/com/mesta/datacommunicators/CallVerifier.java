@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,9 +27,10 @@ import org.json.JSONObject;
  * @author harm
  */
 public class CallVerifier {
+
     private static CallableStatement statement;
-    
-    private CallVerifier(){
+
+    private CallVerifier() {
         throw new IllegalAccessError("Utility class");
     }
 
@@ -62,7 +64,7 @@ public class CallVerifier {
         }
         return succes;
     }
-    
+
     public static boolean facebookVerify(String inputtoken) {
         boolean succes = false;
 
@@ -84,10 +86,13 @@ public class CallVerifier {
                     response.append('\r');
                 }
             }
-            JSONObject json = new JSONObject(response.toString()); //ToDo: Throws JSON Exception
-            boolean is_valid = json.getBoolean("is_valid");
-            
-            if(is_valid) succes = true;
+            System.out.println(response.toString());
+            JSONObject json = new JSONObject(response.toString());
+            Boolean is_valid = json.getJSONObject("data").getBoolean("is_valid");
+
+            if (is_valid) {
+                succes = true;
+            }
 
         } catch (MalformedURLException ex) {
             System.out.println(ex.getMessage());
@@ -96,14 +101,15 @@ public class CallVerifier {
             System.out.println(ex.getMessage());
             Logger.getLogger(AccountGetter.class.getName()).log(Level.SEVERE, null, ex);
         } catch (JSONException ex) {
+            System.out.println(ex.getMessage());
             Logger.getLogger(CallVerifier.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             httpConnection.disconnect();
         }
         return succes;
     }
-    
-    private static String getAccessToken(){
+
+    private static String getAccessToken() {
         String answer = "";
         HttpURLConnection httpConnection = null;
         try {
