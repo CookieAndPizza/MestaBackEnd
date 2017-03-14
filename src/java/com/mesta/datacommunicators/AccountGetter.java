@@ -39,28 +39,29 @@ public class AccountGetter {
      * @return Account
      * @throws java.sql.SQLException
      */
-    public Account login(String login) throws SQLException {
+    public Account login(String login, String inputtoken) throws SQLException {
         Account account = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);
 
-            checkFacebook("1");
+            if (CallVerifier.facebookVerify(inputtoken)) {
 
-            Token token = new Token();
-            String query = "CALL select_or_insert_Account(?, ?)";
-            statement = connection.prepareCall(query);
-            statement.setString(1, login);
-            statement.setString(2, token.getToken());
+                Token token = new Token();
+                String query = "CALL select_or_insert_Account(?, ?)";
+                statement = connection.prepareCall(query);
+                statement.setString(1, login);
+                statement.setString(2, token.getToken());
 
-            ResultSet result = statement.executeQuery();
+                ResultSet result = statement.executeQuery();
 
-            while (result.next()) {
-                int id = result.getInt("ID");
-                String fbID = result.getString("ExternalID");
-                boolean admin = result.getBoolean("Admin");
-                boolean banned = result.getBoolean("Blocked");
-                account = new Account(id, fbID, admin, banned, token);
+                while (result.next()) {
+                    int id = result.getInt("ID");
+                    String fbID = result.getString("ExternalID");
+                    boolean admin = result.getBoolean("Admin");
+                    boolean banned = result.getBoolean("Blocked");
+                    account = new Account(id, fbID, admin, banned, token);
+                }
             }
 
         } catch (SQLException | ClassNotFoundException ex) {
@@ -72,11 +73,11 @@ public class AccountGetter {
     }
 
     /**
-     * 
+     *
      * @param fbID Facebook ID of the logged in user
      * @param token token of the logged in user
      * @return response from database
-     * @throws SQLException 
+     * @throws SQLException
      */
     public DatabaseInfo.DatabaseRepsonse logout(String fbID, String token) throws SQLException {
         try {
@@ -104,41 +105,5 @@ public class AccountGetter {
             connection.close();
         }
         return DatabaseInfo.DatabaseRepsonse.FAILED;
-    }
-
-    private boolean checkFacebook(String inputtoken) {
-        boolean succes = false;
-        HttpURLConnection httpConnection = null;
-        try {
-            URL url = new URL("https://graph.facebook.com/debug_token?input_token=" + inputtoken + "&access_token=1648610375442724");
-            httpConnection = (HttpURLConnection) url.openConnection();
-
-            httpConnection.setRequestMethod("GET");
-            httpConnection.setUseCaches(false);
-            httpConnection.setDoOutput(true);
-
-            DataOutputStream wr = new DataOutputStream(httpConnection.getOutputStream());
-            wr.close();
-
-            InputStream is = httpConnection.getInputStream();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-            StringBuilder response = new StringBuilder();
-            String line;
-            while ((line = rd.readLine()) != null) {
-                response.append(line);
-                response.append('\r');
-            }
-            rd.close();
-
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(AccountGetter.class.getName()).log(Level.SEVERE, null, ex);
-        }catch (IOException ex){
-                Logger.getLogger(AccountGetter.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (httpConnection != null) {
-                httpConnection.disconnect();
-            }
-        }
-        return succes;
     }
 }

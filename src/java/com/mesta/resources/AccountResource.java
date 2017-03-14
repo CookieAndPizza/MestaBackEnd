@@ -45,13 +45,13 @@ public class AccountResource {
      * Retrieves representation of an instance of com.mesta.resources.Account
      * @return an instance of java.lang.String
      */
-    @Path("/fblogin/{ID}")
+    @Path("/fblogin/{ID}/{AccessToken}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response login(@PathParam("ID") String loginID) {
+    public Response login(@PathParam("ID") String loginID, @PathParam("AccessToken") String accessToken) {
         Account account = null;
         try {
-            account = AccountController.getController().accountGetter().login(loginID);
+            account = AccountController.getController().accountGetter().login(loginID, accessToken);
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             Logger.getLogger(AccountResource.class.getName()).log(Level.SEVERE, null, ex);

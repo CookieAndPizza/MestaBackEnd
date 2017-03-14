@@ -12,6 +12,7 @@ import com.mesta.models.Location;
 import com.mesta.models.Comment;
 import java.sql.SQLException;
 import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.core.Context;
@@ -55,7 +56,7 @@ public class LocationResource {
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAll() {
-        ArrayDeque locations = new ArrayDeque();
+        Deque locations = new ArrayDeque();
         try {
             locations = LocationController.getController().locationGetter().getAllLocations();
         } catch (SQLException ex) {
@@ -121,7 +122,7 @@ public class LocationResource {
     @Path("/nearby/{Lat}/{Long}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response nearbyLocations(@PathParam("Lat") double lat, @PathParam("Long") double lon) {
-        ArrayDeque locations = new ArrayDeque();
+        Deque locations = new ArrayDeque();
         try {
             locations = LocationController.getController().locationGetter().getNearbyLocations(lat, lon);
         } catch (SQLException ex) {
