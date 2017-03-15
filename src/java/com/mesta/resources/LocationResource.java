@@ -10,10 +10,9 @@ import com.mesta.datacontrollers.CommentController;
 import com.mesta.datacontrollers.LocationController;
 import com.mesta.models.Location;
 import com.mesta.models.Comment;
-import com.mesta.models.Token;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.core.Context;
@@ -28,6 +27,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 /**
  * REST Web Service
@@ -56,12 +56,14 @@ public class LocationResource {
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAll() {
-        ArrayDeque locations = new ArrayDeque();
-        Token token = new Token();
+        Deque locations = new ArrayDeque();
         try {
             locations = LocationController.getController().locationGetter().getAllLocations();
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NullPointerException ex){
+            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
+            return Response.status(Status.BAD_REQUEST).build();
         }
         return Response.ok(locations.toString(), MediaType.APPLICATION_JSON).build();
     }
@@ -80,6 +82,9 @@ public class LocationResource {
             return Response.ok(String.valueOf(succes)).build();
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NullPointerException ex){
+            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
+            return Response.status(Status.BAD_REQUEST).build();
         }
         return Response.serverError().build();
     }
@@ -98,6 +103,9 @@ public class LocationResource {
 
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NullPointerException ex){
+            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
+            return Response.status(Status.BAD_REQUEST).build();
         }
         if (location != null) {
             return Response.ok(location.toString(), MediaType.APPLICATION_JSON).build();
@@ -119,6 +127,9 @@ public class LocationResource {
             locations = LocationController.getController().locationGetter().getNearbyLocations(lat, lon, range);
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NullPointerException ex){
+            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
+            return Response.status(Status.BAD_REQUEST).build();
         }
         return Response.ok(locations.toString(), MediaType.APPLICATION_JSON).build();
     }
@@ -126,12 +137,15 @@ public class LocationResource {
     @POST
     @Path("/comment/save")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response putComment(Comment com, @CookieParam("fbLoginID") Cookie fbLogin, @CookieParam("token") Cookie token) {
+    public Response putComment(Comment com, @CookieParam("fbLoginID") Cookie fbLogin, @CookieParam("token") Cookie token) { 
         try {
             DatabaseInfo.DatabaseRepsonse succes = CommentController.getController().commentSetter().saveComment(com, fbLogin.getValue(), token.getValue());
             return Response.ok(String.valueOf(succes)).build();
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NullPointerException ex){
+            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
+            return Response.status(Status.BAD_REQUEST).build();
         }
         return Response.serverError().build();
     }

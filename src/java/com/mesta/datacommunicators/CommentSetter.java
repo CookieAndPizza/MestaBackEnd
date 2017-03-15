@@ -19,14 +19,21 @@ import java.util.logging.Level;
  */
 public class CommentSetter {
 
-    private static final Logger LOGGER = Logger.getLogger(LocationSetter.class.getName());
     private Connection connection;
     private PreparedStatement statement;
 
+    /**
+     * 
+     * @param comment the comment to be saved in the database
+     * @param login the login for verification
+     * @param token the token for verification
+     * @return database responds
+     * @throws SQLException 
+     */
     public DatabaseInfo.DatabaseRepsonse saveComment(Comment comment, String login, String token) throws SQLException {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(DatabaseInfo.ConnectionString, DatabaseInfo.LoginName, DatabaseInfo.Password);
+            connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);
 
             if (CallVerifier.verify(login, token, connection)) {
                 String query = "INSERT INTO Comment (LocationID, AccountID, Title, Text) VALUES (?, ?, ?, ?)";
@@ -46,7 +53,6 @@ public class CommentSetter {
                 return DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID;
             }
         } catch (SQLException | ClassNotFoundException ex) {
-            System.out.println(ex.getMessage());
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             connection.close();

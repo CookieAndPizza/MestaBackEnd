@@ -26,7 +26,7 @@ public class LocationSetter {
     public DatabaseInfo.DatabaseRepsonse saveLocation(Location loc, String login, String token) throws SQLException {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(DatabaseInfo.ConnectionString, DatabaseInfo.LoginName, DatabaseInfo.Password);
+            connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);
 
             if (CallVerifier.verify(login, token, connection)) {
                 String query = "INSERT INTO Location (Name, Latitude, Longitude, Description) VALUES (?, ?, ?, ?)";
@@ -39,9 +39,7 @@ public class LocationSetter {
 
                 int affectedRows = statement.executeUpdate();
 
-                if (affectedRows > 0) {
-                    return DatabaseInfo.DatabaseRepsonse.SUCCES;
-                }
+                if (affectedRows > 0) return DatabaseInfo.DatabaseRepsonse.SUCCES;
             }else{
                 return DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID;
             }

@@ -5,8 +5,6 @@
  */
 package com.mesta.models;
 
-import java.security.SecureRandom;
-import java.sql.Date;
 import java.util.Random;
 
 /**
@@ -33,7 +31,7 @@ public class Token {
 
     private String generateRandomString() {
 
-        StringBuffer randStr = new StringBuffer();
+        StringBuilder randStr = new StringBuilder();
         for (int i = 0; i < RANDOM_STRING_LENGTH; i++) {
             int number = getRandomNumber();
             char ch = CHAR_LIST.charAt(number);

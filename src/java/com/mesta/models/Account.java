@@ -79,7 +79,6 @@ public class Account {
             object.put("faceBookID", this.externalID);
             object.put("Banned", this.banned);
             object.put("Admin", this.admin);
-            object.put("Token", this.token.getToken());
         } catch (JSONException ex) {
             System.out.println(ex);
             Logger.getLogger(Location.class.getName()).log(Level.SEVERE, null, ex);

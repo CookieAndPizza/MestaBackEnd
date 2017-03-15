@@ -5,16 +5,22 @@
  */
 package com.mesta.datacommunicators;
 
-import com.mesta.models.Account;
-import com.mesta.models.Token;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -22,13 +28,19 @@ import java.util.logging.Logger;
  */
 public class CallVerifier {
 
-    private static final Logger LOGGER = Logger.getLogger(LocationSetter.class.getName());
     private static CallableStatement statement;
+
+    private CallVerifier() {
+        throw new IllegalAccessError("Utility class");
+    }
 
     /**
      * method for getting all locations.
      *
-     * @param content representation for the resource
+     * @param login login to be verified
+     * @param token token of the login
+     * @param connection database connection
+     * @return returns true or false
      * @throws java.sql.SQLException
      */
     public static boolean verify(String login, String token, Connection connection) throws SQLException {
@@ -47,13 +59,86 @@ public class CallVerifier {
             int answer = statement.getInt(3);
             succes = answer != 0;
 
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            System.out.println(ex.getMessage());
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         }
         return succes;
+    }
+
+    public static boolean facebookVerify(String inputtoken) {
+        boolean succes = false;
+
+        HttpURLConnection httpConnection = null;
+        try {
+            String accessToken = getAccessToken();
+            URL url = new URL("https://graph.facebook.com/debug_token?input_token=" + inputtoken + "&" + accessToken);
+
+            httpConnection = (HttpURLConnection) url.openConnection();
+
+            httpConnection.setDoOutput(true);
+
+            InputStream is = httpConnection.getInputStream();
+            String line;
+            StringBuilder response = new StringBuilder();
+            try (BufferedReader rd = new BufferedReader(new InputStreamReader(is))) {
+                while ((line = rd.readLine()) != null) {
+                    response.append(line);
+                    response.append('\r');
+                }
+            }
+            System.out.println(response.toString());
+            JSONObject json = new JSONObject(response.toString());
+            Boolean is_valid = json.getJSONObject("data").getBoolean("is_valid");
+
+            if (is_valid) {
+                succes = true;
+            }
+
+        } catch (MalformedURLException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(AccountGetter.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(AccountGetter.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JSONException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(CallVerifier.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            httpConnection.disconnect();
+        }
+        return succes;
+    }
+
+    private static String getAccessToken() {
+        String answer = "";
+        HttpURLConnection httpConnection = null;
+        try {
+            URL url = new URL("https://graph.facebook.com/oauth/access_token?client_id=1648610375442724&client_secret=457b6d1b4d0d23b7d489277ca599dd7d&grant_type=client_credentials");
+
+            httpConnection = (HttpURLConnection) url.openConnection();
+
+            httpConnection.setDoOutput(true);
+
+            InputStream is = httpConnection.getInputStream();
+            String line;
+            StringBuilder response = new StringBuilder();
+            try (BufferedReader rd = new BufferedReader(new InputStreamReader(is))) {
+                while ((line = rd.readLine()) != null) {
+                    response.append(line);
+                    response.append('\r');
+                }
+            }
+            answer = response.toString();
+
+        } catch (MalformedURLException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(AccountGetter.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+            Logger.getLogger(AccountGetter.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            httpConnection.disconnect();
+        }
+        return answer;
     }
 }
