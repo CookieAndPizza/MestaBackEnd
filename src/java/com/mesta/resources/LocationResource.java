@@ -111,12 +111,12 @@ public class LocationResource {
      * @param content representation for the resource
      */
     @GET
-    @Path("/nearby/{Lat}/{Long}")
+    @Path("/nearby/{Lat}/{Long}/{Range}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response nearbyLocations(@PathParam("Lat") double lat, @PathParam("Long") double lon) {
+    public Response nearbyLocations(@PathParam("Lat") double lat, @PathParam("Long") double lon, @PathParam("Range") int range) {
         ArrayDeque locations = new ArrayDeque();
         try {
-            locations = LocationController.getController().locationGetter().getNearbyLocations(lat, lon);
+            locations = LocationController.getController().locationGetter().getNearbyLocations(lat, lon, range);
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
         }

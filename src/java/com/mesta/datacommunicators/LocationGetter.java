@@ -97,17 +97,18 @@ public class LocationGetter {
         return location;
     }
 
-    public ArrayDeque getNearbyLocations(double lat, double lon) throws SQLException {
+    public ArrayDeque getNearbyLocations(double lat, double lon, int range) throws SQLException {
         ArrayDeque locations = new ArrayDeque<Location>();
         int count = 1;
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(DatabaseInfo.ConnectionString, DatabaseInfo.LoginName, DatabaseInfo.Password);
 
-            String query = "SELECT l.ID, l.Name, l.Latitude, l.Longitude, l.Description FROM Location l ORDER BY ABS(l.Latitude - ?) + ABS(l.Longitude - ?) LIMIT 5";
+            String query = "SELECT l.ID, l.Name, l.Latitude, l.Longitude, l.Description FROM Location l ORDER BY ABS(l.Latitude - ?) + ABS(l.Longitude - ?) LIMIT 5 + ?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setDouble(1, lat);
             statement.setDouble(2, lon);
+            statement.setDouble(3, range);
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
