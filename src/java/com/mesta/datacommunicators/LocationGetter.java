@@ -94,7 +94,7 @@ public class LocationGetter {
         return location;
     }
     
-    public ArrayDeque getNearbyLocations(double lat, double lon, int range) throws SQLException {
+    public ArrayDeque getNearbyLocations(double lat, double lon, int offset) throws SQLException {
         ArrayDeque locations = new ArrayDeque<Location>();
         int count = 1;
         try {
@@ -105,7 +105,7 @@ public class LocationGetter {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setDouble(1, lat);
             statement.setDouble(2, lon);
-            statement.setDouble(3, range);
+            statement.setDouble(3, offset);
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
