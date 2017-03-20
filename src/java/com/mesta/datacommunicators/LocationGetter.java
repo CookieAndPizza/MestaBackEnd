@@ -105,7 +105,7 @@ public class LocationGetter {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setDouble(1, lat);
             statement.setDouble(2, lon);
-            statement.setDouble(3, offset);
+            statement.setInt(3, offset);
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
