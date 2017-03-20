@@ -126,23 +126,23 @@ public class Location implements Serializable {
 
     @Override
     public String toString() {
-<span class="nc" id="L129">        JSONObject object = new JSONObject();</span>
+<span class="fc" id="L129">        JSONObject object = new JSONObject();</span>
         try {
-<span class="nc" id="L131">            object.put(&quot;id&quot;, this.id);</span>
-<span class="nc" id="L132">            object.put(&quot;name&quot;, this.name);</span>
-<span class="nc" id="L133">            object.put(&quot;longitude&quot;, this.longitude);</span>
-<span class="nc" id="L134">            object.put(&quot;latitude&quot;, this.latitude);</span>
-<span class="nc" id="L135">            object.put(&quot;description&quot;, this.description);</span>
-<span class="nc" id="L136">            object.put(&quot;images&quot;, images);</span>
-<span class="nc" id="L137">            object.put(&quot;comments&quot;, comments);</span>
-<span class="nc" id="L138">            object.put(&quot;tags&quot;, tags);</span>
-<span class="nc" id="L139">            object.put(&quot;category&quot;, category.toString());</span>
+<span class="fc" id="L131">            object.put(&quot;id&quot;, this.id);</span>
+<span class="fc" id="L132">            object.put(&quot;name&quot;, this.name);</span>
+<span class="fc" id="L133">            object.put(&quot;longitude&quot;, this.longitude);</span>
+<span class="fc" id="L134">            object.put(&quot;latitude&quot;, this.latitude);</span>
+<span class="fc" id="L135">            object.put(&quot;description&quot;, this.description);</span>
+<span class="fc" id="L136">            object.put(&quot;images&quot;, images);</span>
+<span class="fc" id="L137">            object.put(&quot;comments&quot;, comments);</span>
+<span class="fc" id="L138">            object.put(&quot;tags&quot;, tags);</span>
+<span class="fc" id="L139">            object.put(&quot;category&quot;, category.toString());</span>
 <span class="nc" id="L140">        } catch (JSONException ex) {</span>
 <span class="nc" id="L141">            System.out.println(ex);</span>
 <span class="nc" id="L142">            Logger.getLogger(Location.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L143">        }</span>
+<span class="fc" id="L143">        }</span>
 
-<span class="nc" id="L145">        return object.toString();</span>
+<span class="fc" id="L145">        return object.toString();</span>
     }
     
 <span class="pc" id="L148">    public enum Category {</span>
