@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CommentSetter.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Mesta&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">com.mesta.datacommunicators</a> &gt; <span class="el_source">CommentSetter.java</span></div><h1>CommentSetter.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.mesta.datacommunicators;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.logging.Logger;
+import com.mesta.models.Comment;
+import java.util.logging.Level;
+
+/**
+ *
+ * @author Vernoxius
+ */
+<span class="nc" id="L20">public class CommentSetter {</span>
+
+    private Connection connection;
+    private PreparedStatement statement;
+
+    /**
+     * 
+     * @param comment the comment to be saved in the database
+     * @param login the login for verification
+     * @param token the token for verification
+     * @return database responds
+     * @throws SQLException 
+     */
+    public DatabaseInfo.DatabaseRepsonse saveComment(Comment comment, String login, String token) throws SQLException {
+        try {
+<span class="nc" id="L35">            Class.forName(&quot;com.mysql.jdbc.Driver&quot;);</span>
+<span class="nc" id="L36">            connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);</span>
+
+<span class="nc bnc" id="L38" title="All 2 branches missed.">            if (CallVerifier.verify(login, token, connection)) {</span>
+<span class="nc" id="L39">                String query = &quot;INSERT INTO Comment (LocationID, AccountID, Title, Text) VALUES (?, ?, ?, ?)&quot;;</span>
+<span class="nc" id="L40">                statement = connection.prepareStatement(query);</span>
+
+<span class="nc" id="L42">                statement.setString(1, comment.getLocationID());</span>
+<span class="nc" id="L43">                statement.setString(2, comment.getfaceBookID());</span>
+<span class="nc" id="L44">                statement.setString(3, comment.getTitle());</span>
+<span class="nc" id="L45">                statement.setString(4, comment.getComment());</span>
+
+<span class="nc" id="L47">                int affectedRows = statement.executeUpdate();</span>
+
+<span class="nc bnc" id="L49" title="All 2 branches missed.">                if(affectedRows &gt; 0){</span>
+<span class="nc" id="L50">                    return DatabaseInfo.DatabaseRepsonse.SUCCES;</span>
+                }
+<span class="nc" id="L52">            }else{</span>
+<span class="nc" id="L53">                return DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID;</span>
+            }
+<span class="nc" id="L55">        } catch (SQLException | ClassNotFoundException ex) {</span>
+<span class="nc" id="L56">            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);</span>
+        } finally {
+<span class="nc" id="L58">            connection.close();</span>
+<span class="nc" id="L59">        }</span>
+<span class="nc" id="L60">        return DatabaseInfo.DatabaseRepsonse.FAILED;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

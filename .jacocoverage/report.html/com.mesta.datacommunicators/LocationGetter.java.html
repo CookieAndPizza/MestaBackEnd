@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>LocationGetter.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Mesta&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">com.mesta.datacommunicators</a> &gt; <span class="el_source">LocationGetter.java</span></div><h1>LocationGetter.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.mesta.datacommunicators;
+
+import com.mesta.datacontrollers.CommentController;
+import com.mesta.models.Location;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author harm
+ */
+<span class="nc" id="L24">public class LocationGetter {</span>
+
+    private Connection connection;
+    private PreparedStatement statement;
+<span class="nc" id="L28">    private final String DRIVER_STRING = &quot;com.mysql.jdbc.Driver&quot;;</span>
+
+    /**
+     * method for getting all locations.
+     */
+    public Deque getAllLocations() throws SQLException {
+<span class="nc" id="L34">        Deque locations = new ArrayDeque();</span>
+        try {
+<span class="nc" id="L36">            Class.forName(DRIVER_STRING);</span>
+<span class="nc" id="L37">            connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);</span>
+
+<span class="nc" id="L39">            String query = &quot;SELECT l.ID, l.Name, l.Latitude, l.Longitude, l.Description FROM Location l&quot;;</span>
+<span class="nc" id="L40">            statement = connection.prepareStatement(query);</span>
+
+<span class="nc" id="L42">            ResultSet result = statement.executeQuery();</span>
+
+<span class="nc bnc" id="L44" title="All 2 branches missed.">            while (result.next()) {</span>
+<span class="nc" id="L45">                int id = result.getInt(&quot;ID&quot;);</span>
+<span class="nc" id="L46">                String name = result.getString(&quot;Name&quot;);</span>
+<span class="nc" id="L47">                double latitude = result.getDouble(&quot;Latitude&quot;);</span>
+<span class="nc" id="L48">                double longitude = result.getDouble(&quot;Longitude&quot;);</span>
+<span class="nc" id="L49">                String discription = result.getString(&quot;Description&quot;);</span>
+
+<span class="nc" id="L51">                Location loc = new Location(id, name, longitude, latitude, discription);</span>
+<span class="nc" id="L52">                addLocationData(loc, connection);</span>
+<span class="nc" id="L53">                CommentController.getController().commentGetter().getCommentsFromLocation(loc);</span>
+
+<span class="nc" id="L55">                locations.add(loc);</span>
+<span class="nc" id="L56">            }</span>
+
+<span class="nc" id="L58">        } catch (SQLException | ClassNotFoundException ex) {</span>
+<span class="nc" id="L59">            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);</span>
+        } finally {
+<span class="nc" id="L61">            connection.close();</span>
+<span class="nc" id="L62">        }</span>
+<span class="nc" id="L63">        return locations;</span>
+    }
+
+    /**
+     * gets one location
+     *
+     * @param ID Id of the location
+     * @return location
+     * @throws SQLException
+     */
+    public Location getOneLocation(int ID) throws SQLException {
+<span class="nc" id="L74">        Location location = null;</span>
+        try {
+<span class="nc" id="L76">            Class.forName(DRIVER_STRING);</span>
+<span class="nc" id="L77">            connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);</span>
+
+<span class="nc" id="L79">            String query = &quot;SELECT ID, Name, Latitude, Longitude, Description FROM Location WHERE ID = ?&quot;;</span>
+<span class="nc" id="L80">            PreparedStatement statement = connection.prepareStatement(query);</span>
+<span class="nc" id="L81">            statement.setString(1, String.valueOf(ID));</span>
+
+<span class="nc" id="L83">            ResultSet result = statement.executeQuery();</span>
+<span class="nc" id="L84">            result.next();</span>
+<span class="nc" id="L85">            location = new Location(ID, result.getString(&quot;Name&quot;), result.getDouble(&quot;Longitude&quot;), result.getDouble(&quot;Latitude&quot;), result.getString(&quot;Description&quot;));</span>
+<span class="nc" id="L86">            addLocationData(location, connection);</span>
+<span class="nc" id="L87">            CommentController.getController().commentGetter().getCommentsFromLocation(location);</span>
+
+<span class="nc" id="L89">        } catch (SQLException | ClassNotFoundException ex) {</span>
+<span class="nc" id="L90">            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);</span>
+        } finally {
+<span class="nc" id="L92">            connection.close();</span>
+<span class="nc" id="L93">        }</span>
+
+<span class="nc" id="L95">        return location;</span>
+    }
+
+    public ArrayDeque getNearbyLocations(double lat, double lon, int offset) throws SQLException {
+<span class="nc" id="L99">        ArrayDeque locations = new ArrayDeque&lt;Location&gt;();</span>
+<span class="nc" id="L100">        int count = 1;</span>
+        try {
+<span class="nc" id="L102">            Class.forName(DRIVER_STRING);</span>
+<span class="nc" id="L103">            connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);</span>
+
+<span class="nc" id="L105">            String query = &quot;SELECT l.ID, l.Name, l.Latitude, l.Longitude, l.Description FROM Location l ORDER BY ABS(l.Latitude - ?) + ABS(l.Longitude - ?) LIMIT 10 OFFSET ?&quot;;</span>
+<span class="nc" id="L106">            PreparedStatement statement = connection.prepareStatement(query);</span>
+<span class="nc" id="L107">            statement.setDouble(1, lat);</span>
+<span class="nc" id="L108">            statement.setDouble(2, lon);</span>
+<span class="nc" id="L109">            statement.setDouble(3, offset);</span>
+<span class="nc" id="L110">            ResultSet result = statement.executeQuery();</span>
+
+<span class="nc bnc" id="L112" title="All 2 branches missed.">            while (result.next()) {</span>
+<span class="nc" id="L113">                int id = result.getInt(&quot;ID&quot;);</span>
+<span class="nc" id="L114">                String name = result.getString(&quot;Name&quot;);</span>
+<span class="nc" id="L115">                double latitude = result.getDouble(&quot;Latitude&quot;);</span>
+<span class="nc" id="L116">                double longitude = result.getDouble(&quot;Longitude&quot;);</span>
+<span class="nc" id="L117">                String discription = result.getString(&quot;Description&quot;);</span>
+
+<span class="nc" id="L119">                Location loc = new Location(id, name, longitude, latitude, discription);</span>
+<span class="nc" id="L120">                addLocationData(loc, connection);</span>
+<span class="nc" id="L121">                CommentController.getController().commentGetter().getCommentsFromLocation(loc);</span>
+
+<span class="nc" id="L123">                locations.add(loc);</span>
+<span class="nc" id="L124">            }</span>
+<span class="nc" id="L125">        } catch (SQLException | ClassNotFoundException ex) {</span>
+<span class="nc" id="L126">            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);</span>
+        } finally {
+<span class="nc" id="L128">            connection.close();</span>
+<span class="nc" id="L129">        }</span>
+<span class="nc" id="L130">        return locations;</span>
+    }
+
+    /**
+     * adds images to a location
+     *
+     * @param loc location
+     * @throws SQLException
+     */
+    private void addImagesFromLocation(Location loc, Connection connection) throws SQLException {
+<span class="nc" id="L140">        String query = &quot;SELECT i.ID FROM Image i, Location l WHERE l.ID = i.LocationID AND l.ID = ?&quot;;</span>
+<span class="nc" id="L141">        PreparedStatement statement = connection.prepareStatement(query);</span>
+<span class="nc" id="L142">        statement.setInt(1, loc.getId());</span>
+
+<span class="nc" id="L144">        ResultSet result = statement.executeQuery();</span>
+
+<span class="nc bnc" id="L146" title="All 2 branches missed.">        while (result.next()) {</span>
+<span class="nc" id="L147">            String image = result.getString(&quot;ID&quot;);</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">            if (!&quot;&quot;.equals(image)) {</span>
+<span class="nc" id="L149">                loc.addImage(&quot;i.the-mesta.com/&quot; + image);</span>
+            }
+<span class="nc" id="L151">        }</span>
+<span class="nc" id="L152">    }</span>
+
+    private void addTagsFromLocation(Location loc, Connection connection) throws SQLException {
+<span class="nc" id="L155">        String query = &quot;SELECT * FROM Tag WHERE LocationID = ?&quot;;</span>
+<span class="nc" id="L156">        PreparedStatement statement = connection.prepareStatement(query);</span>
+<span class="nc" id="L157">        statement.setInt(1, loc.getId());</span>
+
+<span class="nc" id="L159">        ResultSet result = statement.executeQuery();</span>
+
+<span class="nc bnc" id="L161" title="All 2 branches missed.">        while (result.next()) {</span>
+<span class="nc" id="L162">            String tag = result.getString(&quot;Tag&quot;);</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">            if (!&quot;&quot;.equals(tag)) {</span>
+<span class="nc" id="L164">                loc.addTag(tag);</span>
+            }
+<span class="nc" id="L166">        }</span>
+<span class="nc" id="L167">    }</span>
+
+    private void addCategoryFromLocation(Location loc, Connection connection) throws SQLException {
+<span class="nc" id="L170">        String query = &quot;SELECT c.Name FROM Category c WHERE ID = (SELECT CategoryID FROM BelongsTo WHERE LocationID = ?)&quot;;</span>
+<span class="nc" id="L171">        PreparedStatement statement = connection.prepareStatement(query);</span>
+<span class="nc" id="L172">        statement.setInt(1, loc.getId());</span>
+
+<span class="nc" id="L174">        ResultSet result = statement.executeQuery();</span>
+
+<span class="nc bnc" id="L176" title="All 2 branches missed.">        if(result.next()){</span>
+<span class="nc" id="L177">            loc.setCategory(Location.Category.valueOf(result.getString(&quot;Name&quot;)));</span>
+        }
+<span class="nc" id="L179">    }</span>
+    
+    private void addLocationData(Location loc, Connection connection) throws SQLException{
+<span class="nc" id="L182">        addCategoryFromLocation(loc, connection);</span>
+<span class="nc" id="L183">        addImagesFromLocation(loc, connection);</span>
+<span class="nc" id="L184">        addTagsFromLocation(loc, connection);</span>
+<span class="nc" id="L185">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
