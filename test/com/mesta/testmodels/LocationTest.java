@@ -35,6 +35,8 @@ public class LocationTest {
 
     @Before
     public void setUp() {
+        loc = new Location();
+        loc = new Location("testloc", 10, 20, "testDescription");
         loc = new Location(1, "testLoc", 10, 20, "testDescription");
     }
 
@@ -102,26 +104,40 @@ public class LocationTest {
         int expected = 1;
         assertEquals(expected, loc.getImages().size());
     }
-    
+
     @Test
-    public void getCategoryTest(){
+    public void getCategoryTest() {
         Location.Category expected = Location.Category.None;
         assertEquals(expected, loc.getCategory());
     }
-    
+
     @Test
-    public void getTags(){
+    public void getTagsTest() {
         String tag = "tag";
         loc.addTag(tag);
         int expected = 1;
         assertEquals(expected, loc.getTags().size());
     }
-    
+
     @Test
-    public void getComments(){
+    public void getCommentsTest() {
         Comment comment = new Comment("1", "thisisacomment", "thisisatitle");
         loc.addComment(comment);
         int expected = 1;
         assertEquals(expected, loc.getComments().size());
+    }
+
+    @Test
+    public void setCategoryTest() {
+        Location.Category cat = Location.Category.Architecture;
+        loc.setCategory(cat);
+        assertEquals(cat, loc.getCategory());
+    }
+    
+    @Test
+    public void toStringTest(){
+        String expected = "{\"images\":[],\"comments\":[],\"latitude\":20,\"name\":\"testLoc\",\"description\":\"testDescription\",\"id\":1,\"category\":\"None\",\"longitude\":10,\"tags\":[]}";
+        String actual = loc.toString();
+        assertEquals(expected, actual);
     }
 }
