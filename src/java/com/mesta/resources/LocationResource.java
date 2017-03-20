@@ -67,6 +67,26 @@ public class LocationResource {
         }
         return Response.ok(locations.toString(), MediaType.APPLICATION_JSON).build();
     }
+    
+    /**
+     * @param value
+     * @return an instance of java.lang.String
+     */
+    @GET
+    @Path("/search/{Value}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response Search(@PathParam("Value") String value) {
+        Deque locations = new ArrayDeque();
+        try {
+            locations = LocationController.getController().locationGetter().search(value);
+        } catch (SQLException ex) {
+            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NullPointerException ex){
+            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
+            return Response.status(Status.BAD_REQUEST).build();
+        }
+        return Response.ok(locations.toString(), MediaType.APPLICATION_JSON).build();
+    }
 
     /**
      * POST method for updating or creating an instance of PlaceResource

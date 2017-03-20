@@ -62,6 +62,43 @@ public class LocationGetter {
         }
         return locations;
     }
+    
+    /**
+     * method for searching locations.
+     */
+    public Deque search(String value) throws SQLException {
+        Deque locations = new ArrayDeque();
+        try {
+            Class.forName(DRIVER_STRING);
+            connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);
+
+            String query = "SELECT l.ID, l.Name, l.Latitude, l.Longitude, l.Description FROM Location l LEFT JOIN Tag t ON (l.ID = t.LocationID) WHERE l.Name LIKE ? OR t.Tag LIKE ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, "%" + value + "%");
+            statement.setString(2, "%" + value + "%");
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                int id = result.getInt("ID");
+                String name = result.getString("Name");
+                double latitude = result.getDouble("Latitude");
+                double longitude = result.getDouble("Longitude");
+                String discription = result.getString("Description");
+
+                Location loc = new Location(id, name, longitude, latitude, discription);
+                addImagesFromLocation(loc);
+                CommentController.getController().commentGetter().getCommentsFromLocation(loc);
+
+                locations.add(loc);
+            }
+
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            connection.close();
+        }
+        return locations;
+    }
 
     /**
      * gets one location
