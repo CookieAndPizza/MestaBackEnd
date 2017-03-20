@@ -39,7 +39,6 @@ public class Location implements Serializable {
     public void setTags(List<String> tags) {
         this.tags = tags;
     }
-    
 
     public int getId() {
         return id;
@@ -85,12 +84,17 @@ public class Location implements Serializable {
         this.comments.add(comment);
     }
 
+    public void addTag(String tag) {
+        this.tags.add(tag);
+    }
+
     public Location() {
     }
 
     public Location(String name, double longitude, double latitude, String discription) {
         this.comments = new ArrayList<>();
         this.images = new ArrayList<>();
+        this.tags = new ArrayList<>();
         this.id = -1;
         this.name = name;
         this.longitude = longitude;
@@ -101,6 +105,7 @@ public class Location implements Serializable {
     public Location(int id, String name, double longitude, double latitude, String discription) {
         this.comments = new ArrayList<>();
         this.images = new ArrayList<>();
+        this.tags = new ArrayList<>();
         this.id = id;
         this.name = name;
         this.longitude = longitude;

@@ -9,7 +9,9 @@ import com.mesta.models.Location;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,7 +32,7 @@ public class LocationSetter {
 
             if (CallVerifier.verify(login, token, connection)) {
                 String query = "INSERT INTO Location (Name, Latitude, Longitude, Description) VALUES (?, ?, ?, ?)";
-                statement = connection.prepareStatement(query);
+                statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
                 statement.setString(1, loc.getName());
                 statement.setDouble(2, loc.getLatitude());
@@ -38,9 +40,18 @@ public class LocationSetter {
                 statement.setString(4, loc.getDescription());
 
                 int affectedRows = statement.executeUpdate();
+                
+                ResultSet keys = statement.getGeneratedKeys();
+                int id = -1;
+                if(keys.next()){
+                    id = keys.getInt(1);
+                }
+                DatabaseInfo.DatabaseRepsonse response = saveTags(loc, connection, id);
 
-                if (affectedRows > 0) return DatabaseInfo.DatabaseRepsonse.SUCCES;
-            }else{
+                if (affectedRows > 0 && response == DatabaseInfo.DatabaseRepsonse.SUCCES) {
+                    return DatabaseInfo.DatabaseRepsonse.SUCCES;
+                }
+            } else {
                 return DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID;
             }
 
@@ -53,11 +64,30 @@ public class LocationSetter {
         }
         return DatabaseInfo.DatabaseRepsonse.FAILED;
     }
-    
-    private DatabaseInfo.DatabaseRepsonse saveTags(Location loc){
-        String tagQuery = "INSERT IGNORE INTO Tag (Name) VALUES (?);";
-        String getID = "SELECT ID FROM TAG WHERE Name = ?";
-        String insertLink = "INSERT INTO HAS (LocationID, TagID) VALUES ";
+
+    private DatabaseInfo.DatabaseRepsonse saveTags(Location loc, Connection connection, int locationID) throws SQLException {
+        
+        if(locationID == -1){
+            return DatabaseInfo.DatabaseRepsonse.FAILED;
+        }
+        
+        String tagQuery = "INSERT INTO Tag (LocationID, Tag) VALUES (?, ?)";
+        PreparedStatement tagStatement = null;
+        
+        boolean succes = false;
+        
+        for (String tag : loc.getTags()) {
+            tagStatement = connection.prepareStatement(tagQuery);
+            tagStatement.setInt(1, locationID);
+            tagStatement.setString(2, tag);
+            int affectedRows = tagStatement.executeUpdate();
+            
+            if(!succes) succes = affectedRows > 0;
+        }
+
+        if(succes){
+            return DatabaseInfo.DatabaseRepsonse.SUCCES;
+        }
         return DatabaseInfo.DatabaseRepsonse.FAILED;
     }
 }
