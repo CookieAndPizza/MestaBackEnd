@@ -15,22 +15,14 @@ import org.json.JSONObject;
  * @author Demian
  */
 public class Account {
-    private int id;
+
     private String externalID;
     private boolean banned;
     private boolean admin;
     private Token token;
 
-    public int getId() {
-        return id;
-    }
-
     public Token getToken() {
         return token;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getExternalID() {
@@ -58,14 +50,6 @@ public class Account {
     }
     
     public Account(String externalID, boolean banned, boolean admin, Token token){
-        this.externalID = externalID;
-        this.banned = banned;
-        this.admin = admin;
-        this.token = token;
-    }
-    
-    public Account(int id, String externalID, boolean banned, boolean admin, Token token){
-        this.id = id;
         this.externalID = externalID;
         this.banned = banned;
         this.admin = admin;

@@ -7,14 +7,6 @@ package com.mesta.datacommunicators;
 
 import com.mesta.models.Account;
 import com.mesta.models.Token;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -56,11 +48,10 @@ public class AccountGetter {
                 ResultSet result = statement.executeQuery();
 
                 while (result.next()) {
-                    int id = result.getInt("ID");
                     String fbID = result.getString("ExternalID");
                     boolean admin = result.getBoolean("Admin");
                     boolean banned = result.getBoolean("Blocked");
-                    account = new Account(id, fbID, admin, banned, token);
+                    account = new Account(fbID, admin, banned, token);
                 }
             }
 
