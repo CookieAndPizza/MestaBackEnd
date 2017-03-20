@@ -27,6 +27,7 @@ public class Location implements Serializable {
     private List<String> images;
     private List<Comment> comments;
     private List<String> tags;
+    private Category category;
 
     public List<Comment> getComments() {
         return comments;
@@ -34,6 +35,14 @@ public class Location implements Serializable {
 
     public List<String> getTags() {
         return tags;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public void setTags(List<String> tags) {
@@ -100,6 +109,7 @@ public class Location implements Serializable {
         this.longitude = longitude;
         this.latitude = latitude;
         this.description = discription;
+        this.category = Category.None;
     }
 
     public Location(int id, String name, double longitude, double latitude, String discription) {
@@ -111,6 +121,7 @@ public class Location implements Serializable {
         this.longitude = longitude;
         this.latitude = latitude;
         this.description = discription;
+        this.category = Category.None;
     }
 
     @Override
@@ -125,11 +136,21 @@ public class Location implements Serializable {
             object.put("images", images);
             object.put("comments", comments);
             object.put("tags", tags);
+            object.put("category", category.toString());
         } catch (JSONException ex) {
             System.out.println(ex);
             Logger.getLogger(Location.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return object.toString();
+    }
+    
+    public enum Category {
+        None,
+        Nature,
+        View,
+        Urban,
+        Architecture,
+        Picnic
     }
 }

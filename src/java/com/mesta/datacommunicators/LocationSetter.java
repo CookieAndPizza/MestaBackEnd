@@ -40,15 +40,16 @@ public class LocationSetter {
                 statement.setString(4, loc.getDescription());
 
                 int affectedRows = statement.executeUpdate();
-                
+
                 ResultSet keys = statement.getGeneratedKeys();
                 int id = -1;
-                if(keys.next()){
+                if (keys.next()) {
                     id = keys.getInt(1);
                 }
-                DatabaseInfo.DatabaseRepsonse response = saveTags(loc, connection, id);
+                DatabaseInfo.DatabaseRepsonse tagresponse = saveTags(loc, connection, id);
+                DatabaseInfo.DatabaseRepsonse categoryResponse = saveCategory(loc, connection, id);
 
-                if (affectedRows > 0 && response == DatabaseInfo.DatabaseRepsonse.SUCCES) {
+                if (affectedRows > 0 && tagresponse == DatabaseInfo.DatabaseRepsonse.SUCCES && categoryResponse == DatabaseInfo.DatabaseRepsonse.SUCCES) {
                     return DatabaseInfo.DatabaseRepsonse.SUCCES;
                 }
             } else {
@@ -66,26 +67,55 @@ public class LocationSetter {
     }
 
     private DatabaseInfo.DatabaseRepsonse saveTags(Location loc, Connection connection, int locationID) throws SQLException {
-        
-        if(locationID == -1){
+
+        if (locationID == -1) {
             return DatabaseInfo.DatabaseRepsonse.FAILED;
         }
-        
+
         String tagQuery = "INSERT INTO Tag (LocationID, Tag) VALUES (?, ?)";
         PreparedStatement tagStatement = null;
-        
+
         boolean succes = false;
-        
+
         for (String tag : loc.getTags()) {
             tagStatement = connection.prepareStatement(tagQuery);
             tagStatement.setInt(1, locationID);
             tagStatement.setString(2, tag);
             int affectedRows = tagStatement.executeUpdate();
-            
-            if(!succes) succes = affectedRows > 0;
+
+            if (!succes) {
+                succes = affectedRows > 0;
+            }
         }
 
-        if(succes){
+        if (succes) {
+            return DatabaseInfo.DatabaseRepsonse.SUCCES;
+        }
+        return DatabaseInfo.DatabaseRepsonse.FAILED;
+    }
+
+    private DatabaseInfo.DatabaseRepsonse saveCategory(Location loc, Connection connection, int locationID) throws SQLException {
+        if (locationID == -1) {
+            return DatabaseInfo.DatabaseRepsonse.FAILED;
+        }
+
+        String idQuery = "SELECT ID FROM Category WHERE Name = ?";
+        PreparedStatement idStatement = connection.prepareStatement(idQuery);
+        
+        idStatement.setString(1, loc.getCategory().toString());
+        ResultSet set = idStatement.executeQuery();
+        int id = -1;
+        while(set.next()){
+            id = set.getInt("ID");
+        }
+
+        String tagQuery = "INSERT INTO BelongsTo (LocationID, CategoryID) VALUES (?, ?)";
+        PreparedStatement catStatement = connection.prepareStatement(tagQuery);
+        catStatement.setInt(1, locationID);
+        catStatement.setInt(2, id);
+        int affectedRows = catStatement.executeUpdate();
+
+        if (affectedRows > 0) {
             return DatabaseInfo.DatabaseRepsonse.SUCCES;
         }
         return DatabaseInfo.DatabaseRepsonse.FAILED;

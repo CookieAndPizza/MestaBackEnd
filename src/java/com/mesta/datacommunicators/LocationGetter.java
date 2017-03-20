@@ -49,8 +49,7 @@ public class LocationGetter {
                 String discription = result.getString("Description");
 
                 Location loc = new Location(id, name, longitude, latitude, discription);
-                addImagesFromLocation(loc, connection);
-                addTagsFromLocation(loc, connection);
+                addLocationData(loc, connection);
                 CommentController.getController().commentGetter().getCommentsFromLocation(loc);
 
                 locations.add(loc);
@@ -84,8 +83,7 @@ public class LocationGetter {
             ResultSet result = statement.executeQuery();
             result.next();
             location = new Location(ID, result.getString("Name"), result.getDouble("Longitude"), result.getDouble("Latitude"), result.getString("Description"));
-            addImagesFromLocation(location, connection);
-            addTagsFromLocation(location, connection);
+            addLocationData(location, connection);
             CommentController.getController().commentGetter().getCommentsFromLocation(location);
 
         } catch (SQLException | ClassNotFoundException ex) {
@@ -119,8 +117,7 @@ public class LocationGetter {
                 String discription = result.getString("Description");
 
                 Location loc = new Location(id, name, longitude, latitude, discription);
-                addImagesFromLocation(loc, connection);
-                addTagsFromLocation(loc, connection);
+                addLocationData(loc, connection);
                 CommentController.getController().commentGetter().getCommentsFromLocation(loc);
 
                 locations.add(loc);
@@ -167,5 +164,23 @@ public class LocationGetter {
                 loc.addTag(tag);
             }
         }
+    }
+
+    private void addCategoryFromLocation(Location loc, Connection connection) throws SQLException {
+        String query = "SELECT c.Name FROM Category c WHERE ID = (SELECT CategoryID FROM BelongsTo WHERE LocationID = ?)";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, loc.getId());
+
+        ResultSet result = statement.executeQuery();
+
+        if(result.next()){
+            loc.setCategory(Location.Category.valueOf(result.getString("Name")));
+        }
+    }
+    
+    private void addLocationData(Location loc, Connection connection) throws SQLException{
+        addCategoryFromLocation(loc, connection);
+        addImagesFromLocation(loc, connection);
+        addTagsFromLocation(loc, connection);
     }
 }
