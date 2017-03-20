@@ -45,10 +45,6 @@ public class Location implements Serializable {
         this.category = category;
     }
 
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
-
     public int getId() {
         return id;
     }

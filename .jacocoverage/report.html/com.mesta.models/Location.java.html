@@ -30,7 +30,7 @@ public class Location implements Serializable {
     private Category category;
 
     public List&lt;Comment&gt; getComments() {
-<span class="nc" id="L33">        return comments;</span>
+<span class="fc" id="L33">        return comments;</span>
     }
 
     public List&lt;String&gt; getTags() {
@@ -42,120 +42,116 @@ public class Location implements Serializable {
     }
 
     public void setCategory(Category category) {
-<span class="nc" id="L45">        this.category = category;</span>
-<span class="nc" id="L46">    }</span>
-
-    public void setTags(List&lt;String&gt; tags) {
-<span class="nc" id="L49">        this.tags = tags;</span>
-<span class="nc" id="L50">    }</span>
+<span class="fc" id="L45">        this.category = category;</span>
+<span class="fc" id="L46">    }</span>
 
     public int getId() {
-<span class="fc" id="L53">        return id;</span>
+<span class="fc" id="L49">        return id;</span>
     }
 
     public String getName() {
-<span class="fc" id="L57">        return name;</span>
+<span class="fc" id="L53">        return name;</span>
     }
 
     public void setName(String name) {
-<span class="fc" id="L61">        this.name = name;</span>
-<span class="fc" id="L62">    }</span>
+<span class="fc" id="L57">        this.name = name;</span>
+<span class="fc" id="L58">    }</span>
 
     public double getLongitude() {
-<span class="fc" id="L65">        return longitude;</span>
+<span class="fc" id="L61">        return longitude;</span>
     }
 
     public double getLatitude() {
-<span class="fc" id="L69">        return latitude;</span>
+<span class="fc" id="L65">        return latitude;</span>
     }
 
     public void setLatitude(double latitude) {
-<span class="fc" id="L73">        this.latitude = latitude;</span>
-<span class="fc" id="L74">    }</span>
+<span class="fc" id="L69">        this.latitude = latitude;</span>
+<span class="fc" id="L70">    }</span>
 
     public void setLongitude(double longitude) {
-<span class="fc" id="L77">        this.longitude = longitude;</span>
-<span class="fc" id="L78">    }</span>
+<span class="fc" id="L73">        this.longitude = longitude;</span>
+<span class="fc" id="L74">    }</span>
 
     public String getDescription() {
-<span class="fc" id="L81">        return description;</span>
+<span class="fc" id="L77">        return description;</span>
     }
 
     public void setDescription(String discription) {
-<span class="fc" id="L85">        this.description = discription;</span>
-<span class="fc" id="L86">    }</span>
+<span class="fc" id="L81">        this.description = discription;</span>
+<span class="fc" id="L82">    }</span>
 
     public void addImage(String path) {
-<span class="fc" id="L89">        images.add(path);</span>
-<span class="fc" id="L90">    }</span>
+<span class="fc" id="L85">        images.add(path);</span>
+<span class="fc" id="L86">    }</span>
         
     public List&lt;String&gt; getImages(){
-<span class="fc" id="L93">        return this.images;</span>
+<span class="fc" id="L89">        return this.images;</span>
     }
 
     public void addComment(Comment comment) {
-<span class="nc" id="L97">        this.comments.add(comment);</span>
-<span class="nc" id="L98">    }</span>
+<span class="fc" id="L93">        this.comments.add(comment);</span>
+<span class="fc" id="L94">    }</span>
 
     public void addTag(String tag) {
-<span class="fc" id="L101">        this.tags.add(tag);</span>
-<span class="fc" id="L102">    }</span>
+<span class="fc" id="L97">        this.tags.add(tag);</span>
+<span class="fc" id="L98">    }</span>
 
-<span class="nc" id="L104">    public Location() {</span>
-<span class="nc" id="L105">    }</span>
+<span class="fc" id="L100">    public Location() {</span>
+<span class="fc" id="L101">    }</span>
 
-<span class="nc" id="L107">    public Location(String name, double longitude, double latitude, String discription) {</span>
-<span class="nc" id="L108">        this.comments = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L109">        this.images = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L110">        this.tags = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L111">        this.id = -1;</span>
-<span class="nc" id="L112">        this.name = name;</span>
-<span class="nc" id="L113">        this.longitude = longitude;</span>
-<span class="nc" id="L114">        this.latitude = latitude;</span>
-<span class="nc" id="L115">        this.description = discription;</span>
-<span class="nc" id="L116">        this.category = Category.None;</span>
-<span class="nc" id="L117">    }</span>
+<span class="fc" id="L103">    public Location(String name, double longitude, double latitude, String discription) {</span>
+<span class="fc" id="L104">        this.comments = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L105">        this.images = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L106">        this.tags = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L107">        this.id = -1;</span>
+<span class="fc" id="L108">        this.name = name;</span>
+<span class="fc" id="L109">        this.longitude = longitude;</span>
+<span class="fc" id="L110">        this.latitude = latitude;</span>
+<span class="fc" id="L111">        this.description = discription;</span>
+<span class="fc" id="L112">        this.category = Category.None;</span>
+<span class="fc" id="L113">    }</span>
 
-<span class="fc" id="L119">    public Location(int id, String name, double longitude, double latitude, String discription) {</span>
-<span class="fc" id="L120">        this.comments = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L121">        this.images = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L122">        this.tags = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L123">        this.id = id;</span>
-<span class="fc" id="L124">        this.name = name;</span>
-<span class="fc" id="L125">        this.longitude = longitude;</span>
-<span class="fc" id="L126">        this.latitude = latitude;</span>
-<span class="fc" id="L127">        this.description = discription;</span>
-<span class="fc" id="L128">        this.category = Category.None;</span>
-<span class="fc" id="L129">    }</span>
+<span class="fc" id="L115">    public Location(int id, String name, double longitude, double latitude, String discription) {</span>
+<span class="fc" id="L116">        this.comments = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L117">        this.images = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L118">        this.tags = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L119">        this.id = id;</span>
+<span class="fc" id="L120">        this.name = name;</span>
+<span class="fc" id="L121">        this.longitude = longitude;</span>
+<span class="fc" id="L122">        this.latitude = latitude;</span>
+<span class="fc" id="L123">        this.description = discription;</span>
+<span class="fc" id="L124">        this.category = Category.None;</span>
+<span class="fc" id="L125">    }</span>
 
     @Override
     public String toString() {
-<span class="nc" id="L133">        JSONObject object = new JSONObject();</span>
+<span class="nc" id="L129">        JSONObject object = new JSONObject();</span>
         try {
-<span class="nc" id="L135">            object.put(&quot;id&quot;, this.id);</span>
-<span class="nc" id="L136">            object.put(&quot;name&quot;, this.name);</span>
-<span class="nc" id="L137">            object.put(&quot;longitude&quot;, this.longitude);</span>
-<span class="nc" id="L138">            object.put(&quot;latitude&quot;, this.latitude);</span>
-<span class="nc" id="L139">            object.put(&quot;description&quot;, this.description);</span>
-<span class="nc" id="L140">            object.put(&quot;images&quot;, images);</span>
-<span class="nc" id="L141">            object.put(&quot;comments&quot;, comments);</span>
-<span class="nc" id="L142">            object.put(&quot;tags&quot;, tags);</span>
-<span class="nc" id="L143">            object.put(&quot;category&quot;, category.toString());</span>
-<span class="nc" id="L144">        } catch (JSONException ex) {</span>
-<span class="nc" id="L145">            System.out.println(ex);</span>
-<span class="nc" id="L146">            Logger.getLogger(Location.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L147">        }</span>
+<span class="nc" id="L131">            object.put(&quot;id&quot;, this.id);</span>
+<span class="nc" id="L132">            object.put(&quot;name&quot;, this.name);</span>
+<span class="nc" id="L133">            object.put(&quot;longitude&quot;, this.longitude);</span>
+<span class="nc" id="L134">            object.put(&quot;latitude&quot;, this.latitude);</span>
+<span class="nc" id="L135">            object.put(&quot;description&quot;, this.description);</span>
+<span class="nc" id="L136">            object.put(&quot;images&quot;, images);</span>
+<span class="nc" id="L137">            object.put(&quot;comments&quot;, comments);</span>
+<span class="nc" id="L138">            object.put(&quot;tags&quot;, tags);</span>
+<span class="nc" id="L139">            object.put(&quot;category&quot;, category.toString());</span>
+<span class="nc" id="L140">        } catch (JSONException ex) {</span>
+<span class="nc" id="L141">            System.out.println(ex);</span>
+<span class="nc" id="L142">            Logger.getLogger(Location.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L143">        }</span>
 
-<span class="nc" id="L149">        return object.toString();</span>
+<span class="nc" id="L145">        return object.toString();</span>
     }
     
-<span class="pc" id="L152">    public enum Category {</span>
-<span class="fc" id="L153">        None,</span>
-<span class="fc" id="L154">        Nature,</span>
-<span class="fc" id="L155">        View,</span>
-<span class="fc" id="L156">        Urban,</span>
-<span class="fc" id="L157">        Architecture,</span>
-<span class="fc" id="L158">        Picnic</span>
+<span class="pc" id="L148">    public enum Category {</span>
+<span class="fc" id="L149">        None,</span>
+<span class="fc" id="L150">        Nature,</span>
+<span class="fc" id="L151">        View,</span>
+<span class="fc" id="L152">        Urban,</span>
+<span class="fc" id="L153">        Architecture,</span>
+<span class="fc" id="L154">        Picnic</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

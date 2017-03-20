@@ -67,6 +67,26 @@ public class LocationResource {
 <span class="nc" id="L67">        }</span>
 <span class="nc" id="L68">        return Response.ok(locations.toString(), MediaType.APPLICATION_JSON).build();</span>
     }
+    
+    /**
+     * @param value
+     * @return an instance of java.lang.String
+     */
+    @GET
+    @Path(&quot;/search/{Value}&quot;)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response Search(@PathParam(&quot;Value&quot;) String value) {
+<span class="nc" id="L79">        Deque locations = new ArrayDeque();</span>
+        try {
+<span class="nc" id="L81">            locations = LocationController.getController().locationGetter().search(value);</span>
+<span class="nc" id="L82">        } catch (SQLException ex) {</span>
+<span class="nc" id="L83">            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L84">        } catch (NullPointerException ex){</span>
+<span class="nc" id="L85">            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L86">            return Response.status(Status.BAD_REQUEST).build();</span>
+<span class="nc" id="L87">        }</span>
+<span class="nc" id="L88">        return Response.ok(locations.toString(), MediaType.APPLICATION_JSON).build();</span>
+    }
 
     /**
      * POST method for updating or creating an instance of PlaceResource
@@ -78,39 +98,39 @@ public class LocationResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response putLocation(Location loc, @CookieParam(&quot;fbLoginID&quot;) Cookie fbLogin, @CookieParam(&quot;token&quot;) Cookie token) {
         try {
-<span class="nc" id="L81">            DatabaseInfo.DatabaseRepsonse succes = LocationController.getController().locationSetter().saveLocation(loc, fbLogin.getValue(), token.getValue());</span>
-<span class="nc" id="L82">            return Response.ok(String.valueOf(succes)).build();</span>
-<span class="nc" id="L83">        } catch (SQLException ex) {</span>
-<span class="nc" id="L84">            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L85">        } catch (NullPointerException ex){</span>
-<span class="nc" id="L86">            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L87">            return Response.status(Status.BAD_REQUEST).build();</span>
-<span class="nc" id="L88">        }</span>
-<span class="nc" id="L89">        return Response.serverError().build();</span>
+<span class="nc" id="L101">            DatabaseInfo.DatabaseRepsonse succes = LocationController.getController().locationSetter().saveLocation(loc, fbLogin.getValue(), token.getValue());</span>
+<span class="nc" id="L102">            return Response.ok(String.valueOf(succes)).build();</span>
+<span class="nc" id="L103">        } catch (SQLException ex) {</span>
+<span class="nc" id="L104">            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L105">        } catch (NullPointerException ex){</span>
+<span class="nc" id="L106">            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L107">            return Response.status(Status.BAD_REQUEST).build();</span>
+<span class="nc" id="L108">        }</span>
+<span class="nc" id="L109">        return Response.serverError().build();</span>
     }
 
     @GET
     @Path(&quot;{ID}&quot;)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOne(@PathParam(&quot;ID&quot;) int ID) {
-<span class="nc" id="L96">        Location location = null;</span>
+<span class="nc" id="L116">        Location location = null;</span>
         try {
-<span class="nc" id="L98">            location = LocationController.getController().locationGetter().getOneLocation(ID);</span>
+<span class="nc" id="L118">            location = LocationController.getController().locationGetter().getOneLocation(ID);</span>
 
-<span class="nc bnc" id="L100" title="All 2 branches missed.">            if (location == null) {</span>
-<span class="nc" id="L101">                return Response.status(Response.Status.NOT_FOUND).build();</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">            if (location == null) {</span>
+<span class="nc" id="L121">                return Response.status(Response.Status.NOT_FOUND).build();</span>
             }
 
-<span class="nc" id="L104">        } catch (SQLException ex) {</span>
-<span class="nc" id="L105">            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L106">        } catch (NullPointerException ex){</span>
-<span class="nc" id="L107">            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L108">            return Response.status(Status.BAD_REQUEST).build();</span>
-<span class="nc" id="L109">        }</span>
-<span class="nc bnc" id="L110" title="All 2 branches missed.">        if (location != null) {</span>
-<span class="nc" id="L111">            return Response.ok(location.toString(), MediaType.APPLICATION_JSON).build();</span>
+<span class="nc" id="L124">        } catch (SQLException ex) {</span>
+<span class="nc" id="L125">            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L126">        } catch (NullPointerException ex){</span>
+<span class="nc" id="L127">            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L128">            return Response.status(Status.BAD_REQUEST).build();</span>
+<span class="nc" id="L129">        }</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">        if (location != null) {</span>
+<span class="nc" id="L131">            return Response.ok(location.toString(), MediaType.APPLICATION_JSON).build();</span>
         }
-<span class="nc" id="L113">        return null;</span>
+<span class="nc" id="L133">        return null;</span>
     }
 
     /**
@@ -119,19 +139,19 @@ public class LocationResource {
      * @param content representation for the resource
      */
     @GET
-    @Path(&quot;/nearby/{Lat}/{Long}/{Range}&quot;)
+    @Path(&quot;/nearby/{Lat}/{Long}/{Offset}&quot;)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response nearbyLocations(@PathParam(&quot;Lat&quot;) double lat, @PathParam(&quot;Long&quot;) double lon, @PathParam(&quot;Range&quot;) int offset) {
-<span class="nc" id="L125">        ArrayDeque locations = new ArrayDeque();</span>
+    public Response nearbyLocations(@PathParam(&quot;Lat&quot;) double lat, @PathParam(&quot;Long&quot;) double lon, @PathParam(&quot;Offset&quot;) int offset) {
+<span class="nc" id="L145">        ArrayDeque locations = new ArrayDeque();</span>
         try {
-<span class="nc" id="L127">            locations = LocationController.getController().locationGetter().getNearbyLocations(lat, lon, offset);</span>
-<span class="nc" id="L128">        } catch (SQLException ex) {</span>
-<span class="nc" id="L129">            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L130">        } catch (NullPointerException ex){</span>
-<span class="nc" id="L131">            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L132">            return Response.status(Status.BAD_REQUEST).build();</span>
-<span class="nc" id="L133">        }</span>
-<span class="nc" id="L134">        return Response.ok(locations.toString(), MediaType.APPLICATION_JSON).build();</span>
+<span class="nc" id="L147">            locations = LocationController.getController().locationGetter().getNearbyLocations(lat, lon, offset);</span>
+<span class="nc" id="L148">        } catch (SQLException ex) {</span>
+<span class="nc" id="L149">            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L150">        } catch (NullPointerException ex){</span>
+<span class="nc" id="L151">            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L152">            return Response.status(Status.BAD_REQUEST).build();</span>
+<span class="nc" id="L153">        }</span>
+<span class="nc" id="L154">        return Response.ok(locations.toString(), MediaType.APPLICATION_JSON).build();</span>
     }
 
     @POST
@@ -139,15 +159,15 @@ public class LocationResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response putComment(Comment com, @CookieParam(&quot;fbLoginID&quot;) Cookie fbLogin, @CookieParam(&quot;token&quot;) Cookie token) { 
         try {
-<span class="nc" id="L142">            DatabaseInfo.DatabaseRepsonse succes = CommentController.getController().commentSetter().saveComment(com, fbLogin.getValue(), token.getValue());</span>
-<span class="nc" id="L143">            return Response.ok(String.valueOf(succes)).build();</span>
-<span class="nc" id="L144">        } catch (SQLException ex) {</span>
-<span class="nc" id="L145">            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L146">        } catch (NullPointerException ex){</span>
-<span class="nc" id="L147">            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L148">            return Response.status(Status.BAD_REQUEST).build();</span>
-<span class="nc" id="L149">        }</span>
-<span class="nc" id="L150">        return Response.serverError().build();</span>
+<span class="nc" id="L162">            DatabaseInfo.DatabaseRepsonse succes = CommentController.getController().commentSetter().saveComment(com, fbLogin.getValue(), token.getValue());</span>
+<span class="nc" id="L163">            return Response.ok(String.valueOf(succes)).build();</span>
+<span class="nc" id="L164">        } catch (SQLException ex) {</span>
+<span class="nc" id="L165">            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L166">        } catch (NullPointerException ex){</span>
+<span class="nc" id="L167">            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L168">            return Response.status(Status.BAD_REQUEST).build();</span>
+<span class="nc" id="L169">        }</span>
+<span class="nc" id="L170">        return Response.serverError().build();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
