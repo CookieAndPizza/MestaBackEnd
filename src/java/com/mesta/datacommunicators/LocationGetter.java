@@ -49,7 +49,7 @@ public class LocationGetter {
                 String discription = result.getString("Description");
 
                 Location loc = new Location(id, name, longitude, latitude, discription);
-                addImagesFromLocation(loc);
+                addLocationData(loc, connection);
                 CommentController.getController().commentGetter().getCommentsFromLocation(loc);
 
                 locations.add(loc);
@@ -102,9 +102,10 @@ public class LocationGetter {
 
     /**
      * gets one location
+     *
      * @param ID Id of the location
      * @return location
-     * @throws SQLException 
+     * @throws SQLException
      */
     public Location getOneLocation(int ID) throws SQLException {
         Location location = null;
@@ -119,7 +120,7 @@ public class LocationGetter {
             ResultSet result = statement.executeQuery();
             result.next();
             location = new Location(ID, result.getString("Name"), result.getDouble("Longitude"), result.getDouble("Latitude"), result.getString("Description"));
-            addImagesFromLocation(location);
+            addLocationData(location, connection);
             CommentController.getController().commentGetter().getCommentsFromLocation(location);
 
         } catch (SQLException | ClassNotFoundException ex) {
@@ -130,7 +131,7 @@ public class LocationGetter {
 
         return location;
     }
-    
+
     public ArrayDeque getNearbyLocations(double lat, double lon, int offset) throws SQLException {
         ArrayDeque locations = new ArrayDeque<Location>();
         int count = 1;
@@ -153,7 +154,7 @@ public class LocationGetter {
                 String discription = result.getString("Description");
 
                 Location loc = new Location(id, name, longitude, latitude, discription);
-                addImagesFromLocation(loc);
+                addLocationData(loc, connection);
                 CommentController.getController().commentGetter().getCommentsFromLocation(loc);
 
                 locations.add(loc);
@@ -162,39 +163,61 @@ public class LocationGetter {
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             connection.close();
-        }           
+        }
         return locations;
     }
 
     /**
      * adds images to a location
+     *
      * @param loc location
-     * @throws SQLException 
+     * @throws SQLException
      */
-    private void addImagesFromLocation(Location loc) throws SQLException {
-        try {
-            Class.forName(DRIVER_STRING);
-            connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);
+    private void addImagesFromLocation(Location loc, Connection connection) throws SQLException {
+        String query = "SELECT i.ID FROM Image i, Location l WHERE l.ID = i.LocationID AND l.ID = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, loc.getId());
 
-            String query = "SELECT i.ID FROM Image i, Location l WHERE l.ID = i.LocationID AND l.ID = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, loc.getId());
+        ResultSet result = statement.executeQuery();
 
-            ResultSet result = statement.executeQuery();
-
-            while (result.next()) {
-                String image = result.getString("ID");
-                if (!"".equals(image)) {
-                    loc.addImage("i.the-mesta.com/" + image);
-                }
+        while (result.next()) {
+            String image = result.getString("ID");
+            if (!"".equals(image)) {
+                loc.addImage("i.the-mesta.com/" + image);
             }
-
-        } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            connection.close();
         }
     }
+
+    private void addTagsFromLocation(Location loc, Connection connection) throws SQLException {
+        String query = "SELECT * FROM Tag WHERE LocationID = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, loc.getId());
+
+        ResultSet result = statement.executeQuery();
+
+        while (result.next()) {
+            String tag = result.getString("Tag");
+            if (!"".equals(tag)) {
+                loc.addTag(tag);
+            }
+        }
+    }
+
+    private void addCategoryFromLocation(Location loc, Connection connection) throws SQLException {
+        String query = "SELECT c.Name FROM Category c WHERE ID = (SELECT CategoryID FROM BelongsTo WHERE LocationID = ?)";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setInt(1, loc.getId());
+
+        ResultSet result = statement.executeQuery();
+
+        if(result.next()){
+            loc.setCategory(Location.Category.valueOf(result.getString("Name")));
+        }
+    }
+    
+    private void addLocationData(Location loc, Connection connection) throws SQLException{
+        addCategoryFromLocation(loc, connection);
+        addImagesFromLocation(loc, connection);
+        addTagsFromLocation(loc, connection);
+    }
 }
-
-

@@ -26,9 +26,27 @@ public class Location implements Serializable {
     private String description;
     private List<String> images;
     private List<Comment> comments;
+    private List<String> tags;
+    private Category category;
 
     public List<Comment> getComments() {
         return comments;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 
     public int getId() {
@@ -75,27 +93,35 @@ public class Location implements Serializable {
         this.comments.add(comment);
     }
 
+    public void addTag(String tag) {
+        this.tags.add(tag);
+    }
+
     public Location() {
     }
 
     public Location(String name, double longitude, double latitude, String discription) {
         this.comments = new ArrayList<>();
         this.images = new ArrayList<>();
+        this.tags = new ArrayList<>();
         this.id = -1;
         this.name = name;
         this.longitude = longitude;
         this.latitude = latitude;
         this.description = discription;
+        this.category = Category.None;
     }
 
     public Location(int id, String name, double longitude, double latitude, String discription) {
         this.comments = new ArrayList<>();
         this.images = new ArrayList<>();
+        this.tags = new ArrayList<>();
         this.id = id;
         this.name = name;
         this.longitude = longitude;
         this.latitude = latitude;
         this.description = discription;
+        this.category = Category.None;
     }
 
     @Override
@@ -109,11 +135,22 @@ public class Location implements Serializable {
             object.put("description", this.description);
             object.put("images", images);
             object.put("comments", comments);
+            object.put("tags", tags);
+            object.put("category", category.toString());
         } catch (JSONException ex) {
             System.out.println(ex);
             Logger.getLogger(Location.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return object.toString();
+    }
+    
+    public enum Category {
+        None,
+        Nature,
+        View,
+        Urban,
+        Architecture,
+        Picnic
     }
 }
