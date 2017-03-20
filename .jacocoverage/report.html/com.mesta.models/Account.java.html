@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Account.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Mesta&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">com.mesta.models</a> &gt; <span class="el_source">Account.java</span></div><h1>Account.java</h1><pre class="source lang-java linenums">/*
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="nl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Account.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Mesta&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">com.mesta.models</a> &gt; <span class="el_source">Account.java</span></div><h1>Account.java</h1><pre class="source lang-java linenums">/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -15,77 +15,61 @@ import org.json.JSONObject;
  * @author Demian
  */
 public class Account {
-    private int id;
+
     private String externalID;
     private boolean banned;
     private boolean admin;
     private Token token;
 
-    public int getId() {
-<span class="nc" id="L25">        return id;</span>
-    }
-
     public Token getToken() {
-<span class="nc" id="L29">        return token;</span>
+<span class="nc" id="L25">        return token;</span>
     }
-
-    public void setId(int id) {
-<span class="nc" id="L33">        this.id = id;</span>
-<span class="nc" id="L34">    }</span>
 
     public String getExternalID() {
-<span class="nc" id="L37">        return externalID;</span>
+<span class="fc" id="L29">        return externalID;</span>
     }
 
     public void setExternalID(String externalID) {
-<span class="nc" id="L41">        this.externalID = externalID;</span>
-<span class="nc" id="L42">    }</span>
+<span class="fc" id="L33">        this.externalID = externalID;</span>
+<span class="fc" id="L34">    }</span>
 
     public boolean isBanned() {
-<span class="nc" id="L45">        return banned;</span>
+<span class="fc" id="L37">        return banned;</span>
     }
 
     public void setBanned(boolean banned) {
-<span class="nc" id="L49">        this.banned = banned;</span>
-<span class="nc" id="L50">    }</span>
+<span class="fc" id="L41">        this.banned = banned;</span>
+<span class="fc" id="L42">    }</span>
 
     public boolean isAdmin() {
-<span class="nc" id="L53">        return admin;</span>
+<span class="fc" id="L45">        return admin;</span>
     }
 
     public void setAdmin(boolean admin) {
-<span class="nc" id="L57">        this.admin = admin;</span>
-<span class="nc" id="L58">    }</span>
+<span class="fc" id="L49">        this.admin = admin;</span>
+<span class="fc" id="L50">    }</span>
     
-<span class="nc" id="L60">    public Account(String externalID, boolean banned, boolean admin, Token token){</span>
-<span class="nc" id="L61">        this.externalID = externalID;</span>
-<span class="nc" id="L62">        this.banned = banned;</span>
-<span class="nc" id="L63">        this.admin = admin;</span>
-<span class="nc" id="L64">        this.token = token;</span>
-<span class="nc" id="L65">    }</span>
-    
-<span class="nc" id="L67">    public Account(int id, String externalID, boolean banned, boolean admin, Token token){</span>
-<span class="nc" id="L68">        this.id = id;</span>
-<span class="nc" id="L69">        this.externalID = externalID;</span>
-<span class="nc" id="L70">        this.banned = banned;</span>
-<span class="nc" id="L71">        this.admin = admin;</span>
-<span class="nc" id="L72">        this.token = token;</span>
-<span class="nc" id="L73">    }</span>
+<span class="fc" id="L52">    public Account(String externalID, boolean banned, boolean admin, Token token){</span>
+<span class="fc" id="L53">        this.externalID = externalID;</span>
+<span class="fc" id="L54">        this.banned = banned;</span>
+<span class="fc" id="L55">        this.admin = admin;</span>
+<span class="fc" id="L56">        this.token = token;</span>
+<span class="fc" id="L57">    }</span>
     
     @Override
     public String toString() {
-<span class="nc" id="L77">        JSONObject object = new JSONObject();</span>
+<span class="fc" id="L61">        JSONObject object = new JSONObject();</span>
         try {
-<span class="nc" id="L79">            object.put(&quot;faceBookID&quot;, this.externalID);</span>
-<span class="nc" id="L80">            object.put(&quot;Banned&quot;, this.banned);</span>
-<span class="nc" id="L81">            object.put(&quot;Admin&quot;, this.admin);</span>
-<span class="nc" id="L82">        } catch (JSONException ex) {</span>
-<span class="nc" id="L83">            System.out.println(ex);</span>
-<span class="nc" id="L84">            Logger.getLogger(Location.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L85">        }</span>
+<span class="fc" id="L63">            object.put(&quot;faceBookID&quot;, this.externalID);</span>
+<span class="fc" id="L64">            object.put(&quot;Banned&quot;, this.banned);</span>
+<span class="fc" id="L65">            object.put(&quot;Admin&quot;, this.admin);</span>
+<span class="nc" id="L66">        } catch (JSONException ex) {</span>
+<span class="nc" id="L67">            System.out.println(ex);</span>
+<span class="nc" id="L68">            Logger.getLogger(Location.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L69">        }</span>
 
-<span class="nc" id="L87">        return object.toString();</span>
+<span class="fc" id="L71">        return object.toString();</span>
     }
     
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
