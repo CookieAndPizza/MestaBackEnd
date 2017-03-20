@@ -86,7 +86,7 @@ public class LocationGetter {
                 String discription = result.getString("Description");
 
                 Location loc = new Location(id, name, longitude, latitude, discription);
-                addImagesFromLocation(loc);
+                addLocationData(loc, connection);
                 CommentController.getController().commentGetter().getCommentsFromLocation(loc);
 
                 locations.add(loc);
