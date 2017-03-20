@@ -26,10 +26,20 @@ public class Location implements Serializable {
     private String description;
     private List<String> images;
     private List<Comment> comments;
+    private List<String> tags;
 
     public List<Comment> getComments() {
         return comments;
     }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+    
 
     public int getId() {
         return id;
@@ -109,6 +119,7 @@ public class Location implements Serializable {
             object.put("description", this.description);
             object.put("images", images);
             object.put("comments", comments);
+            object.put("tags", tags);
         } catch (JSONException ex) {
             System.out.println(ex);
             Logger.getLogger(Location.class.getName()).log(Level.SEVERE, null, ex);

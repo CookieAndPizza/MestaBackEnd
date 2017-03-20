@@ -53,4 +53,11 @@ public class LocationSetter {
         }
         return DatabaseInfo.DatabaseRepsonse.FAILED;
     }
+    
+    private DatabaseInfo.DatabaseRepsonse saveTags(Location loc){
+        String tagQuery = "INSERT IGNORE INTO Tag (Name) VALUES (?);";
+        String getID = "SELECT ID FROM TAG WHERE Name = ?";
+        String insertLink = "INSERT INTO HAS (LocationID, TagID) VALUES ";
+        return DatabaseInfo.DatabaseRepsonse.FAILED;
+    }
 }
