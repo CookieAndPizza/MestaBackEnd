@@ -5,8 +5,8 @@
  */
 package com.mesta.testmodels;
 
+import com.mesta.models.Comment;
 import com.mesta.models.Location;
-import junit.framework.Assert;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -27,7 +27,6 @@ public class LocationTest {
 
     @BeforeClass
     public static void setUpClass() {
-        loc = new Location(1, "testLoc", 10, 20, "testDescription");
     }
 
     @AfterClass
@@ -36,6 +35,7 @@ public class LocationTest {
 
     @Before
     public void setUp() {
+        loc = new Location(1, "testLoc", 10, 20, "testDescription");
     }
 
     @After
@@ -46,52 +46,82 @@ public class LocationTest {
     public void getIdTest() {
         assertEquals(1, loc.getId());
     }
-    
+
     @Test
-    public void getNameTest(){
+    public void getNameTest() {
         assertEquals("testLoc", loc.getName());
     }
-    
+
     @Test
-    public void setNameTest(){
+    public void setNameTest() {
         String newName = "newName";
         loc.setName(newName);
         assertEquals(newName, loc.getName());
     }
-    
+
     @Test
-    public void getLongitudeTest(){
-        assertEquals(10, loc.getLongitude());
+    public void getLongitudeTest() {
+        assertEquals(10, loc.getLongitude(), 0);
     }
-    
+
     @Test
-    public void setLongitudeTest(){
+    public void setLongitudeTest() {
         double longitude = 15;
         loc.setLongitude(longitude);
-        assertEquals(longitude, loc.getLongitude());
+        assertEquals(longitude, loc.getLongitude(), 0);
     }
-    
+
     @Test
-    public void getLatitudeTest(){
-        assertEquals(20, loc.getLatitude());
+    public void getLatitudeTest() {
+        assertEquals(20, loc.getLatitude(), 0);
     }
-    
+
     @Test
-    public void setLatitudeTest(){
+    public void setLatitudeTest() {
         double latitude = 25;
-        loc.setLongitude(latitude);
-        assertEquals(latitude, loc.getLatitude());
+        loc.setLatitude(latitude);
+        assertEquals(latitude, loc.getLatitude(), 0);
     }
-    
+
     @Test
-    public void getDescriptionTest(){
+    public void getDescriptionTest() {
         assertEquals("testDescription", loc.getDescription());
     }
-    
+
     @Test
-    public void setDescriptionTest(){
+    public void setDescriptionTest() {
         String description = "newDescription";
         loc.setDescription(description);
         assertEquals(description, loc.getDescription());
+    }
+
+    @Test
+    public void addImageTest() {
+        String image = "testimageurl";
+        loc.addImage(image);
+        int expected = 1;
+        assertEquals(expected, loc.getImages().size());
+    }
+    
+    @Test
+    public void getCategoryTest(){
+        Location.Category expected = Location.Category.None;
+        assertEquals(expected, loc.getCategory());
+    }
+    
+    @Test
+    public void getTags(){
+        String tag = "tag";
+        loc.addTag(tag);
+        int expected = 1;
+        assertEquals(expected, loc.getTags().size());
+    }
+    
+    @Test
+    public void getComments(){
+        Comment comment = new Comment("1", "thisisacomment", "thisisatitle");
+        loc.addComment(comment);
+        int expected = 1;
+        assertEquals(expected, loc.getComments().size());
     }
 }

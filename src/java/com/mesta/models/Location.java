@@ -88,6 +88,10 @@ public class Location implements Serializable {
     public void addImage(String path) {
         images.add(path);
     }
+        
+    public List<String> getImages(){
+        return this.images;
+    }
 
     public void addComment(Comment comment) {
         this.comments.add(comment);
