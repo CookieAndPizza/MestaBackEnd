@@ -22,7 +22,7 @@ public class HttpFilter implements ContainerResponseFilter {
         MultivaluedMap<String, Object> headers = crc1.getHeaders();
 
         headers.add("Access-Control-Allow-Origin", "*");
-        headers.add("Access-Control-Request-Headers", "*");
+        headers.add("Access-Control-Request-Headers", "Content-Type");
     }
 
 }
