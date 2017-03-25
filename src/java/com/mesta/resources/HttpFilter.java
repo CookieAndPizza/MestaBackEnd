@@ -22,10 +22,8 @@ public class HttpFilter implements ContainerResponseFilter {
         MultivaluedMap<String, Object> headers = crc1.getHeaders();
 
         headers.add("Access-Control-Allow-Origin", "*");
-        headers.add("Access-Control-Request-Headers", "Content-Type");
         headers.add("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
-        headers.add("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, X-Codingpedia");
+        headers.add("Access-Control-Allow-Headers", "Content-Type, Access-Control-Request-Credentials, Access-Control-Request-Origin");
         headers.add("Access-Control-Allow-Credentials", "true");
-        headers.add("Access-Control-Request-Origin", "Content-Type");
     }
 }
