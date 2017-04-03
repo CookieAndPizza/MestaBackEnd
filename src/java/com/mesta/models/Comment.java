@@ -5,6 +5,8 @@
  */
 package com.mesta.models;
 
+import java.sql.Date;
+
 /**
  *
  * @author harm
@@ -13,18 +15,28 @@ public class Comment{
     
     private String faceBookID;
     private String comment;
-    private String title;
     private int locationID;
+    private String date;
 
     public Comment(){
         
     }
     
-    public Comment(String faceBookID, String comment, String title) {
+    public Comment(String faceBookID, String comment, String date) {
         this.faceBookID = faceBookID;
         this.comment = comment;
-        this.title = title;
+        this.date = date;
     }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+    
+    
 
     public void setfaceBookID(String faceBookID){
         this.faceBookID = faceBookID;
@@ -32,10 +44,6 @@ public class Comment{
     
     public void setLocationID(int locationID){
         this.locationID = locationID;
-    }
-    
-    public void setTitle(String title){
-        this.title = title;
     }
     
     public void setComment(String comment){
@@ -49,10 +57,6 @@ public class Comment{
     public String getComment() {
         return comment;
     }
-
-    public String getTitle() {
-        return title;
-    }
     
     public String getLocationID(){
         return String.valueOf(locationID);
@@ -60,6 +64,6 @@ public class Comment{
     
     @Override
     public String toString(){
-        return String.format("%s; %s; %s", faceBookID, title, comment);
+        return String.format("%s; %s; %s", faceBookID, date.toString(), comment);
     }
 }

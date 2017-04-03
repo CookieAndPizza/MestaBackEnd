@@ -23,12 +23,12 @@ public class CommentSetter {
     private PreparedStatement statement;
 
     /**
-     * 
+     *
      * @param comment the comment to be saved in the database
      * @param login the login for verification
      * @param token the token for verification
      * @return database responds
-     * @throws SQLException 
+     * @throws SQLException
      */
     public DatabaseInfo.DatabaseRepsonse saveComment(Comment comment, String login, String token) throws SQLException {
         try {
@@ -36,21 +36,21 @@ public class CommentSetter {
             connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);
 
             if (CallVerifier.verify(login, token, connection)) {
-                String query = "INSERT INTO Comment (LocationID, AccountID, Title, Text) VALUES (?, ?, ?, ?)";
+                String query = "INSERT INTO Comment (LocationID, AccountID, Text, Time) VALUES (?, ?, ?, ?)";
                 statement = connection.prepareStatement(query);
 
                 statement.setString(1, comment.getLocationID());
-                statement.setString(2, "TestMesta");
-                statement.setString(3, comment.getTitle());
-                statement.setString(4, comment.getComment());
+                statement.setString(2, comment.getfaceBookID());
+                statement.setString(3, comment.getComment());
+                statement.setString(4, comment.getDate());
 
                 int affectedRows = statement.executeUpdate();
 
-                if(affectedRows > 0){
+                if (affectedRows > 0) {
                     return DatabaseInfo.DatabaseRepsonse.SUCCES;
                 }
-            }else{
-               return DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID;
+            } else {
+                return DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID;
             }
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
