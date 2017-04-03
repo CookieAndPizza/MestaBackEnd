@@ -151,6 +151,7 @@ public class Location implements Serializable {
         View,
         Urban,
         Architecture,
-        Picnic
+        Picnic,
+        Technology
     }
 }

@@ -25,12 +25,12 @@ import java.util.logging.Logger;
     private Connection connection;
     private PreparedStatement statement;
 
-    public DatabaseInfo.DatabaseRepsonse saveLocation(Location loc, String login, String token) throws SQLException {
+    public DatabaseInfo.DatabaseRepsonse saveLocation(Location loc) throws SQLException{//, String login, String token) throws SQLException {
         try {
 <span class="nc" id="L30">            Class.forName(&quot;com.mysql.jdbc.Driver&quot;);</span>
 <span class="nc" id="L31">            connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);</span>
 
-<span class="nc bnc" id="L33" title="All 2 branches missed.">            if (CallVerifier.verify(login, token, connection)) {</span>
+           // if (CallVerifier.verify(login, token, connection)) {
 <span class="nc" id="L34">                String query = &quot;INSERT INTO Location (Name, Latitude, Longitude, Description) VALUES (?, ?, ?, ?)&quot;;</span>
 <span class="nc" id="L35">                statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);</span>
 
@@ -52,9 +52,9 @@ import java.util.logging.Logger;
 <span class="nc bnc" id="L52" title="All 6 branches missed.">                if (affectedRows &gt; 0 &amp;&amp; tagresponse == DatabaseInfo.DatabaseRepsonse.SUCCES &amp;&amp; categoryResponse == DatabaseInfo.DatabaseRepsonse.SUCCES) {</span>
 <span class="nc" id="L53">                    return DatabaseInfo.DatabaseRepsonse.SUCCES;</span>
                 }
-<span class="nc" id="L55">            } else {</span>
-<span class="nc" id="L56">                return DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID;</span>
-            }
+         //   } else {
+        //        return DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID;
+         //   }
 
 <span class="nc" id="L59">        } catch (SQLException | ClassNotFoundException ex) {</span>
 <span class="nc" id="L60">            System.out.println(ex.getMessage());</span>

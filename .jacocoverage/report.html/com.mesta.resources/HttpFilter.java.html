@@ -21,8 +21,11 @@ import javax.ws.rs.core.MultivaluedMap;
     public void filter(ContainerRequestContext crc, ContainerResponseContext crc1) throws IOException {
 <span class="nc" id="L22">        MultivaluedMap&lt;String, Object&gt; headers = crc1.getHeaders();</span>
 
-<span class="nc" id="L24">        headers.add(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;);</span>
-<span class="nc" id="L25">    }</span>
-
+<span class="nc" id="L24">        headers.add(&quot;Access-Control-Allow-Origin&quot;, &quot;http://localhost:63342&quot;);</span>
+<span class="nc" id="L25">        headers.add(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, POST, DELETE, PUT, OPTIONS&quot;);</span>
+<span class="nc" id="L26">        headers.add(&quot;Access-Control-Allow-Headers&quot;, &quot;Content-Type, Access-Control-Request-Credentials, Access-Control-Request-Origin&quot;);</span>
+<span class="nc" id="L27">        headers.add(&quot;Access-Control-Allow-Credentials&quot;, &quot;true&quot;);</span>
+<span class="nc" id="L28">        headers.add(&quot;Allow-Credentials&quot;, &quot;true&quot;);</span>
+<span class="nc" id="L29">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

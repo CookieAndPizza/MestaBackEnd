@@ -61,13 +61,13 @@ public class LocationResource {
             locations = LocationController.getController().locationGetter().getAllLocations();
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NullPointerException ex){
+        } catch (NullPointerException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Status.BAD_REQUEST).build();
         }
         return Response.ok(locations.toString(), MediaType.APPLICATION_JSON).build();
     }
-    
+
     /**
      * @param value
      * @return an instance of java.lang.String
@@ -81,7 +81,7 @@ public class LocationResource {
             locations = LocationController.getController().locationGetter().search(value);
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NullPointerException ex){
+        } catch (NullPointerException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Status.BAD_REQUEST).build();
         }
@@ -96,13 +96,18 @@ public class LocationResource {
     @POST
     @Path("/save")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response putLocation(Location loc, @CookieParam("fbLoginID") Cookie fbLogin, @CookieParam("token") Cookie token) {
+    public Response putLocation(Location loc){//, @CookieParam("fbLoginID") Cookie fbLogin, @CookieParam("token") Cookie token) {
+
+      /*  if (fbLogin == null || token == null) {
+            return Response.status(Status.BAD_REQUEST).build();
+        }
+        */
         try {
-            DatabaseInfo.DatabaseRepsonse succes = LocationController.getController().locationSetter().saveLocation(loc, fbLogin.getValue(), token.getValue());
+            DatabaseInfo.DatabaseRepsonse succes = LocationController.getController().locationSetter().saveLocation(loc);//, fbLogin.getValue(), token.getValue());
             return Response.ok(String.valueOf(succes)).build();
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NullPointerException ex){
+        } catch (NullPointerException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Status.BAD_REQUEST).build();
         }
@@ -123,7 +128,7 @@ public class LocationResource {
 
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NullPointerException ex){
+        } catch (NullPointerException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Status.BAD_REQUEST).build();
         }
@@ -147,7 +152,7 @@ public class LocationResource {
             locations = LocationController.getController().locationGetter().getNearbyLocations(lat, lon, offset);
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NullPointerException ex){
+        } catch (NullPointerException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Status.BAD_REQUEST).build();
         }
@@ -157,13 +162,13 @@ public class LocationResource {
     @POST
     @Path("/comment/save")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response putComment(Comment com, @CookieParam("fbLoginID") Cookie fbLogin, @CookieParam("token") Cookie token) { 
+    public Response putComment(Comment com){//, @CookieParam("fbLoginID") Cookie fbLogin, @CookieParam("token") Cookie token) {
         try {
-            DatabaseInfo.DatabaseRepsonse succes = CommentController.getController().commentSetter().saveComment(com, fbLogin.getValue(), token.getValue());
+            DatabaseInfo.DatabaseRepsonse succes = CommentController.getController().commentSetter().saveComment(com);//, fbLogin.getValue(), token.getValue());
             return Response.ok(String.valueOf(succes)).build();
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NullPointerException ex){
+        } catch (NullPointerException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Status.BAD_REQUEST).build();
         }

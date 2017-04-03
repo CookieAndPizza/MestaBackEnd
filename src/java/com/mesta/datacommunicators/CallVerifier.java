@@ -86,7 +86,6 @@ public class CallVerifier {
                     response.append('\r');
                 }
             }
-            System.out.println(response.toString());
             JSONObject json = new JSONObject(response.toString());
             Boolean is_valid = json.getJSONObject("data").getBoolean("is_valid");
 
