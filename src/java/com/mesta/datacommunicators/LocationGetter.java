@@ -99,6 +99,39 @@ public class LocationGetter {
         }
         return locations;
     }
+    
+    public Deque searchByCategory(String value) throws SQLException {
+        Deque locations = new ArrayDeque();
+        try {
+            Class.forName(DRIVER_STRING);
+            connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);
+
+            String query = "SELECT * FROM Location l LEFT JOIN BelongsTo b ON (b.LocationID = l.ID) WHERE CategoryID = (SELECT ID FROM Category WHERE Name LIKE ?)";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, "%" + value + "%");
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                int id = result.getInt("ID");
+                String name = result.getString("Name");
+                double latitude = result.getDouble("Latitude");
+                double longitude = result.getDouble("Longitude");
+                String discription = result.getString("Description");
+
+                Location loc = new Location(id, name, longitude, latitude, discription);
+                addLocationData(loc, connection);
+            
+
+                locations.add(loc);
+            }
+
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            connection.close();
+        }
+        return locations;
+    }
 
     /**
      * gets one location
