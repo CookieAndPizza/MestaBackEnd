@@ -162,9 +162,9 @@ public class LocationResource {
     @POST
     @Path("/comment/save")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response putComment(Comment com){//, @CookieParam("fbLoginID") Cookie fbLogin, @CookieParam("token") Cookie token) {
+    public Response putComment(Comment com, @PathParam("fbLoginID") String fbLoginID, @PathParam("token") String token){
         try {
-            DatabaseInfo.DatabaseRepsonse succes = CommentController.getController().commentSetter().saveComment(com);//, fbLogin.getValue(), token.getValue());
+            DatabaseInfo.DatabaseRepsonse succes = CommentController.getController().commentSetter().saveComment(com, fbLoginID, token);
             return Response.ok(String.valueOf(succes)).build();
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);

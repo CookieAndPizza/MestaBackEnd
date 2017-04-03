@@ -30,12 +30,12 @@ public class CommentSetter {
      * @return database responds
      * @throws SQLException 
      */
-    public DatabaseInfo.DatabaseRepsonse saveComment(Comment comment) throws SQLException {//, String login, String token) throws SQLException {
+    public DatabaseInfo.DatabaseRepsonse saveComment(Comment comment, String login, String token) throws SQLException {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);
 
-          //  if (CallVerifier.verify(login, token, connection)) {
+            if (CallVerifier.verify(login, token, connection)) {
                 String query = "INSERT INTO Comment (LocationID, AccountID, Title, Text) VALUES (?, ?, ?, ?)";
                 statement = connection.prepareStatement(query);
 
@@ -49,9 +49,9 @@ public class CommentSetter {
                 if(affectedRows > 0){
                     return DatabaseInfo.DatabaseRepsonse.SUCCES;
                 }
-        //    }else{
-        //       return DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID;
-        //    }
+            }else{
+               return DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID;
+            }
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
