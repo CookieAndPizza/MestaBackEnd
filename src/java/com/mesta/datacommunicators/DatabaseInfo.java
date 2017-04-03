@@ -20,6 +20,7 @@ public class DatabaseInfo {
     public enum DatabaseRepsonse{
         SUCCES,
         FAILED,
-        TOKEN_NOT_VALID
+        TOKEN_NOT_VALID,
+        USER_ALREADY_LIKED
     }
 }
