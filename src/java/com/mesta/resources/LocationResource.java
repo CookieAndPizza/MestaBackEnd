@@ -189,6 +189,7 @@ public class LocationResource {
             return Response.status(Status.BAD_REQUEST).build();
         }
         return Response.serverError().build();
+    }
     
     @GET
     @Path("/categories")
