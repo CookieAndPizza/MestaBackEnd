@@ -6,6 +6,7 @@
 package com.mesta.datacommunicators;
 
 import com.mesta.datacontrollers.CommentController;
+import com.mesta.models.Comment;
 import com.mesta.models.Location;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -50,7 +51,6 @@ public class LocationGetter {
 
                 Location loc = new Location(id, name, longitude, latitude, discription);
                 addLocationData(loc, connection);
-                CommentController.getController().commentGetter().getCommentsFromLocation(loc);
 
                 locations.add(loc);
             }
@@ -62,7 +62,7 @@ public class LocationGetter {
         }
         return locations;
     }
-    
+
     /**
      * method for searching locations.
      */
@@ -87,7 +87,7 @@ public class LocationGetter {
 
                 Location loc = new Location(id, name, longitude, latitude, discription);
                 addLocationData(loc, connection);
-                CommentController.getController().commentGetter().getCommentsFromLocation(loc);
+            
 
                 locations.add(loc);
             }
@@ -121,7 +121,6 @@ public class LocationGetter {
             result.next();
             location = new Location(ID, result.getString("Name"), result.getDouble("Longitude"), result.getDouble("Latitude"), result.getString("Description"));
             addLocationData(location, connection);
-            CommentController.getController().commentGetter().getCommentsFromLocation(location);
 
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
@@ -155,7 +154,7 @@ public class LocationGetter {
 
                 Location loc = new Location(id, name, longitude, latitude, discription);
                 addLocationData(loc, connection);
-                CommentController.getController().commentGetter().getCommentsFromLocation(loc);
+               
 
                 locations.add(loc);
             }
@@ -210,14 +209,31 @@ public class LocationGetter {
 
         ResultSet result = statement.executeQuery();
 
-        if(result.next()){
+        if (result.next()) {
             loc.setCategory(Location.Category.valueOf(result.getString("Name")));
         }
     }
-    
-    private void addLocationData(Location loc, Connection connection) throws SQLException{
+
+    private void addCommentsFromLocation(Location loc, Connection connection) throws SQLException {
+        String query = "SELECT c.Time, c.Text, c.AccountID FROM Comment c WHERE c.LocationID = ?";
+        statement = connection.prepareStatement(query);
+        statement.setString(1, String.valueOf(loc.getId()));
+
+        ResultSet result = statement.executeQuery();
+
+        while (result.next()) {
+            String id = result.getString("AccountID");
+            String comment = result.getString("Text");
+            String date = result.getString("Time");
+            Comment com = new Comment(id, comment, date);
+            loc.addComment(com);
+        }
+    }
+
+    private void addLocationData(Location loc, Connection connection) throws SQLException {
         addCategoryFromLocation(loc, connection);
         addImagesFromLocation(loc, connection);
         addTagsFromLocation(loc, connection);
+        addCommentsFromLocation(loc, connection);
     }
 }

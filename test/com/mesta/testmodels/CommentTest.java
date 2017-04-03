@@ -44,12 +44,6 @@ public class CommentTest {
     }
 
     @Test
-    public void getTitleTest() {
-        String expected = "title";
-        assertEquals(expected, comment.getTitle());
-    }
-
-    @Test
     public void getCommentTest() {
         String expected = "comment";
         assertEquals(expected, comment.getComment());
@@ -72,13 +66,6 @@ public class CommentTest {
         String expected = "newcomment";
         comment.setComment(expected);
         assertEquals(expected, comment.getComment());
-    }
-
-    @Test
-    public void setTitleTest() {
-        String expected = "newTitle";
-        comment.setTitle(expected);
-        assertEquals(expected, comment.getTitle());
     }
 
     @Test

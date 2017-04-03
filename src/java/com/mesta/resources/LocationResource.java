@@ -94,16 +94,16 @@ public class LocationResource {
      * @param content representation for the resource
      */
     @POST
-    @Path("/save")
+    @Path("/save/{fbLoginID}/{token}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response putLocation(Location loc){//, @CookieParam("fbLoginID") Cookie fbLogin, @CookieParam("token") Cookie token) {
+    public Response putLocation(Location loc, @PathParam("fbLoginID") String fbLoginID, @PathParam("token") String token) {
 
-      /*  if (fbLogin == null || token == null) {
+        if (fbLoginID == null || token == null) {
             return Response.status(Status.BAD_REQUEST).build();
         }
-        */
+        
         try {
-            DatabaseInfo.DatabaseRepsonse succes = LocationController.getController().locationSetter().saveLocation(loc);//, fbLogin.getValue(), token.getValue());
+            DatabaseInfo.DatabaseRepsonse succes = LocationController.getController().locationSetter().saveLocation(loc, fbLoginID, token);
             return Response.ok(String.valueOf(succes)).build();
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
@@ -160,11 +160,11 @@ public class LocationResource {
     }
 
     @POST
-    @Path("/comment/save")
+    @Path("/comment/save/{fbLoginID}/{token}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response putComment(Comment com){//, @CookieParam("fbLoginID") Cookie fbLogin, @CookieParam("token") Cookie token) {
+    public Response putComment(Comment com, @PathParam("fbLoginID") String fbLoginID, @PathParam("token") String token){
         try {
-            DatabaseInfo.DatabaseRepsonse succes = CommentController.getController().commentSetter().saveComment(com);//, fbLogin.getValue(), token.getValue());
+            DatabaseInfo.DatabaseRepsonse succes = CommentController.getController().commentSetter().saveComment(com, fbLoginID, token);
             return Response.ok(String.valueOf(succes)).build();
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
