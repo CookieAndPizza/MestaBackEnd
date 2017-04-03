@@ -71,7 +71,7 @@ public class CallVerifier {
         HttpURLConnection httpConnection = null;
         try {
             String accessToken = getAccessToken();
-            URL url = new URL("https://graph.facebook.com/debug_token?input_token=" + inputtoken + "&" + accessToken);
+            URL url = new URL("https://graph.facebook.com/debug_token?input_token=" + inputtoken + "&access_token=" + accessToken);
 
             httpConnection = (HttpURLConnection) url.openConnection();
 
@@ -108,7 +108,7 @@ public class CallVerifier {
         return succes;
     }
 
-    private static String getAccessToken() {
+    private static String getAccessToken() throws JSONException {
         String answer = "";
         HttpURLConnection httpConnection = null;
         try {
@@ -127,7 +127,8 @@ public class CallVerifier {
                     response.append('\r');
                 }
             }
-            answer = response.toString();
+            JSONObject json = new JSONObject(response.toString());
+            answer = json.getString("access_token");
 
         } catch (MalformedURLException ex) {
             System.out.println(ex.getMessage());
