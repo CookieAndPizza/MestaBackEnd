@@ -65,9 +65,7 @@ public class AccountResource {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        NewCookie loginCookie = new NewCookie("fbLoginID", loginID);
-        NewCookie tokenCookie = new NewCookie("token", account.getToken().getToken());
-        return Response.ok(account.toString(), MediaType.APPLICATION_JSON).cookie(loginCookie).cookie(tokenCookie).build();
+        return Response.ok(account.toString(), MediaType.APPLICATION_JSON).build();
     }
 
     @Path("/fblogout")
