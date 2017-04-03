@@ -174,4 +174,18 @@ public class LocationResource {
         }
         return Response.serverError().build();
     }
+    
+    @GET
+    @Path("/categories")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCategories(){
+        Deque categories = new ArrayDeque();
+        try{
+            categories = LocationController.getController().categoryGetter().getCategories();
+            return Response.ok(categories.toString(), MediaType.APPLICATION_JSON).build();  
+        } catch (SQLException ex) {
+            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return Response.status(Status.BAD_REQUEST).build();
+    }
 }
