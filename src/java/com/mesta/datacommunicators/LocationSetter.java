@@ -25,12 +25,12 @@ public class LocationSetter {
     private Connection connection;
     private PreparedStatement statement;
 
-    public DatabaseInfo.DatabaseRepsonse saveLocation(Location loc) throws SQLException{//, String login, String token) throws SQLException {
+    public DatabaseInfo.DatabaseRepsonse saveLocation(Location loc, String login, String token) throws SQLException {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);
 
-           // if (CallVerifier.verify(login, token, connection)) {
+            if (CallVerifier.verify(login, token, connection)) {
                 String query = "INSERT INTO Location (Name, Latitude, Longitude, Description) VALUES (?, ?, ?, ?)";
                 statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
@@ -52,9 +52,9 @@ public class LocationSetter {
                 if (affectedRows > 0 && tagresponse == DatabaseInfo.DatabaseRepsonse.SUCCES && categoryResponse == DatabaseInfo.DatabaseRepsonse.SUCCES) {
                     return DatabaseInfo.DatabaseRepsonse.SUCCES;
                 }
-         //   } else {
-        //        return DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID;
-         //   }
+            } else {
+                return DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID;
+            }
 
         } catch (SQLException | ClassNotFoundException ex) {
             System.out.println(ex.getMessage());
