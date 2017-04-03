@@ -27,6 +27,7 @@ public class Location implements Serializable {
     private List<String> images;
     private List<Comment> comments;
     private List<String> tags;
+    private List<String> likes;
     private Category category;
 
     public List<Comment> getComments() {
@@ -96,6 +97,10 @@ public class Location implements Serializable {
     public void addTag(String tag) {
         this.tags.add(tag);
     }
+    
+    public void addLike(String fbID){
+        this.likes.add(fbID);
+    }
 
     public Location() {
     }
@@ -104,6 +109,7 @@ public class Location implements Serializable {
         this.comments = new ArrayList<>();
         this.images = new ArrayList<>();
         this.tags = new ArrayList<>();
+        this.likes = new ArrayList<>();
         this.id = -1;
         this.name = name;
         this.longitude = longitude;
@@ -116,6 +122,7 @@ public class Location implements Serializable {
         this.comments = new ArrayList<>();
         this.images = new ArrayList<>();
         this.tags = new ArrayList<>();
+        this.likes = new ArrayList<>();
         this.id = id;
         this.name = name;
         this.longitude = longitude;
@@ -137,6 +144,7 @@ public class Location implements Serializable {
             object.put("comments", comments);
             object.put("tags", tags);
             object.put("category", category.toString());
+            object.put("likes", likes);
         } catch (JSONException ex) {
             System.out.println(ex);
             Logger.getLogger(Location.class.getName()).log(Level.SEVERE, null, ex);

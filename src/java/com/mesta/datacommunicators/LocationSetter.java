@@ -56,7 +56,7 @@ public class LocationSetter {
                 return DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID;
             }
 
-        } catch (SQLException | ClassNotFoundException ex) {
+        } catch (ClassNotFoundException ex) {
             System.out.println(ex.getMessage());
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -64,6 +64,54 @@ public class LocationSetter {
             connection.close();
         }
         return DatabaseInfo.DatabaseRepsonse.FAILED;
+    }
+
+    public DatabaseInfo.DatabaseRepsonse likeLocation(int locationID, String fbLogin, String token) throws SQLException {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);
+
+            if (CallVerifier.verify(fbLogin, token, connection)) {
+                
+                if(checkLiked(locationID, fbLogin)){
+                    return DatabaseInfo.DatabaseRepsonse.USER_ALREADY_LIKED;
+                }
+                
+                String query = "INSERT INTO Liked (LocationID, AccountID) VALUES (?, ?)";
+                statement = connection.prepareStatement(query);
+
+                statement.setInt(1, locationID);
+                statement.setString(2, fbLogin);
+
+                int affectedRows = statement.executeUpdate();
+
+                if (affectedRows > 0) {
+                    return DatabaseInfo.DatabaseRepsonse.SUCCES;
+                }
+
+            } else {
+                return DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID;
+            }
+
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            statement.close();
+            connection.close();
+        }
+
+        return DatabaseInfo.DatabaseRepsonse.FAILED;
+    }
+
+    private boolean checkLiked(int locationID, String accountID) throws SQLException {
+        String query = "SELECT * FROM Liked WHERE LocationID = ? AND AccountID = ?";
+        statement = connection.prepareStatement(query);
+
+        statement.setInt(1, locationID);
+        statement.setString(2, accountID);
+
+        ResultSet set = statement.executeQuery();
+        return set.next();
     }
 
     private DatabaseInfo.DatabaseRepsonse saveTags(Location loc, Connection connection, int locationID) throws SQLException {
@@ -101,11 +149,11 @@ public class LocationSetter {
 
         String idQuery = "SELECT ID FROM Category WHERE Name = ?";
         PreparedStatement idStatement = connection.prepareStatement(idQuery);
-        
+
         idStatement.setString(1, loc.getCategory().toString());
         ResultSet set = idStatement.executeQuery();
         int id = -1;
-        while(set.next()){
+        while (set.next()) {
             id = set.getInt("ID");
         }
 

@@ -101,7 +101,7 @@ public class LocationResource {
         if (fbLoginID == null || token == null) {
             return Response.status(Status.BAD_REQUEST).build();
         }
-        
+
         try {
             DatabaseInfo.DatabaseRepsonse succes = LocationController.getController().locationSetter().saveLocation(loc, fbLoginID, token);
             return Response.ok(String.valueOf(succes)).build();
@@ -147,7 +147,7 @@ public class LocationResource {
     @Path("/nearby/{Lat}/{Long}/{Offset}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response nearbyLocations(@PathParam("Lat") double lat, @PathParam("Long") double lon, @PathParam("Offset") int offset) {
-        ArrayDeque locations = new ArrayDeque();
+        Deque<Location> locations = new ArrayDeque();
         try {
             locations = LocationController.getController().locationGetter().getNearbyLocations(lat, lon, offset);
         } catch (SQLException ex) {
@@ -162,9 +162,25 @@ public class LocationResource {
     @POST
     @Path("/comment/save/{fbLoginID}/{token}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response putComment(Comment com, @PathParam("fbLoginID") String fbLoginID, @PathParam("token") String token){
+    public Response putComment(Comment com, @PathParam("fbLoginID") String fbLoginID, @PathParam("token") String token) {
         try {
             DatabaseInfo.DatabaseRepsonse succes = CommentController.getController().commentSetter().saveComment(com, fbLoginID, token);
+            return Response.ok(String.valueOf(succes)).build();
+        } catch (SQLException ex) {
+            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NullPointerException ex) {
+            Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
+            return Response.status(Status.BAD_REQUEST).build();
+        }
+        return Response.serverError().build();
+    }
+
+    @POST
+    @Path("/like/{locationID}/{fbLoginID}/{token}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response saveLike(@PathParam("locationID") int locationID, @PathParam("fbLoginID") String fbLoginID, @PathParam("token") String token) {
+        try {
+            DatabaseInfo.DatabaseRepsonse succes = LocationController.getController().locationSetter().likeLocation(locationID, fbLoginID, token);
             return Response.ok(String.valueOf(succes)).build();
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);

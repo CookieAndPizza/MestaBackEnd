@@ -32,7 +32,7 @@ public class LocationGetter {
      * method for getting all locations.
      */
     public Deque getAllLocations() throws SQLException {
-        Deque locations = new ArrayDeque();
+        Deque<Location> locations = new ArrayDeque();
         try {
             Class.forName(DRIVER_STRING);
             connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);
@@ -67,13 +67,13 @@ public class LocationGetter {
      * method for searching locations.
      */
     public Deque search(String value) throws SQLException {
-        Deque locations = new ArrayDeque();
+        Deque<Location> locations = new ArrayDeque();
         try {
             Class.forName(DRIVER_STRING);
             connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);
 
             String query = "SELECT l.ID, l.Name, l.Latitude, l.Longitude, l.Description FROM Location l LEFT JOIN Tag t ON (l.ID = t.LocationID) WHERE l.Name LIKE ? OR t.Tag LIKE ?";
-            PreparedStatement statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query);
             statement.setString(1, "%" + value + "%");
             statement.setString(2, "%" + value + "%");
             ResultSet result = statement.executeQuery();
@@ -87,7 +87,6 @@ public class LocationGetter {
 
                 Location loc = new Location(id, name, longitude, latitude, discription);
                 addLocationData(loc, connection);
-            
 
                 locations.add(loc);
             }
@@ -114,7 +113,7 @@ public class LocationGetter {
             connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);
 
             String query = "SELECT ID, Name, Latitude, Longitude, Description FROM Location WHERE ID = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query);
             statement.setString(1, String.valueOf(ID));
 
             ResultSet result = statement.executeQuery();
@@ -131,15 +130,14 @@ public class LocationGetter {
         return location;
     }
 
-    public ArrayDeque getNearbyLocations(double lat, double lon, int offset) throws SQLException {
-        ArrayDeque locations = new ArrayDeque<Location>();
-        int count = 1;
+    public Deque<Location> getNearbyLocations(double lat, double lon, int offset) throws SQLException {
+        Deque<Location> locations = new ArrayDeque();
         try {
             Class.forName(DRIVER_STRING);
             connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);
 
             String query = "SELECT l.ID, l.Name, l.Latitude, l.Longitude, l.Description FROM Location l ORDER BY ABS(l.Latitude - ?) + ABS(l.Longitude - ?) LIMIT 10 OFFSET ?";
-            PreparedStatement statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query);
             statement.setDouble(1, lat);
             statement.setDouble(2, lon);
             statement.setInt(3, offset);
@@ -154,7 +152,6 @@ public class LocationGetter {
 
                 Location loc = new Location(id, name, longitude, latitude, discription);
                 addLocationData(loc, connection);
-               
 
                 locations.add(loc);
             }
@@ -174,7 +171,7 @@ public class LocationGetter {
      */
     private void addImagesFromLocation(Location loc, Connection connection) throws SQLException {
         String query = "SELECT i.ID FROM Image i, Location l WHERE l.ID = i.LocationID AND l.ID = ?";
-        PreparedStatement statement = connection.prepareStatement(query);
+        statement = connection.prepareStatement(query);
         statement.setInt(1, loc.getId());
 
         ResultSet result = statement.executeQuery();
@@ -189,7 +186,7 @@ public class LocationGetter {
 
     private void addTagsFromLocation(Location loc, Connection connection) throws SQLException {
         String query = "SELECT * FROM Tag WHERE LocationID = ?";
-        PreparedStatement statement = connection.prepareStatement(query);
+        statement = connection.prepareStatement(query);
         statement.setInt(1, loc.getId());
 
         ResultSet result = statement.executeQuery();
@@ -204,7 +201,7 @@ public class LocationGetter {
 
     private void addCategoryFromLocation(Location loc, Connection connection) throws SQLException {
         String query = "SELECT c.Name FROM Category c WHERE ID = (SELECT CategoryID FROM BelongsTo WHERE LocationID = ?)";
-        PreparedStatement statement = connection.prepareStatement(query);
+        statement = connection.prepareStatement(query);
         statement.setInt(1, loc.getId());
 
         ResultSet result = statement.executeQuery();
@@ -230,10 +227,24 @@ public class LocationGetter {
         }
     }
 
+    private void addLikes(Location loc, Connection connection) throws SQLException {
+        String query = "SELECT l.AccountID FROM Liked l WHERE l.LocationID = ?";
+        statement = connection.prepareStatement(query);
+        statement.setInt(1, loc.getId());
+
+        ResultSet result = statement.executeQuery();
+
+        while (result.next()) {
+            String accountID = result.getString("AccountID");
+            loc.addLike(accountID);
+        }
+    }
+
     private void addLocationData(Location loc, Connection connection) throws SQLException {
         addCategoryFromLocation(loc, connection);
         addImagesFromLocation(loc, connection);
         addTagsFromLocation(loc, connection);
         addCommentsFromLocation(loc, connection);
+        addLikes(loc, connection);
     }
 }
