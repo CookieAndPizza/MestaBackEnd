@@ -64,8 +64,10 @@ public class AccountResource {
         if (account == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-
-        return Response.ok(account.toString(), MediaType.APPLICATION_JSON).build();
+        
+        NewCookie tokenCookie = new NewCookie("token", account.getToken().getToken());
+        NewCookie facebookID = new NewCookie("fbLoginID", account.getExternalID());
+        return Response.ok(account.toString(), MediaType.APPLICATION_JSON).cookie(tokenCookie).cookie(facebookID).build();
     }
 
     @Path("/fblogout")
