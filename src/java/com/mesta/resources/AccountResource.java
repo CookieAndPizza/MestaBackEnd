@@ -68,11 +68,11 @@ public class AccountResource {
         return Response.ok(account.toString(), MediaType.APPLICATION_JSON).build();
     }
 
-    @Path("/fblogout/{ID}/{AccessToken}")
+    @Path("/fblogout")
     @POST
-    public Response logout(@PathParam("ID") String loginID, @PathParam("AccessToken") String Token) {
+    public Response logout(@CookieParam("ID") Cookie loginID, @CookieParam("AccessToken") Cookie token) {
         try {
-            DatabaseInfo.DatabaseRepsonse succes = AccountController.getController().accountGetter().logout(loginID, Token);
+            DatabaseInfo.DatabaseRepsonse succes = AccountController.getController().accountGetter().logout(loginID.getValue(), token.getValue());
             return Response.ok(String.valueOf(succes)).build();
         } catch (SQLException ex) {
             Logger.getLogger(AccountResource.class.getName()).log(Level.SEVERE, null, ex);
