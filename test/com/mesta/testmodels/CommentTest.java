@@ -35,7 +35,7 @@ public class CommentTest {
     @Before
     public void setUp() {
         this.comment = new Comment();
-        this.comment = new Comment("comment", "title");
+        this.comment = new Comment(1, "comment", "title");
         this.comment.setLocationID(1);
     }
 

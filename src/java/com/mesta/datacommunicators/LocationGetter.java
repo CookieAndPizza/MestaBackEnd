@@ -255,7 +255,8 @@ public class LocationGetter {
             String id = result.getString("AccountID");
             String comment = result.getString("Text");
             String date = result.getString("Time");
-            Comment com = new Comment(comment, date);
+            Comment com = new Comment(loc.getId(), comment, date);
+            com.setfaceBookID(id);
             loc.addComment(com);
         }
     }

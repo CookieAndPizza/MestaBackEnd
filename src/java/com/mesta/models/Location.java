@@ -146,7 +146,7 @@ public class Location implements Serializable {
             
             JSONArray commentArray = new JSONArray();
             for(Comment c : comments){
-                commentArray.put(new JSONObject(c));
+                commentArray.put(new JSONObject(c).put("facebookID", c.getfaceBookID()));
             }
             
             object.put("comments", commentArray);

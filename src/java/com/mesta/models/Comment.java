@@ -5,12 +5,6 @@
  */
 package com.mesta.models;
 
-import java.sql.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 /**
  *
  * @author harm
@@ -26,7 +20,8 @@ public class Comment {
 
     }
 
-    public Comment(String comment, String date) {
+    public Comment(int locationID, String comment, String date) {
+        this.locationID = locationID;
         this.comment = comment;
         this.date = date;
     }
@@ -62,21 +57,5 @@ public class Comment {
     public String getLocationID() {
         return String.valueOf(locationID);
     }
-
-    @Override
-    public String toString() {
-        JSONObject object = new JSONObject();
-        try { 
-            object.put("date", date);
-            object.put("comment", comment);
-            object.put("userID", faceBookID);
-        } catch (JSONException ex) {
-            System.out.println(ex);
-            Logger.getLogger(Location.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return object.toString();
-    }
-    
     
 }

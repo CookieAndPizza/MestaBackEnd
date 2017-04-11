@@ -21,7 +21,7 @@ public class HttpFilter implements ContainerResponseFilter {
     public void filter(ContainerRequestContext crc, ContainerResponseContext crc1) throws IOException {
         MultivaluedMap<String, Object> headers = crc1.getHeaders();
 
-        headers.add("Access-Control-Allow-Origin", "www.the-mesta.com");
+        headers.add("Access-Control-Allow-Origin", "http://www.the-mesta.com");
         headers.add("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS");
         headers.add("Access-Control-Allow-Headers", "Content-Type, Access-Control-Request-Credentials, Access-Control-Request-Origin");
         headers.add("Access-Control-Allow-Credentials", "true");
