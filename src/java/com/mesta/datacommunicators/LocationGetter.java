@@ -212,7 +212,7 @@ public class LocationGetter {
         while (result.next()) {
             String image = result.getString("ID");
             if (!"".equals(image)) {
-                loc.addImage("i.the-mesta.com/" + image);
+                loc.addImage("http://i.the-mesta.com/" + image);
             }
         }
     }
