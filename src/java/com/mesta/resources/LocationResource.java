@@ -180,6 +180,7 @@ public class LocationResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response putComment(Comment com, @CookieParam("fbLoginID") Cookie fbLoginID, @CookieParam("token") Cookie token) {
         try {
+            com.setfaceBookID(fbLoginID.getValue());
             DatabaseInfo.DatabaseRepsonse succes = CommentController.getController().commentSetter().saveComment(com, fbLoginID.getValue(), token.getValue());
             return Response.ok(String.valueOf(succes)).build();
         } catch (SQLException ex) {

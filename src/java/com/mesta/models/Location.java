@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.json.JsonObject;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -141,7 +143,13 @@ public class Location implements Serializable {
             object.put("latitude", this.latitude);
             object.put("description", this.description);
             object.put("images", images);
-            object.put("comments", comments);
+            
+            JSONArray commentArray = new JSONArray();
+            for(Comment c : comments){
+                commentArray.put(new JSONObject(c));
+            }
+            
+            object.put("comments", commentArray);
             object.put("tags", tags);
             object.put("category", category.toString());
             object.put("likes", likes);

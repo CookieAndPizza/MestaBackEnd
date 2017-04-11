@@ -121,7 +121,7 @@ public class LocationTest {
 
     @Test
     public void getCommentsTest() {
-        Comment comment = new Comment("1", "thisisacomment", "thisisatitle");
+        Comment comment = new Comment("thisisacomment", "thisisatitle");
         loc.addComment(comment);
         int expected = 1;
         assertEquals(expected, loc.getComments().size());

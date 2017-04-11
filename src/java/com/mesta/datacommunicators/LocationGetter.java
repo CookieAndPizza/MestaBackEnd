@@ -255,7 +255,7 @@ public class LocationGetter {
             String id = result.getString("AccountID");
             String comment = result.getString("Text");
             String date = result.getString("Time");
-            Comment com = new Comment(id, comment, date);
+            Comment com = new Comment(comment, date);
             loc.addComment(com);
         }
     }
