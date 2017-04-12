@@ -6,12 +6,14 @@
 package com.mesta.datacommunicators;
 
 import com.mesta.models.Location;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -72,23 +74,18 @@ public class LocationSetter {
             connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);
 
             if (CallVerifier.verify(fbLogin, token, connection)) {
-                
-                if(checkLiked(locationID, fbLogin)){
-                    return DatabaseInfo.DatabaseRepsonse.USER_ALREADY_LIKED;
-                }
-                
-                String query = "INSERT INTO Liked (LocationID, AccountID) VALUES (?, ?)";
-                statement = connection.prepareStatement(query);
 
-                statement.setInt(1, locationID);
-                statement.setString(2, fbLogin);
+                String query = "CALL `like`(?, ?)";
+                CallableStatement stat = connection.prepareCall(query);
+                stat = connection.prepareCall(query);
+                stat.setString(1, fbLogin);
+                stat.setInt(2, locationID);
 
-                int affectedRows = statement.executeUpdate();
+                int affectedRows = stat.executeUpdate();
 
-                if (affectedRows > 0) {
+               if (affectedRows > 0) {
                     return DatabaseInfo.DatabaseRepsonse.SUCCES;
-                }
-
+               }
             } else {
                 return DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID;
             }
@@ -96,22 +93,10 @@ public class LocationSetter {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            statement.close();
             connection.close();
         }
 
         return DatabaseInfo.DatabaseRepsonse.FAILED;
-    }
-
-    private boolean checkLiked(int locationID, String accountID) throws SQLException {
-        String query = "SELECT * FROM Liked WHERE LocationID = ? AND AccountID = ?";
-        statement = connection.prepareStatement(query);
-
-        statement.setInt(1, locationID);
-        statement.setString(2, accountID);
-
-        ResultSet set = statement.executeQuery();
-        return set.next();
     }
 
     private DatabaseInfo.DatabaseRepsonse saveTags(Location loc, Connection connection, int locationID) throws SQLException {
