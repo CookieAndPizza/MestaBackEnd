@@ -57,5 +57,4 @@ public class Comment {
     public String getLocationID() {
         return String.valueOf(locationID);
     }
-    
 }

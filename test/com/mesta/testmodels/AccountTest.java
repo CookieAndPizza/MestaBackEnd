@@ -83,7 +83,7 @@ public class AccountTest {
     
     @Test
     public void toJson(){
-        String expected = "{\"Banned\":false,\"faceBookID\":\"123456\",\"Admin\":false}";
+        String expected = "{\"Banned\":false,\"Token\":\"" + acc.getToken().getToken() + "\",\"faceBookID\":\"123456\",\"Admin\":false}";
         Assert.assertEquals(expected, acc.toString());
     }
 }

@@ -35,7 +35,7 @@ public class CommentTest {
     @Before
     public void setUp() {
         this.comment = new Comment();
-        this.comment = new Comment(1, "comment", "title");
+        this.comment = new Comment(1, "comment", "10-05-1996");
         this.comment.setLocationID(1);
     }
 
@@ -43,6 +43,19 @@ public class CommentTest {
     public void tearDown() {
     }
 
+    @Test
+    public void getDateTest() {
+        String expected = "10-05-1996";
+        assertEquals(expected, comment.getDate());
+    }
+    
+    @Test
+    public void setDateTest() {
+        comment.setDate("02-7-1997");
+        String expected = "02-7-1997";
+        assertEquals(expected, comment.getDate());
+    }
+    
     @Test
     public void getCommentTest() {
         String expected = "comment";
@@ -73,11 +86,5 @@ public class CommentTest {
         String expected = "newID";
         comment.setfaceBookID(expected);
         assertEquals(expected, comment.getfaceBookID());
-    }
-    
-    @Test
-    public void toStringTest(){
-        String expected = "facebookid; title; comment";
-        assertEquals(expected, comment.toString());
     }
 }

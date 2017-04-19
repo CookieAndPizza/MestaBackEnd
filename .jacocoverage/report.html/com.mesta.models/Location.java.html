@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Location.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Mesta&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">com.mesta.models</a> &gt; <span class="el_source">Location.java</span></div><h1>Location.java</h1><pre class="source lang-java linenums">/*
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="nl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Location.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Mesta&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">com.mesta.models</a> &gt; <span class="el_source">Location.java</span></div><h1>Location.java</h1><pre class="source lang-java linenums">/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.json.JsonObject;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,132 +29,146 @@ public class Location implements Serializable {
     private List&lt;String&gt; images;
     private List&lt;Comment&gt; comments;
     private List&lt;String&gt; tags;
+    private List&lt;String&gt; likes;
     private Category category;
 
     public List&lt;Comment&gt; getComments() {
-<span class="fc" id="L33">        return comments;</span>
+<span class="fc" id="L36">        return comments;</span>
     }
 
     public List&lt;String&gt; getTags() {
-<span class="fc" id="L37">        return tags;</span>
+<span class="fc" id="L40">        return tags;</span>
     }
 
     public Category getCategory() {
-<span class="fc" id="L41">        return category;</span>
+<span class="fc" id="L44">        return category;</span>
     }
 
     public void setCategory(Category category) {
-<span class="fc" id="L45">        this.category = category;</span>
-<span class="fc" id="L46">    }</span>
+<span class="fc" id="L48">        this.category = category;</span>
+<span class="fc" id="L49">    }</span>
 
     public int getId() {
-<span class="fc" id="L49">        return id;</span>
+<span class="fc" id="L52">        return id;</span>
     }
 
     public String getName() {
-<span class="fc" id="L53">        return name;</span>
+<span class="fc" id="L56">        return name;</span>
     }
 
     public void setName(String name) {
-<span class="fc" id="L57">        this.name = name;</span>
-<span class="fc" id="L58">    }</span>
+<span class="fc" id="L60">        this.name = name;</span>
+<span class="fc" id="L61">    }</span>
 
     public double getLongitude() {
-<span class="fc" id="L61">        return longitude;</span>
+<span class="fc" id="L64">        return longitude;</span>
     }
 
     public double getLatitude() {
-<span class="fc" id="L65">        return latitude;</span>
+<span class="fc" id="L68">        return latitude;</span>
     }
 
     public void setLatitude(double latitude) {
-<span class="fc" id="L69">        this.latitude = latitude;</span>
-<span class="fc" id="L70">    }</span>
+<span class="fc" id="L72">        this.latitude = latitude;</span>
+<span class="fc" id="L73">    }</span>
 
     public void setLongitude(double longitude) {
-<span class="fc" id="L73">        this.longitude = longitude;</span>
-<span class="fc" id="L74">    }</span>
+<span class="fc" id="L76">        this.longitude = longitude;</span>
+<span class="fc" id="L77">    }</span>
 
     public String getDescription() {
-<span class="fc" id="L77">        return description;</span>
+<span class="fc" id="L80">        return description;</span>
     }
 
     public void setDescription(String discription) {
-<span class="fc" id="L81">        this.description = discription;</span>
-<span class="fc" id="L82">    }</span>
+<span class="fc" id="L84">        this.description = discription;</span>
+<span class="fc" id="L85">    }</span>
 
     public void addImage(String path) {
-<span class="fc" id="L85">        images.add(path);</span>
-<span class="fc" id="L86">    }</span>
+<span class="fc" id="L88">        images.add(path);</span>
+<span class="fc" id="L89">    }</span>
         
     public List&lt;String&gt; getImages(){
-<span class="fc" id="L89">        return this.images;</span>
+<span class="fc" id="L92">        return this.images;</span>
     }
 
     public void addComment(Comment comment) {
-<span class="fc" id="L93">        this.comments.add(comment);</span>
-<span class="fc" id="L94">    }</span>
+<span class="fc" id="L96">        this.comments.add(comment);</span>
+<span class="fc" id="L97">    }</span>
 
     public void addTag(String tag) {
-<span class="fc" id="L97">        this.tags.add(tag);</span>
-<span class="fc" id="L98">    }</span>
-
-<span class="fc" id="L100">    public Location() {</span>
+<span class="fc" id="L100">        this.tags.add(tag);</span>
 <span class="fc" id="L101">    }</span>
+    
+    public void addLike(String fbID){
+<span class="nc" id="L104">        this.likes.add(fbID);</span>
+<span class="nc" id="L105">    }</span>
 
-<span class="fc" id="L103">    public Location(String name, double longitude, double latitude, String discription) {</span>
-<span class="fc" id="L104">        this.comments = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L105">        this.images = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L106">        this.tags = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L107">        this.id = -1;</span>
-<span class="fc" id="L108">        this.name = name;</span>
-<span class="fc" id="L109">        this.longitude = longitude;</span>
-<span class="fc" id="L110">        this.latitude = latitude;</span>
-<span class="fc" id="L111">        this.description = discription;</span>
-<span class="fc" id="L112">        this.category = Category.None;</span>
-<span class="fc" id="L113">    }</span>
+<span class="fc" id="L107">    public Location() {</span>
+<span class="fc" id="L108">    }</span>
 
-<span class="fc" id="L115">    public Location(int id, String name, double longitude, double latitude, String discription) {</span>
-<span class="fc" id="L116">        this.comments = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L117">        this.images = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L118">        this.tags = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L119">        this.id = id;</span>
-<span class="fc" id="L120">        this.name = name;</span>
-<span class="fc" id="L121">        this.longitude = longitude;</span>
-<span class="fc" id="L122">        this.latitude = latitude;</span>
-<span class="fc" id="L123">        this.description = discription;</span>
-<span class="fc" id="L124">        this.category = Category.None;</span>
-<span class="fc" id="L125">    }</span>
+<span class="fc" id="L110">    public Location(String name, double longitude, double latitude, String discription) {</span>
+<span class="fc" id="L111">        this.comments = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L112">        this.images = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L113">        this.tags = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L114">        this.likes = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L115">        this.id = -1;</span>
+<span class="fc" id="L116">        this.name = name;</span>
+<span class="fc" id="L117">        this.longitude = longitude;</span>
+<span class="fc" id="L118">        this.latitude = latitude;</span>
+<span class="fc" id="L119">        this.description = discription;</span>
+<span class="fc" id="L120">        this.category = Category.None;</span>
+<span class="fc" id="L121">    }</span>
+
+<span class="fc" id="L123">    public Location(int id, String name, double longitude, double latitude, String discription) {</span>
+<span class="fc" id="L124">        this.comments = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L125">        this.images = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L126">        this.tags = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L127">        this.likes = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L128">        this.id = id;</span>
+<span class="fc" id="L129">        this.name = name;</span>
+<span class="fc" id="L130">        this.longitude = longitude;</span>
+<span class="fc" id="L131">        this.latitude = latitude;</span>
+<span class="fc" id="L132">        this.description = discription;</span>
+<span class="fc" id="L133">        this.category = Category.None;</span>
+<span class="fc" id="L134">    }</span>
 
     @Override
     public String toString() {
-<span class="fc" id="L129">        JSONObject object = new JSONObject();</span>
+<span class="fc" id="L138">        JSONObject object = new JSONObject();</span>
         try {
-<span class="fc" id="L131">            object.put(&quot;id&quot;, this.id);</span>
-<span class="fc" id="L132">            object.put(&quot;name&quot;, this.name);</span>
-<span class="fc" id="L133">            object.put(&quot;longitude&quot;, this.longitude);</span>
-<span class="fc" id="L134">            object.put(&quot;latitude&quot;, this.latitude);</span>
-<span class="fc" id="L135">            object.put(&quot;description&quot;, this.description);</span>
-<span class="fc" id="L136">            object.put(&quot;images&quot;, images);</span>
-<span class="fc" id="L137">            object.put(&quot;comments&quot;, comments);</span>
-<span class="fc" id="L138">            object.put(&quot;tags&quot;, tags);</span>
-<span class="fc" id="L139">            object.put(&quot;category&quot;, category.toString());</span>
-<span class="nc" id="L140">        } catch (JSONException ex) {</span>
-<span class="nc" id="L141">            System.out.println(ex);</span>
-<span class="nc" id="L142">            Logger.getLogger(Location.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="fc" id="L143">        }</span>
+<span class="fc" id="L140">            object.put(&quot;id&quot;, this.id);</span>
+<span class="fc" id="L141">            object.put(&quot;name&quot;, this.name);</span>
+<span class="fc" id="L142">            object.put(&quot;longitude&quot;, this.longitude);</span>
+<span class="fc" id="L143">            object.put(&quot;latitude&quot;, this.latitude);</span>
+<span class="fc" id="L144">            object.put(&quot;description&quot;, this.description);</span>
+<span class="fc" id="L145">            object.put(&quot;images&quot;, images);</span>
+            
+<span class="fc" id="L147">            JSONArray commentArray = new JSONArray();</span>
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">            for(Comment c : comments){</span>
+<span class="nc" id="L149">                commentArray.put(new JSONObject(c).put(&quot;facebookID&quot;, c.getfaceBookID()));</span>
+<span class="nc" id="L150">            }</span>
+            
+<span class="fc" id="L152">            object.put(&quot;comments&quot;, commentArray);</span>
+<span class="fc" id="L153">            object.put(&quot;tags&quot;, tags);</span>
+<span class="fc" id="L154">            object.put(&quot;category&quot;, category.toString());</span>
+<span class="fc" id="L155">            object.put(&quot;likes&quot;, likes);</span>
+<span class="nc" id="L156">        } catch (JSONException ex) {</span>
+<span class="nc" id="L157">            System.out.println(ex);</span>
+<span class="nc" id="L158">            Logger.getLogger(Location.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="fc" id="L159">        }</span>
 
-<span class="fc" id="L145">        return object.toString();</span>
+<span class="fc" id="L161">        return object.toString();</span>
     }
     
-<span class="pc" id="L148">    public enum Category {</span>
-<span class="fc" id="L149">        None,</span>
-<span class="fc" id="L150">        Nature,</span>
-<span class="fc" id="L151">        View,</span>
-<span class="fc" id="L152">        Urban,</span>
-<span class="fc" id="L153">        Architecture,</span>
-<span class="fc" id="L154">        Picnic,</span>
-<span class="fc" id="L155">        Technology</span>
+<span class="pc" id="L164">    public enum Category {</span>
+<span class="fc" id="L165">        None,</span>
+<span class="fc" id="L166">        Nature,</span>
+<span class="fc" id="L167">        View,</span>
+<span class="fc" id="L168">        Urban,</span>
+<span class="fc" id="L169">        Architecture,</span>
+<span class="fc" id="L170">        Picnic,</span>
+<span class="fc" id="L171">        Technology</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
