@@ -38,6 +38,7 @@ public class LocationTest {
         loc = new Location();
         loc = new Location("testloc", 10, 20, "testDescription");
         loc = new Location(1, "testLoc", 10, 20, "testDescription");
+        loc.addComment(new Comment(1, "comment", "10-02-2017"));
     }
 
     @After
@@ -123,7 +124,7 @@ public class LocationTest {
     public void getCommentsTest() {
         Comment comment = new Comment(1, "thisisacomment", "thisisatitle");
         loc.addComment(comment);
-        int expected = 1;
+        int expected = 2;
         assertEquals(expected, loc.getComments().size());
     }
 
@@ -136,7 +137,7 @@ public class LocationTest {
     
     @Test
     public void toStringTest(){
-        String expected = "{\"images\":[],\"comments\":[],\"latitude\":20,\"name\":\"testLoc\",\"description\":\"testDescription\",\"id\":1,\"category\":\"None\",\"longitude\":10,\"tags\":[]}";
+        String expected = "{\"images\":[],\"comments\":[{\"date\":\"10-02-2017\",\"locationID\":\"1\",\"comment\":\"comment\"}],\"latitude\":20,\"name\":\"testLoc\",\"description\":\"testDescription\",\"id\":1,\"category\":\"None\",\"longitude\":10,\"tags\":[],\"likes\":[]}";
         String actual = loc.toString();
         assertEquals(expected, actual);
     }
