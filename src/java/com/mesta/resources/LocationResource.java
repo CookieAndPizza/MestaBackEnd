@@ -13,6 +13,7 @@ import com.mesta.models.Comment;
 import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.core.Context;
@@ -112,6 +113,7 @@ public class LocationResource {
     @POST
     @Path("/save")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response putLocation(Location loc, @CookieParam("fbLoginID") Cookie fbLoginID, @CookieParam("token") Cookie token) {
 
         if (fbLoginID == null || token == null) {
@@ -119,8 +121,8 @@ public class LocationResource {
         }
 
         try {
-            DatabaseInfo.DatabaseRepsonse succes = LocationController.getController().locationSetter().saveLocation(loc, fbLoginID.getValue(), token.getValue());
-            return Response.ok(String.valueOf(succes)).build();
+            Entry<DatabaseInfo.DatabaseRepsonse, Integer> succes = LocationController.getController().locationSetter().saveLocation(loc, fbLoginID.getValue(), token.getValue());
+            return Response.ok("{\"message\":\"" + String.valueOf(succes.getKey() + "\",\"id\":\"" + succes.getValue() + "\"}")).build();
         } catch (SQLException ex) {
             Logger.getLogger(LocationResource.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NullPointerException ex) {

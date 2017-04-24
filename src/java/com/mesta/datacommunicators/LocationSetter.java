@@ -13,7 +13,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Types;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,7 +28,7 @@ public class LocationSetter {
     private Connection connection;
     private PreparedStatement statement;
 
-    public DatabaseInfo.DatabaseRepsonse saveLocation(Location loc, String login, String token) throws SQLException {
+    public Entry<DatabaseInfo.DatabaseRepsonse, Integer> saveLocation(Location loc, String login, String token) throws SQLException {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);
@@ -48,14 +49,15 @@ public class LocationSetter {
                 if (keys.next()) {
                     id = keys.getInt(1);
                 }
+
                 DatabaseInfo.DatabaseRepsonse tagresponse = saveTags(loc, connection, id);
                 DatabaseInfo.DatabaseRepsonse categoryResponse = saveCategory(loc, connection, id);
 
                 if (affectedRows > 0 && tagresponse == DatabaseInfo.DatabaseRepsonse.SUCCES && categoryResponse == DatabaseInfo.DatabaseRepsonse.SUCCES) {
-                    return DatabaseInfo.DatabaseRepsonse.SUCCES;
+                    return new SimpleEntry<>(DatabaseInfo.DatabaseRepsonse.SUCCES, id);
                 }
             } else {
-                return DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID;
+                return new SimpleEntry<>(DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID, -1);
             }
 
         } catch (ClassNotFoundException ex) {
@@ -65,7 +67,7 @@ public class LocationSetter {
             statement.close();
             connection.close();
         }
-        return DatabaseInfo.DatabaseRepsonse.FAILED;
+        return new SimpleEntry<>(DatabaseInfo.DatabaseRepsonse.FAILED, -1);
     }
 
     public DatabaseInfo.DatabaseRepsonse likeLocation(int locationID, String fbLogin, String token) throws SQLException {
@@ -83,9 +85,9 @@ public class LocationSetter {
 
                 int affectedRows = stat.executeUpdate();
 
-               if (affectedRows > 0) {
+                if (affectedRows > 0) {
                     return DatabaseInfo.DatabaseRepsonse.SUCCES;
-               }
+                }
             } else {
                 return DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID;
             }
