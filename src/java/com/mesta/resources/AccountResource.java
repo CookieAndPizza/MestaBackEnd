@@ -23,6 +23,7 @@ import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
+import org.json.JSONObject;
 
 /**
  * REST Web Service
@@ -46,10 +47,10 @@ public class AccountResource {
      *
      * @return an instance of java.lang.String
      */
-    @Path("/fblogin/{ID}/{AccessToken}")
-    @GET
+    @Path("/fblogin")
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response login(@PathParam("ID") String loginID, @PathParam("AccessToken") String accessToken) {
+    public Response login(@CookieParam("fbLoginID") String loginID, @CookieParam("AccessToken") String accessToken) {
         Account account = null;
         try {
             account = AccountController.getController().accountGetter().login(loginID, accessToken);
@@ -62,12 +63,12 @@ public class AccountResource {
         }
 
         if (account == null) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
+            return Response.ok("{\"success\":\"false\"}").build();
         }
         
         NewCookie tokenCookie = new NewCookie("token", account.getToken().getToken());
         NewCookie facebookID = new NewCookie("fbLoginID", account.getExternalID());
-        return Response.ok(account.toString(), MediaType.APPLICATION_JSON).cookie(tokenCookie).cookie(facebookID).build();
+        return Response.ok("{\"success\":\"true\"}", MediaType.APPLICATION_JSON).cookie(tokenCookie).cookie(facebookID).build();
     }
 
     @Path("/fblogout")
