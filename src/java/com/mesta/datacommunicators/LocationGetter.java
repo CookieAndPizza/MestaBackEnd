@@ -72,7 +72,7 @@ public class LocationGetter {
             Class.forName(DRIVER_STRING);
             connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);
 
-            String query = "SELECT l.ID, l.Name, l.Latitude, l.Longitude, l.Description FROM Location l LEFT JOIN Tag t ON (l.ID = t.LocationID) WHERE l.Name LIKE ? OR t.Tag LIKE ?";
+            String query = "SELECT DISTINCT(l.ID), l.Name, l.Latitude, l.Longitude, l.Description FROM Location l LEFT JOIN Tag t ON (l.ID = t.LocationID) WHERE l.Name LIKE ? OR t.Tag LIKE ?";
             statement = connection.prepareStatement(query);
             statement.setString(1, "%" + value + "%");
             statement.setString(2, "%" + value + "%");

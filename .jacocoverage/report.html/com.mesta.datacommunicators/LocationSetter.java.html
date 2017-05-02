@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="nl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>LocationSetter.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Mesta&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">com.mesta.datacommunicators</a> &gt; <span class="el_source">LocationSetter.java</span></div><h1>LocationSetter.java</h1><pre class="source lang-java linenums">/*
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>LocationSetter.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;Mesta&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">com.mesta.datacommunicators</a> &gt; <span class="el_source">LocationSetter.java</span></div><h1>LocationSetter.java</h1><pre class="source lang-java linenums">/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -13,7 +13,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Types;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,137 +22,138 @@ import java.util.logging.Logger;
  *
  * @author harm
  */
-<span class="nc" id="L24">public class LocationSetter {</span>
+<span class="nc" id="L25">public class LocationSetter {</span>
 
-<span class="nc" id="L26">    private static final Logger LOGGER = Logger.getLogger(LocationSetter.class.getName());</span>
+<span class="nc" id="L27">    private static final Logger LOGGER = Logger.getLogger(LocationSetter.class.getName());</span>
     private Connection connection;
     private PreparedStatement statement;
 
-    public DatabaseInfo.DatabaseRepsonse saveLocation(Location loc, String login, String token) throws SQLException {
+    public Entry&lt;DatabaseInfo.DatabaseRepsonse, Integer&gt; saveLocation(Location loc, String login, String token) throws SQLException {
         try {
-<span class="nc" id="L32">            Class.forName(&quot;com.mysql.jdbc.Driver&quot;);</span>
-<span class="nc" id="L33">            connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);</span>
+<span class="nc" id="L33">            Class.forName(&quot;com.mysql.jdbc.Driver&quot;);</span>
+<span class="nc" id="L34">            connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);</span>
 
-<span class="nc bnc" id="L35" title="All 2 branches missed.">            if (CallVerifier.verify(login, token, connection)) {</span>
-<span class="nc" id="L36">                String query = &quot;INSERT INTO Location (Name, Latitude, Longitude, Description) VALUES (?, ?, ?, ?)&quot;;</span>
-<span class="nc" id="L37">                statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">            if (CallVerifier.verify(login, token, connection)) {</span>
+<span class="nc" id="L37">                String query = &quot;INSERT INTO Location (Name, Latitude, Longitude, Description) VALUES (?, ?, ?, ?)&quot;;</span>
+<span class="nc" id="L38">                statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);</span>
 
-<span class="nc" id="L39">                statement.setString(1, loc.getName());</span>
-<span class="nc" id="L40">                statement.setDouble(2, loc.getLatitude());</span>
-<span class="nc" id="L41">                statement.setDouble(3, loc.getLongitude());</span>
-<span class="nc" id="L42">                statement.setString(4, loc.getDescription());</span>
+<span class="nc" id="L40">                statement.setString(1, loc.getName());</span>
+<span class="nc" id="L41">                statement.setDouble(2, loc.getLatitude());</span>
+<span class="nc" id="L42">                statement.setDouble(3, loc.getLongitude());</span>
+<span class="nc" id="L43">                statement.setString(4, loc.getDescription());</span>
 
-<span class="nc" id="L44">                int affectedRows = statement.executeUpdate();</span>
+<span class="nc" id="L45">                int affectedRows = statement.executeUpdate();</span>
 
-<span class="nc" id="L46">                ResultSet keys = statement.getGeneratedKeys();</span>
-<span class="nc" id="L47">                int id = -1;</span>
-<span class="nc bnc" id="L48" title="All 2 branches missed.">                if (keys.next()) {</span>
-<span class="nc" id="L49">                    id = keys.getInt(1);</span>
+<span class="nc" id="L47">                ResultSet keys = statement.getGeneratedKeys();</span>
+<span class="nc" id="L48">                int id = -1;</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">                if (keys.next()) {</span>
+<span class="nc" id="L50">                    id = keys.getInt(1);</span>
                 }
-<span class="nc" id="L51">                DatabaseInfo.DatabaseRepsonse tagresponse = saveTags(loc, connection, id);</span>
-<span class="nc" id="L52">                DatabaseInfo.DatabaseRepsonse categoryResponse = saveCategory(loc, connection, id);</span>
 
-<span class="nc bnc" id="L54" title="All 6 branches missed.">                if (affectedRows &gt; 0 &amp;&amp; tagresponse == DatabaseInfo.DatabaseRepsonse.SUCCES &amp;&amp; categoryResponse == DatabaseInfo.DatabaseRepsonse.SUCCES) {</span>
-<span class="nc" id="L55">                    return DatabaseInfo.DatabaseRepsonse.SUCCES;</span>
+<span class="nc" id="L53">                DatabaseInfo.DatabaseRepsonse tagresponse = saveTags(loc, connection, id);</span>
+<span class="nc" id="L54">                DatabaseInfo.DatabaseRepsonse categoryResponse = saveCategory(loc, connection, id);</span>
+
+<span class="nc bnc" id="L56" title="All 6 branches missed.">                if (affectedRows &gt; 0 &amp;&amp; tagresponse == DatabaseInfo.DatabaseRepsonse.SUCCES &amp;&amp; categoryResponse == DatabaseInfo.DatabaseRepsonse.SUCCES) {</span>
+<span class="nc" id="L57">                    return new SimpleEntry&lt;&gt;(DatabaseInfo.DatabaseRepsonse.SUCCES, id);</span>
                 }
-<span class="nc" id="L57">            } else {</span>
-<span class="nc" id="L58">                return DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID;</span>
+<span class="nc" id="L59">            } else {</span>
+<span class="nc" id="L60">                return new SimpleEntry&lt;&gt;(DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID, -1);</span>
             }
 
-<span class="nc" id="L61">        } catch (ClassNotFoundException ex) {</span>
-<span class="nc" id="L62">            System.out.println(ex.getMessage());</span>
-<span class="nc" id="L63">            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L63">        } catch (ClassNotFoundException ex) {</span>
+<span class="nc" id="L64">            System.out.println(ex.getMessage());</span>
+<span class="nc" id="L65">            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);</span>
         } finally {
-<span class="nc" id="L65">            statement.close();</span>
-<span class="nc" id="L66">            connection.close();</span>
-<span class="nc" id="L67">        }</span>
-<span class="nc" id="L68">        return DatabaseInfo.DatabaseRepsonse.FAILED;</span>
+<span class="nc" id="L67">            statement.close();</span>
+<span class="nc" id="L68">            connection.close();</span>
+<span class="nc" id="L69">        }</span>
+<span class="nc" id="L70">        return new SimpleEntry&lt;&gt;(DatabaseInfo.DatabaseRepsonse.FAILED, -1);</span>
     }
 
     public DatabaseInfo.DatabaseRepsonse likeLocation(int locationID, String fbLogin, String token) throws SQLException {
         try {
-<span class="nc" id="L73">            Class.forName(&quot;com.mysql.jdbc.Driver&quot;);</span>
-<span class="nc" id="L74">            connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);</span>
+<span class="nc" id="L75">            Class.forName(&quot;com.mysql.jdbc.Driver&quot;);</span>
+<span class="nc" id="L76">            connection = DriverManager.getConnection(DatabaseInfo.CONNECTION_STRING, DatabaseInfo.LOGIN_NAME, DatabaseInfo.PASSWORD);</span>
 
-<span class="nc bnc" id="L76" title="All 2 branches missed.">            if (CallVerifier.verify(fbLogin, token, connection)) {</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">            if (CallVerifier.verify(fbLogin, token, connection)) {</span>
 
-<span class="nc" id="L78">                String query = &quot;CALL `like`(?, ?)&quot;;</span>
-<span class="nc" id="L79">                CallableStatement stat = connection.prepareCall(query);</span>
-<span class="nc" id="L80">                stat = connection.prepareCall(query);</span>
-<span class="nc" id="L81">                stat.setString(1, fbLogin);</span>
-<span class="nc" id="L82">                stat.setInt(2, locationID);</span>
+<span class="nc" id="L80">                String query = &quot;CALL `like`(?, ?)&quot;;</span>
+<span class="nc" id="L81">                CallableStatement stat = connection.prepareCall(query);</span>
+<span class="nc" id="L82">                stat = connection.prepareCall(query);</span>
+<span class="nc" id="L83">                stat.setString(1, fbLogin);</span>
+<span class="nc" id="L84">                stat.setInt(2, locationID);</span>
 
-<span class="nc" id="L84">                int affectedRows = stat.executeUpdate();</span>
+<span class="nc" id="L86">                int affectedRows = stat.executeUpdate();</span>
 
-<span class="nc bnc" id="L86" title="All 2 branches missed.">               if (affectedRows &gt; 0) {</span>
-<span class="nc" id="L87">                    return DatabaseInfo.DatabaseRepsonse.SUCCES;</span>
-               }
-<span class="nc" id="L89">            } else {</span>
-<span class="nc" id="L90">                return DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID;</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">                if (affectedRows &gt; 0) {</span>
+<span class="nc" id="L89">                    return DatabaseInfo.DatabaseRepsonse.SUCCES;</span>
+                }
+<span class="nc" id="L91">            } else {</span>
+<span class="nc" id="L92">                return DatabaseInfo.DatabaseRepsonse.TOKEN_NOT_VALID;</span>
             }
 
-<span class="nc" id="L93">        } catch (ClassNotFoundException ex) {</span>
-<span class="nc" id="L94">            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L95">        } catch (ClassNotFoundException ex) {</span>
+<span class="nc" id="L96">            Logger.getLogger(LocationSetter.class.getName()).log(Level.SEVERE, null, ex);</span>
         } finally {
-<span class="nc" id="L96">            connection.close();</span>
-<span class="nc" id="L97">        }</span>
+<span class="nc" id="L98">            connection.close();</span>
+<span class="nc" id="L99">        }</span>
 
-<span class="nc" id="L99">        return DatabaseInfo.DatabaseRepsonse.FAILED;</span>
+<span class="nc" id="L101">        return DatabaseInfo.DatabaseRepsonse.FAILED;</span>
     }
 
     private DatabaseInfo.DatabaseRepsonse saveTags(Location loc, Connection connection, int locationID) throws SQLException {
 
-<span class="nc bnc" id="L104" title="All 2 branches missed.">        if (locationID == -1) {</span>
-<span class="nc" id="L105">            return DatabaseInfo.DatabaseRepsonse.FAILED;</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">        if (locationID == -1) {</span>
+<span class="nc" id="L107">            return DatabaseInfo.DatabaseRepsonse.FAILED;</span>
         }
 
-<span class="nc" id="L108">        String tagQuery = &quot;INSERT INTO Tag (LocationID, Tag) VALUES (?, ?)&quot;;</span>
-<span class="nc" id="L109">        PreparedStatement tagStatement = null;</span>
+<span class="nc" id="L110">        String tagQuery = &quot;INSERT INTO Tag (LocationID, Tag) VALUES (?, ?)&quot;;</span>
+<span class="nc" id="L111">        PreparedStatement tagStatement = null;</span>
 
-<span class="nc" id="L111">        boolean succes = false;</span>
+<span class="nc" id="L113">        boolean succes = false;</span>
 
-<span class="nc bnc" id="L113" title="All 2 branches missed.">        for (String tag : loc.getTags()) {</span>
-<span class="nc" id="L114">            tagStatement = connection.prepareStatement(tagQuery);</span>
-<span class="nc" id="L115">            tagStatement.setInt(1, locationID);</span>
-<span class="nc" id="L116">            tagStatement.setString(2, tag);</span>
-<span class="nc" id="L117">            int affectedRows = tagStatement.executeUpdate();</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">        for (String tag : loc.getTags()) {</span>
+<span class="nc" id="L116">            tagStatement = connection.prepareStatement(tagQuery);</span>
+<span class="nc" id="L117">            tagStatement.setInt(1, locationID);</span>
+<span class="nc" id="L118">            tagStatement.setString(2, tag);</span>
+<span class="nc" id="L119">            int affectedRows = tagStatement.executeUpdate();</span>
 
-<span class="nc bnc" id="L119" title="All 2 branches missed.">            if (!succes) {</span>
-<span class="nc bnc" id="L120" title="All 2 branches missed.">                succes = affectedRows &gt; 0;</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">            if (!succes) {</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">                succes = affectedRows &gt; 0;</span>
             }
-<span class="nc" id="L122">        }</span>
+<span class="nc" id="L124">        }</span>
 
-<span class="nc bnc" id="L124" title="All 2 branches missed.">        if (succes) {</span>
-<span class="nc" id="L125">            return DatabaseInfo.DatabaseRepsonse.SUCCES;</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">        if (succes) {</span>
+<span class="nc" id="L127">            return DatabaseInfo.DatabaseRepsonse.SUCCES;</span>
         }
-<span class="nc" id="L127">        return DatabaseInfo.DatabaseRepsonse.FAILED;</span>
+<span class="nc" id="L129">        return DatabaseInfo.DatabaseRepsonse.FAILED;</span>
     }
 
     private DatabaseInfo.DatabaseRepsonse saveCategory(Location loc, Connection connection, int locationID) throws SQLException {
-<span class="nc bnc" id="L131" title="All 2 branches missed.">        if (locationID == -1) {</span>
-<span class="nc" id="L132">            return DatabaseInfo.DatabaseRepsonse.FAILED;</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">        if (locationID == -1) {</span>
+<span class="nc" id="L134">            return DatabaseInfo.DatabaseRepsonse.FAILED;</span>
         }
 
-<span class="nc" id="L135">        String idQuery = &quot;SELECT ID FROM Category WHERE Name = ?&quot;;</span>
-<span class="nc" id="L136">        PreparedStatement idStatement = connection.prepareStatement(idQuery);</span>
+<span class="nc" id="L137">        String idQuery = &quot;SELECT ID FROM Category WHERE Name = ?&quot;;</span>
+<span class="nc" id="L138">        PreparedStatement idStatement = connection.prepareStatement(idQuery);</span>
 
-<span class="nc" id="L138">        idStatement.setString(1, loc.getCategory().toString());</span>
-<span class="nc" id="L139">        ResultSet set = idStatement.executeQuery();</span>
-<span class="nc" id="L140">        int id = -1;</span>
-<span class="nc bnc" id="L141" title="All 2 branches missed.">        while (set.next()) {</span>
-<span class="nc" id="L142">            id = set.getInt(&quot;ID&quot;);</span>
+<span class="nc" id="L140">        idStatement.setString(1, loc.getCategory().toString());</span>
+<span class="nc" id="L141">        ResultSet set = idStatement.executeQuery();</span>
+<span class="nc" id="L142">        int id = -1;</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">        while (set.next()) {</span>
+<span class="nc" id="L144">            id = set.getInt(&quot;ID&quot;);</span>
         }
 
-<span class="nc" id="L145">        String tagQuery = &quot;INSERT INTO BelongsTo (LocationID, CategoryID) VALUES (?, ?)&quot;;</span>
-<span class="nc" id="L146">        PreparedStatement catStatement = connection.prepareStatement(tagQuery);</span>
-<span class="nc" id="L147">        catStatement.setInt(1, locationID);</span>
-<span class="nc" id="L148">        catStatement.setInt(2, id);</span>
-<span class="nc" id="L149">        int affectedRows = catStatement.executeUpdate();</span>
+<span class="nc" id="L147">        String tagQuery = &quot;INSERT INTO BelongsTo (LocationID, CategoryID) VALUES (?, ?)&quot;;</span>
+<span class="nc" id="L148">        PreparedStatement catStatement = connection.prepareStatement(tagQuery);</span>
+<span class="nc" id="L149">        catStatement.setInt(1, locationID);</span>
+<span class="nc" id="L150">        catStatement.setInt(2, id);</span>
+<span class="nc" id="L151">        int affectedRows = catStatement.executeUpdate();</span>
 
-<span class="nc bnc" id="L151" title="All 2 branches missed.">        if (affectedRows &gt; 0) {</span>
-<span class="nc" id="L152">            return DatabaseInfo.DatabaseRepsonse.SUCCES;</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">        if (affectedRows &gt; 0) {</span>
+<span class="nc" id="L154">            return DatabaseInfo.DatabaseRepsonse.SUCCES;</span>
         }
-<span class="nc" id="L154">        return DatabaseInfo.DatabaseRepsonse.FAILED;</span>
+<span class="nc" id="L156">        return DatabaseInfo.DatabaseRepsonse.FAILED;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
