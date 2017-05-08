@@ -51,7 +51,7 @@ public class AccountResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(@CookieParam("fbLoginID") String loginID, @CookieParam("AccessToken") String accessToken) {
-        Account account = null;
+        Account account = null; 
         try {
             account = AccountController.getController().accountGetter().login(loginID, accessToken);
         } catch (SQLException ex) {
@@ -66,8 +66,8 @@ public class AccountResource {
             return Response.ok("{\"success\":\"false\"}").build();
         }
         
-        NewCookie tokenCookie = new NewCookie("token", account.getToken().getToken());
-        NewCookie facebookID = new NewCookie("fbLoginID", account.getExternalID());
+        NewCookie tokenCookie = new NewCookie("token", account.getToken().getToken(), "/", ".the-mesta.com", "Comment", 0, true);
+        NewCookie facebookID = new NewCookie("fbLoginID", account.getExternalID(), "/", ".the-mesta.com", "Comment", 0, true);
         return Response.ok("{\"success\":\"true\"}", MediaType.APPLICATION_JSON).cookie(tokenCookie).cookie(facebookID).build();
     }
 
