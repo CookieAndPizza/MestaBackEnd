@@ -66,8 +66,8 @@ public class AccountResource {
             return Response.ok("{\"success\":\"false\"}").build();
         }
         
-        NewCookie tokenCookie = new NewCookie("token", account.getToken().getToken(), "/", ".the-mesta.com", "Comment", -1, true);
-        NewCookie facebookID = new NewCookie("fbLoginID", account.getExternalID(), "/", ".the-mesta.com", "Comment", -1, true);
+        NewCookie tokenCookie = new NewCookie("token", account.getToken().getToken(), "/", ".the-mesta.com", "Comment", -1, false);
+        NewCookie facebookID = new NewCookie("fbLoginID", account.getExternalID(), "/", ".the-mesta.com", "Comment", -1, false);
         return Response.ok("{\"success\":\"true\"}", MediaType.APPLICATION_JSON).cookie(tokenCookie).cookie(facebookID).build();
     }
 
